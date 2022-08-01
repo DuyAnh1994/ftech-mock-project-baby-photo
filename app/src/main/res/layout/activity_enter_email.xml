@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="30dp"
+    tools:context=".ActivityEnterEmail">
+
+    <ImageButton
+        android:id="@+id/ibRegisterBackEmail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@color/white"
+        android:src="@drawable/ic_baseline_arrow_back_24"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tvRegisterEmail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="23sp"
+        android:text="Enter your email address"
+        android:textColor="@color/colorText"
+        android:textSize="23sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ibRegisterBackEmail" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilRegisterEmail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:hint="Name@email.com"
+        app:endIconMode="clear_text"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvRegisterEmail">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/selector_str_gray_color_gray_selected"
+            android:inputType="textEmailAddress"
+            android:maxLength="50"
+            android:maxLines="1"
+            android:textColor="#000000"
+            android:textSize="14sp" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnRegisterNext1"
+        android:layout_width="160dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="100dp"
+        android:background="@drawable/selector_rec_gray_color_orange_selected"
+        android:text="Next"
+        android:textColor="#FFFFFF"
+        app:layout_constraintHorizontal_bias="0.565"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tilRegisterEmail" />
+</androidx.constraintlayout.widget.ConstraintLayout>
