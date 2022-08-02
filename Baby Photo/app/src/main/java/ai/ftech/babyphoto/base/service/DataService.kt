@@ -11,10 +11,11 @@ interface DataService {
     @GET("Account.php")
     fun account(): Call<List<AccountModel>>
 
-//    @GET("http://localhost:3000/20tu/{id}")
+//    @GET("20tu/2?id={id}&qtype={qtype}")
 //    fun getValue(
-//        @Path("id") id : String,
-//        @Query("name") name: String): Call<List<T>>
+//        @Path("id") id: String,
+//        @Query("qtype") qtype: String
+//    ): Call<Any>
 
     //thêm mới user
     @FormUrlEncoded

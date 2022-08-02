@@ -48,5 +48,5 @@ dependencies {
     //2. import thư viện để bóc dữ liệu
     implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.0-RC")
-
+    implementation("pl.droidsonroids.gif:android-gif-drawable:1.2.19")
 }

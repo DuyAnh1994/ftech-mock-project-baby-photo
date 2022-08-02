@@ -1,19 +1,25 @@
 package ai.ftech.babyphoto
 
 import ai.ftech.babyphoto.MultiTextWatcher.TextWatcherWithInstance
+import ai.ftech.babyphoto.base.service.ApiService
+import ai.ftech.babyphoto.screen.register.ActivityEnterEmail
 import android.content.Intent
-import android.graphics.Color
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatButton
 import androidx.appcompat.widget.AppCompatEditText
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import java.util.regex.Pattern
 
 
 class RegisterActivity : AppCompatActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
@@ -22,7 +28,7 @@ class RegisterActivity : AppCompatActivity() {
         var btnRegisterNext1: AppCompatButton = findViewById(R.id.btnRegisterNext1)
         btnRegisterNext1.isClickable = false
         btnRegisterNext1.setOnClickListener {
-            if (btnRegisterNext1.isClickable==true){
+            if (btnRegisterNext1.isClickable){
                 val intent = Intent(this, ActivityEnterEmail::class.java)
                 startActivity(intent)
             }
@@ -55,7 +61,7 @@ class RegisterActivity : AppCompatActivity() {
                     if (edtRegisterFirstName.text.toString() != "" && edtRegisterLastName.text.toString() != ""
                         && isValidName(
                             edtRegisterFirstName.text.toString()
-                        ) == true && isValidName(edtRegisterLastName.text.toString()) == true
+                        ) && isValidName(edtRegisterLastName.text.toString())
                     ) {
                         btnRegisterNext1.isClickable = true
                         btnRegisterNext1.setBackgroundResource(R.drawable.selector_rec_orange_color)
@@ -64,14 +70,23 @@ class RegisterActivity : AppCompatActivity() {
                     }
                 }
             })
+
+//        ApiService().local().getValue("2", "0").enqueue(
+//            object : Callback<Any>{
+//                override fun onResponse(call: Call<Any>, response: Response<Any>) {
+//                    print(response.body())
+//                }
+//
+//                override fun onFailure(call: Call<Any>, t: Throwable) {
+//                    Log.e("ERROR", t.toString())
+//                }
+//
+//            }
+//        )
     }
 
     fun isValidName(name: String?): Boolean {
-        if (Pattern.matches("[a-zA-Z]+", name)) {
-            return true
-        }else{
-            return false
-        }
+        return Pattern.matches("[a-zA-Z]+", name)
     }
 }
 

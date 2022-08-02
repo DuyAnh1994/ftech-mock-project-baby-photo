@@ -25,7 +25,9 @@ class MainPresenter(mainActivity: MainActivity) {
                     response: Response<List<AccountModel>>
                 ) {
                     //thành công thì update text
-                    view.tvListAccount.text = response.body().toString()
+//                    view.tvListAccount.text = response.body().toString()
+
+                    Log.d("TAG", "onResponse: ${response.body()?.get(0)?.email}")
                 }
 
                 override fun onFailure(call: Call<List<AccountModel>>, t: Throwable) {

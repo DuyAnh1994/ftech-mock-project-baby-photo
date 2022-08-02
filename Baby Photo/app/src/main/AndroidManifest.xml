@@ -15,7 +15,10 @@
         android:theme="@style/Theme.BabyPhoto"
         tools:targetApi="31">
         <activity
-            android:name=".ActivityEnterEmail"
+            android:name=".screen.register.ActivityCreatePass"
+            android:exported="false" />
+        <activity
+            android:name=".screen.register.ActivityEnterEmail"
             android:exported="false" />
         <activity
             android:name=".MainActivity"
