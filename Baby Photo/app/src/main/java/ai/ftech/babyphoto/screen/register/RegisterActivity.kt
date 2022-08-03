@@ -1,42 +1,45 @@
-package ai.ftech.babyphoto
+package ai.ftech.babyphoto.screen.register
 
-import ai.ftech.babyphoto.MultiTextWatcher.TextWatcherWithInstance
-import ai.ftech.babyphoto.base.service.ApiService
-import ai.ftech.babyphoto.screen.register.ActivityEnterEmail
+import ai.ftech.babyphoto.MainActivity
+import ai.ftech.babyphoto.R
+import ai.ftech.babyphoto.base.Utils
+import ai.ftech.babyphoto.screen.register.MultiTextWatcher.TextWatcherWithInstance
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatButton
 import androidx.appcompat.widget.AppCompatEditText
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import kotlinx.android.synthetic.main.activity_register.*
 import java.util.regex.Pattern
 
 
 class RegisterActivity : AppCompatActivity() {
+    private var presenterRegister: RegisterPresenter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
-        var edtRegisterFirstName: AppCompatEditText = findViewById(R.id.edtRegisterFirstName)
-        var edtRegisterLastName: AppCompatEditText = findViewById(R.id.edtRegisterLastName)
-        var btnRegisterNext1: AppCompatButton = findViewById(R.id.btnRegisterNext1)
-        btnRegisterNext1.isClickable = false
+        val edtRegisterFirstName: AppCompatEditText = findViewById(R.id.edtRegisterFirstName)
+        val edtRegisterLastName: AppCompatEditText = findViewById(R.id.edtRegisterLastName)
+        val btnRegisterNext1: AppCompatButton = findViewById(R.id.btnRegisterNext1)
+
+        presenterRegister = RegisterPresenter(this)
+
         btnRegisterNext1.setOnClickListener {
-            if (btnRegisterNext1.isClickable){
-                val intent = Intent(this, ActivityEnterEmail::class.java)
-                startActivity(intent)
-            }
+            presenterRegister!!.nextScreen()
+        }
+        ibRegisterBack.setOnClickListener {
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
         }
         MultiTextWatcher()
             .registerEditText(edtRegisterFirstName)
             .registerEditText(edtRegisterLastName)
-            .setCallback(object : TextWatcherWithInstance {
+            .setCallback(callback = object : TextWatcherWithInstance {
                 override fun beforeTextChanged(
                     editText: EditText?,
                     s: CharSequence?,
@@ -58,17 +61,12 @@ class RegisterActivity : AppCompatActivity() {
                 }
 
                 override fun afterTextChanged(editText: EditText?, editable: Editable?) {
-                    if (edtRegisterFirstName.text.toString() != "" && edtRegisterLastName.text.toString() != ""
-                        && isValidName(
-                            edtRegisterFirstName.text.toString()
-                        ) && isValidName(edtRegisterLastName.text.toString())
-                    ) {
-                        btnRegisterNext1.isClickable = true
-                        btnRegisterNext1.setBackgroundResource(R.drawable.selector_rec_orange_color)
-                    } else {
-                        btnRegisterNext1.setBackgroundResource(R.drawable.selector_rec_gray_color_orange_selected)
-                    }
+                    presenterRegister!!.checkName(
+                        edtRegisterFirstName.text.toString(),
+                        edtRegisterLastName.text.toString()
+                    )
                 }
+
             })
 
 //        ApiService().local().getValue("2", "0").enqueue(
@@ -83,10 +81,6 @@ class RegisterActivity : AppCompatActivity() {
 //
 //            }
 //        )
-    }
-
-    fun isValidName(name: String?): Boolean {
-        return Pattern.matches("[a-zA-Z]+", name)
     }
 }
 

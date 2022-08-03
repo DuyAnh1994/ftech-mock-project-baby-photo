@@ -21,10 +21,10 @@
             android:name=".screen.register.ActivityEnterEmail"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".screen.register.RegisterActivity"
             android:exported="false" />
         <activity
-            android:name=".RegisterActivity"
+            android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

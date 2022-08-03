@@ -1,7 +1,7 @@
 package ai.ftech.babyphoto.screen.register
 
 import ai.ftech.babyphoto.R
-import ai.ftech.babyphoto.RegisterActivity
+import ai.ftech.babyphoto.screen.register.RegisterActivity
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
@@ -23,12 +23,10 @@ class ActivityEnterEmail : AppCompatActivity() {
         presenter!!.getAccount()
 
         ibRegisterBackEmail.setOnClickListener {
-            val intent = Intent(this, RegisterActivity::class.java)
-            startActivity(intent)
+            finish()
         }
         btnRegisterNext2.setOnClickListener {
-            val intent = Intent(this, ActivityCreatePass::class.java)
-            startActivity(intent)
+            presenter!!.nextScreen()
         }
 
         tieRegisterEmail.addTextChangedListener {

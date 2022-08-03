@@ -5,9 +5,15 @@
     <color name="purple_700">#FF3700B3</color>
     <color name="teal_200">#FF03DAC5</color>
     <color name="teal_700">#FF018786</color>
-    <color name="black">#FF000000</color>
+    <color name="black">#FF000000      </color>
     <color name="white">#FFFFFFFF</color>
-    <color name="buttonRegister">#C6C6C6</color>
+    <color name="button_gray">#C6C6C6</color>
     <color name="colorText">#90000000</color>
     <color name="colorButtonafter">#FFA500</color>
+    <color name="red_button">#ED574B</color>
+    <color name="black_40">#66000000</color>
+    <color name="black_56">#8F000000</color>
+    <color name="black_34">#57000000</color>
+    <color name="black_87">#DF000000</color>
+    <color name="blue_link">#4A75CC</color>
 </resources>

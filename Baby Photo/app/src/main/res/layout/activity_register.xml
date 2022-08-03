@@ -5,17 +5,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="20dp"
-    tools:context=".RegisterActivity">
+    tools:context=".screen.register.RegisterActivity">
 
     <ImageButton
-    android:id="@+id/ibRegisterBack"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:background="@color/white"
-    android:layout_marginTop="10dp"
-    android:src="@drawable/ic_baseline_arrow_back_24"
-    app:layout_constraintLeft_toLeftOf="parent"
-    app:layout_constraintTop_toTopOf="parent" />
+        android:id="@+id/ibRegisterBack"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@color/white"
+        android:src="@drawable/ic_baseline_arrow_back_24"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/tvRegisterQuestion"
@@ -23,7 +23,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="23sp"
         android:text="What's Your Name?"
-        android:textColor="@color/colorText"
+        android:textColor="@color/black_56"
         android:textSize="23sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
@@ -43,7 +43,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="First name: "
-            android:textColor="@color/colorText"
+            android:textColor="@color/black_56"
             android:textSize="14sp" />
 
         <androidx.appcompat.widget.AppCompatEditText
@@ -60,7 +60,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="40dp"
             android:text="Last name: "
-            android:textColor="@color/colorText"
+            android:textColor="@color/black_56"
             android:textSize="14sp" />
 
         <androidx.appcompat.widget.AppCompatEditText
@@ -80,24 +80,26 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="100dp"
         android:background="@drawable/selector_rec_gray_color_orange_selected"
+        android:clickable="false"
         android:text="Next"
         android:textColor="#FFFFFF"
         app:layout_constraintHorizontal_bias="0.565"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/llRegisterForm"
-        android:clickable="false" />
+        app:layout_constraintTop_toBottomOf="@id/llRegisterForm" />
 
     <TextView
         android:id="@+id/tvRegisterWarning"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="25dp"
+        android:layout_marginTop="32dp"
+        android:gravity="center"
         android:text="Maximum of 50 characters and no special characters"
+        android:textColor="@color/black_40"
+        android:textSize="14sp"
+        app:layout_constraintHorizontal_bias="0.655"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        android:textSize="14sp"
-        android:textColor="#66000000"
         app:layout_constraintTop_toBottomOf="@id/btnRegisterNext1" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

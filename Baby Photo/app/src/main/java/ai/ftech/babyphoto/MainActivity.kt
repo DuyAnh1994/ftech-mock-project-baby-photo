@@ -1,5 +1,7 @@
 package ai.ftech.babyphoto
 
+import ai.ftech.babyphoto.screen.register.RegisterActivity
+import android.content.Intent
 import android.os.Bundle
 import android.view.MotionEvent
 import androidx.appcompat.app.AppCompatActivity
@@ -12,13 +14,17 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        tvRegisterLogin.setOnClickListener {
+            val intent = Intent(this, RegisterActivity::class.java)
+            startActivity(intent)
+        }
 
         //khai báo biến presenter
-        presenter = MainPresenter(this)
-
-        //gọi hàm lấy tài khoản
-        presenter!!.getAccount()
-
-        btnInsert.setOnClickListener { _ -> presenter!!.insertAccount() }
+//        presenter = MainPresenter(this)
+//
+//        //gọi hàm lấy tài khoản
+//        presenter!!.getAccount()
+//
+//        btnInsert.setOnClickListener { _ -> presenter!!.insertAccount() }
     }
 }

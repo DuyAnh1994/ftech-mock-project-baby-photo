@@ -23,7 +23,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="23sp"
         android:text="Enter your email address"
-        android:textColor="@color/colorText"
+        android:textColor="@color/black_56"
         android:textSize="23sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
@@ -46,6 +46,7 @@
             android:layout_height="wrap_content"
 
             android:hint="Name@email.com"
+            android:textColorHint="@color/black_34"
             android:inputType="textEmailAddress"
             android:maxLength="50"
             android:maxLines="1"
