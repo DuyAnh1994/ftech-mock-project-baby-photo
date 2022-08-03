@@ -38,10 +38,8 @@ class DialogRelationFragment : BottomSheetDialogFragment() {
         arrayRelation.add(Relation(R.drawable.ic_checkbox_24px, "Grandma"))
         arrayRelation.add(Relation(R.drawable.ic_checkbox_24px, "Nanny"))
         arrayRelation.add(Relation(R.drawable.ic_checkbox_24px, "Family Friend"))
-
         val adapter = RelationAdapter(arrayRelation)
         rvRelation?.adapter = adapter
-
 
     }
 

@@ -1,16 +1,15 @@
 package ai.ftech.babyphoto.activity
 
 import ai.ftech.babyphoto.R
+import ai.ftech.babyphoto.fragment.DialogRelationFragment
 import ai.ftech.babyphoto.model.ICreateAlbum
 import android.app.Activity
 import android.app.DatePickerDialog
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
-import java.text.SimpleDateFormat
 import java.util.*
 
 
@@ -32,6 +31,7 @@ class CreateAlbumActivity : AppCompatActivity(), ICreateAlbum {
         initView()
         getGenderAlbum()
         getBirthdayAlbum()
+        getRelationAlbum()
     }
 
     private fun initView() {
@@ -48,11 +48,11 @@ class CreateAlbumActivity : AppCompatActivity(), ICreateAlbum {
     }
 
     override fun getNameAlbum(): String {
-        edtName?.setOnFocusChangeListener(View.OnFocusChangeListener { v, hasFocus ->
+        edtName?.onFocusChangeListener = View.OnFocusChangeListener { v, hasFocus ->
             if (!hasFocus) {
                 hideKeybroad(v)
             }
-        })
+        }
         return edtName?.text.toString()
     }
 
@@ -88,7 +88,7 @@ class CreateAlbumActivity : AppCompatActivity(), ICreateAlbum {
                         month: Int,
                         dayOfMonth: Int
                     ) {
-                        tvBirthday?.text = "${dayOfMonth}/${month + 1}/${year + 0}"
+                        tvBirthday?.text = "${dayOfMonth}/${month + 1}/${year}"
                     }
 
                 }, year, month, dayOfMonth)
@@ -98,7 +98,10 @@ class CreateAlbumActivity : AppCompatActivity(), ICreateAlbum {
     }
 
     override fun getRelationAlbum(): String {
-
+        flRelation?.setOnClickListener {
+            val dialogRelationFragment = DialogRelationFragment()
+            dialogRelationFragment.show(this.supportFragmentManager, dialogRelationFragment.tag)
+        }
         return ""
     }
 

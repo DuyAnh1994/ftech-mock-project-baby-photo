@@ -46,5 +46,6 @@
     <dimen name="bp_corner_12">12dp</dimen>
     <dimen name="bp_corner_14">14dp</dimen>
     <dimen name="bp_corner_16">16dp</dimen>
+    <dimen name="bp_corner_20">20dp</dimen>
 
 </resources>

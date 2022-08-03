@@ -16,4 +16,6 @@
     <color name="bp_color_white">#FFFFFF</color>
     <color name="bp_color_black">#000000</color>
     <color name="bp_color_gray">#535353</color>
+    <color name="green">#81D600</color>
+    <color name="Transparent">#00000000</color>
 </resources>

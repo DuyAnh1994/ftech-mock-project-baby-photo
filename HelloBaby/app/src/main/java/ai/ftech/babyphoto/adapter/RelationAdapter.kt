@@ -2,6 +2,7 @@ package ai.ftech.babyphoto.adapter
 
 import ai.ftech.babyphoto.R
 import ai.ftech.babyphoto.model.Relation
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,25 +14,27 @@ class RelationAdapter(private val dataSet: MutableList<Relation>) :
     RecyclerView.Adapter<RelationAdapter.ViewHolder>() {
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val ivCheckBox: ImageView
         val tvName: TextView
-
+        val ivCheckBox : ImageView
         init {
-            ivCheckBox = view.findViewById(R.id.ivRelationCheckBox)
             tvName = view.findViewById(R.id.tvRelationName)
+            ivCheckBox = view.findViewById(R.id.ivRelationCheckBox)
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.dialog_relation_fragment, parent, false)
+            .inflate(R.layout.relation_item, parent, false)
         return ViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val arrayRelation = dataSet[position]
-        holder.ivCheckBox.setImageResource(R.drawable.ic_checkbox_24px)
         holder.tvName.text = arrayRelation.name
+        holder.itemView.setOnClickListener {
+            holder.tvName.setTextColor(Color.parseColor("#81D600"))
+            holder.ivCheckBox.visibility = View.VISIBLE
+        }
     }
 
     override fun getItemCount(): Int {
