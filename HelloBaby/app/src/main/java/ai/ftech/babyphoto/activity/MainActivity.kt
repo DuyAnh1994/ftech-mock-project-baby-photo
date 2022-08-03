@@ -31,7 +31,6 @@ class MainActivity : AppCompatActivity() {
         val callback : Call<String> = dataService.setAccountUpdate(password,firstname,lastname,idaccount)
         callback.enqueue(object : Callback<String>{
             override fun onResponse(call: Call<String>, response: Response<String>) {
-                Log.d("AAA", "onResponse: ${response.body()}")
 
             }
 
@@ -69,9 +68,8 @@ class MainActivity : AppCompatActivity() {
                 call: Call<List<Account>>?,
                 response: Response<List<Account>>?
             ) {
-                if (response?.body() != null) {
-                    Log.d("AAA", "onResponse: ${response.body()}")
-                }
+              val array : ArrayList<Account> = response?.body() as ArrayList<Account>
+                Log.d("AAA", "onResponse: ${array[1].email}")
             }
 
             override fun onFailure(call: Call<List<Account>>, t: Throwable) {

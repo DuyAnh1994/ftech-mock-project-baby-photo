@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity.HomeActivity">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/ivHomeMenu"
+        style="@style/BabyPhotoStyleText"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="30dp"
+        android:background="@drawable/ic_menu_24px"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/ivHomeComp"
+        style="@style/BabyPhotoStyleText"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/ic_comp11_24px"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/ivHomeMenu" />
+
+    <FrameLayout
+        android:id="@+id/flHomeAddBaby"
+        style="@style/BabyPhotoStyleText"
+        android:layout_marginTop="30dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/ivHomeComp">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            style="@style/BabyPhotoStyleText"
+            android:layout_gravity="center"
+            android:background="@drawable/ic_add_baby_24px" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            style="@style/BabyPhotoStyleText"
+            android:layout_gravity="center"
+            android:background="@drawable/ic_add_baby1_24px" />
+    </FrameLayout>
+
+    <TextView
+        android:id="@+id/tvHomeAddBaby"
+        style="@style/BpStyleText15MediumNoColor"
+        android:layout_marginTop="5dp"
+        android:text="@string/add_baby"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/flHomeAddBaby" />
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/llHomeJoinAlbum"
+        style="@style/BabyPhotoStyleText"
+        android:layout_marginTop="30dp"
+        android:background="@drawable/ic_add_baby_24px"
+        android:gravity="center"
+        android:orientation="vertical"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvHomeAddBaby">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            style="@style/BabyPhotoStyleText"
+            android:background="@drawable/ic_vector3_24px" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            style="@style/BabyPhotoStyleText"
+            android:background="@drawable/ic_vector2_24px" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            style="@style/BabyPhotoStyleText"
+            android:background="@drawable/ic_vector1_24px" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            style="@style/BpMargin2"
+            android:background="@drawable/ic_vector6_24px" />
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            style="@style/BabyPhotoStyleText"
+            android:orientation="horizontal">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                style="@style/BpMargin2"
+                android:background="@drawable/ic_vector4_24px" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                style="@style/BpMargin2"
+                android:background="@drawable/ic_vector5_24px" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                style="@style/BpMargin2"
+                android:background="@drawable/ic_vector4_24px" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                style="@style/BpMargin2"
+                android:background="@drawable/ic_vector5_24px" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                style="@style/BpMargin2"
+                android:background="@drawable/ic_vector4_24px" />
+        </androidx.appcompat.widget.LinearLayoutCompat>
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <TextView
+        android:id="@+id/tvHomeJoinBaby"
+        style="@style/BpStyleText15MediumNoColor"
+        android:layout_marginTop="5dp"
+        android:text="@string/join_album"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/llHomeJoinAlbum" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
