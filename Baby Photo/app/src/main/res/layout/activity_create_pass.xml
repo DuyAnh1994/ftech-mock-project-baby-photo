@@ -8,23 +8,14 @@
     android:padding="30dp">
     <ImageButton
         android:id="@+id/ibRegisterBackCreatePass"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:background="@color/white"
-        android:src="@drawable/ic_baseline_arrow_back_24"
+        style="@style/BabyButtonBackRegister"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/tvRegisterPass"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="23sp"
+        style="@style/BabyTitleRegister"
         android:text="Create A Password"
-        android:textColor="@color/black_56"
-        android:textSize="23sp"
-        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ibRegisterBackCreatePass" />
 
@@ -90,12 +81,8 @@
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btnRegisterNext3"
-        android:layout_width="160dp"
-        android:layout_height="wrap_content"
+        style="@style/BabyButtonNextRegister"
         android:layout_marginTop="100dp"
-        android:background="@drawable/selector_rec_gray_color_orange_selected"
-        android:text="Next"
-        android:textColor="#FFFFFF"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tvRegisterWarningPass" />

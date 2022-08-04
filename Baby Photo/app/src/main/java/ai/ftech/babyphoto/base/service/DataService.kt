@@ -1,6 +1,8 @@
 package ai.ftech.babyphoto.base.service
 
 import ai.ftech.babyphoto.model.AccountModel
+import okhttp3.RequestBody
+import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -18,6 +20,10 @@ interface DataService {
 //    ): Call<Any>
 
     //thêm mới user
+    @POST("AccountInsert.php")
+    fun insertAccount(
+        @Body body: RequestBody
+    ): Call<ResponseBody>
     @FormUrlEncoded
     @POST("AccountInsert.php")
     fun insertAccount(

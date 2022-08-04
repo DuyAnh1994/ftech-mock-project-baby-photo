@@ -34,4 +34,7 @@ class Utils {
     fun isMatchPass(pass: String, rePass: String): Boolean {
         return Pattern.matches(pass, rePass)
     }
+    fun isMatchEmail(email: String, email1: String): Boolean{
+        return Pattern.matches(email, email1)
+    }
 }

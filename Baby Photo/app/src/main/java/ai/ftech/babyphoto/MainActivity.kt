@@ -1,5 +1,6 @@
 package ai.ftech.babyphoto
 
+import ai.ftech.babyphoto.screen.login.AccountLogin
 import ai.ftech.babyphoto.screen.register.RegisterActivity
 import android.content.Intent
 import android.os.Bundle
@@ -14,8 +15,12 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        tvRegisterLogin.setOnClickListener {
+        tvMainRegister.setOnClickListener {
             val intent = Intent(this, RegisterActivity::class.java)
+            startActivity(intent)
+        }
+        tvMainLogin.setOnClickListener {
+            val intent = Intent(this, AccountLogin::class.java)
             startActivity(intent)
         }
 

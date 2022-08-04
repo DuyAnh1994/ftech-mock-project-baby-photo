@@ -53,6 +53,9 @@ class CreatePassPresenter(activity: ActivityCreatePass) {
         var dialogLoadPass = Dialog(view)
         dialogLoadPass.setContentView(R.layout.dialog_loading_register_layout)
         dialogLoadPass.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        view.btnRegisterNext3.setOnClickListener {
+            dialogLoadPass.dismiss()
+        }
         dialogLoadPass.show()
         return dialogLoadPass
     }

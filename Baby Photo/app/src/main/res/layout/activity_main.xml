@@ -9,7 +9,7 @@
     tools:context=".MainActivity">
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/ivMainImageBaby"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/ic_login"
@@ -17,7 +17,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/tvMainTextBaby"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="27dp"
@@ -27,10 +27,10 @@
         android:textSize="21sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+        app:layout_constraintTop_toBottomOf="@+id/ivMainImageBaby" />
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/appCompatButton"
+        android:id="@+id/acbMainEmail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="25dp"
@@ -43,10 +43,10 @@
         android:textColor="@color/white"
         app:icon="@drawable/ic_baseline_email_24"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+        app:layout_constraintTop_toBottomOf="@+id/tvMainTextBaby" />
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btnLoginFb"
+        android:id="@+id/acbMainFb"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
@@ -58,34 +58,34 @@
         android:text="Sign in with Facebook"
         android:textColor="@color/white"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/appCompatButton" />
+        app:layout_constraintTop_toBottomOf="@+id/acbMainEmail" />
 
     <TextView
-        android:id="@+id/tvLoginWarning"
-        android:layout_width="wrap_content"
+        android:id="@+id/tvMainWarning"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
+        android:gravity="center"
         android:text="We won't post anything without your permisson"
         android:textColor="@color/black_40"
         android:textSize="13sp"
-        app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnLoginFb" />
+        app:layout_constraintTop_toBottomOf="@+id/acbMainFb" />
 
     <LinearLayout
-        android:id="@+id/linearLayout"
+        android:id="@+id/lilMainRegister"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="56dp"
         android:gravity="center"
         android:orientation="horizontal"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
+        app:layout_constraintBottom_toTopOf="@+id/lilMainLogin"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvLoginWarning">
+        app:layout_constraintTop_toBottomOf="@+id/tvMainWarning">
 
         <TextView
-            android:id="@+id/tvQuestionRegisterLogin"
+            android:id="@+id/tvMainQuestionRegister"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Do not have an account?"
@@ -93,7 +93,7 @@
             android:textSize="13sp" />
 
         <TextView
-            android:id="@+id/tvRegisterLogin"
+            android:id="@+id/tvMainRegister"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Create Account"
@@ -102,7 +102,7 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/linearLayout2"
+        android:id="@+id/lilMainLogin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
@@ -110,7 +110,7 @@
         app:layout_constraintStart_toStartOf="parent">
 
         <TextView
-            android:id="@+id/tvQuestionLogin"
+            android:id="@+id/tvMainLogin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Sign In "
@@ -118,7 +118,7 @@
             android:textSize="13sp" />
 
         <TextView
-            android:id="@+id/tvLoginQuestion"
+            android:id="@+id/tvMainQuestionLogin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="now if you already have an account"
