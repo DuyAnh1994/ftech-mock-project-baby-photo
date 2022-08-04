@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Ftech/Baby Photo/app/src/main/res/drawable/dialog_bottomsheet_password_recovery.xml" value="0.1" />
         <entry key="..\:/Ftech/Baby Photo/app/src/main/res/drawable/selector_rec_blue_color_blue_selected.xml" value="0.153" />
         <entry key="..\:/Ftech/Baby Photo/app/src/main/res/drawable/selector_rec_gray_color_orange_selected.xml" value="0.1" />
         <entry key="..\:/Ftech/Baby Photo/app/src/main/res/drawable/selector_rec_orange_color.xml" value="0.153" />
@@ -18,6 +19,7 @@
         <entry key="..\:/Ftech/Baby Photo/app/src/main/res/layout/activity_main.xml" value="0.12135922330097088" />
         <entry key="..\:/Ftech/Baby Photo/app/src/main/res/layout/activity_register.xml" value="0.25052083333333336" />
         <entry key="..\:/Ftech/Baby Photo/app/src/main/res/layout/dialog_loading_register_layout.xml" value="0.1" />
+        <entry key="..\:/Ftech/Baby Photo/app/src/main/res/layout/password_recovery_bottomsheet_layout.xml" value="0.1" />
         <entry key="..\:/New folder/app/src/main/res/drawable-v24/selector_rec_gray_color_orange_selected.xml" value="0.1" />
         <entry key="..\:/New folder/app/src/main/res/drawable/hiiii.xml" value="0.1" />
         <entry key="..\:/New folder/app/src/main/res/drawable/selector_rec_gray_color_orange_selected.xml" value="0.1" />

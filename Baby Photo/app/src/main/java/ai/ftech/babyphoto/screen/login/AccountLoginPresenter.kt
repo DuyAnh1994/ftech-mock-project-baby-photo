@@ -6,9 +6,14 @@ import ai.ftech.babyphoto.base.Utils
 import ai.ftech.babyphoto.base.service.ApiService
 import ai.ftech.babyphoto.model.AccountModel
 import ai.ftech.babyphoto.screen.register.ActivityCreatePass
+import android.app.Dialog
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.util.Log
+import android.view.Gravity
 import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_account_login.*
@@ -55,22 +60,43 @@ class AccountLoginPresenter(activity: AccountLogin) {
             view.startActivity(intent)
             view.finish()
         } else {
-            Log.d("TAG", "login: fail")
-
+            showBottomSheet()
         }
     }
 
     fun checkValidAccount(email: String, pass: String): Boolean {
         val isValid =
-            lAccount.any { account: AccountModel -> account.email == email && account.password == pass }
-        if (!isValid) {
-            view.tvAccountLoginWarning.visibility = View.VISIBLE
-            view.acbAccountLogin.setBackgroundResource(R.drawable.selector_rec_gray_color_orange_selected)
-        } else {
+            lAccount.any { account: AccountModel -> account.email == email && account.password == pass }//mk correct
+        val isValid2 = Utils().checkNull(email, pass)// true->null
+        if (!isValid2 && isValid) {
             view.tvAccountLoginWarning.visibility = View.INVISIBLE
             view.acbAccountLogin.setBackgroundResource(R.drawable.selector_rec_orange_color)
+        } else if (!isValid2 && !isValid){
+            view.tvAccountLoginWarning.visibility = View.VISIBLE
+            view.acbAccountLogin.setBackgroundResource(R.drawable.selector_rec_orange_color)
+        }else{
+            view.tvAccountLoginWarning.visibility = View.VISIBLE
+            view.acbAccountLogin.setBackgroundResource(R.drawable.selector_rec_gray_color_orange_selected)
         }
-        return !isValid
+        return !isValid2 && isValid
+
+    }
+
+    fun showBottomSheet(): Dialog {
+//        var bottomSheetDialog = BottomSheetDialog(this)
+//        bottomSheetDialog.setContentView(R.layout.password_recovery_bottomsheet_layout)
+//        bottomSheetDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+//        bottomSheetDialog.show()
+        var dialog = Dialog(view)
+        dialog.setContentView(R.layout.password_recovery_bottomsheet_layout)
+        dialog.window?.setLayout(
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.WRAP_CONTENT
+        )
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        dialog.show()
+        dialog.window?.setGravity(Gravity.BOTTOM)
+        return dialog
     }
 //    fun nextScreen(){
 //        if (checkValidAccount(view.tieAccountLoginEmail.text.toString(), view.tieAccountLoginPass.text.toString())) return

@@ -50,4 +50,5 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.0-RC")
     implementation("pl.droidsonroids.gif:android-gif-drawable:1.2.19")
     implementation 'com.google.code.gson:gson:2.8.9'
+
 }

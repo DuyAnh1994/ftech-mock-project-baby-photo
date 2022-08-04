@@ -2,13 +2,22 @@ package ai.ftech.babyphoto.screen.login
 
 import ai.ftech.babyphoto.MainActivity
 import ai.ftech.babyphoto.R
+import android.app.Dialog
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
+import android.icu.lang.UCharacter.IndicPositionalCategory.BOTTOM
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.Gravity
+import android.view.ViewGroup
+import android.view.Window.FEATURE_NO_TITLE
 import android.widget.EditText
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import kotlinx.android.synthetic.main.activity_account_login.*
+import kotlinx.android.synthetic.main.activity_create_pass.*
 
 class AccountLogin : AppCompatActivity() {
     private var presenter: AccountLoginPresenter? = null
@@ -25,7 +34,6 @@ class AccountLogin : AppCompatActivity() {
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
         }
-
         acbAccountLogin.setOnClickListener {
             presenter!!.login()
         }
@@ -61,6 +69,8 @@ class AccountLogin : AppCompatActivity() {
             })
 
     }
+
+
 
 }
 class MultiTextWatcher {

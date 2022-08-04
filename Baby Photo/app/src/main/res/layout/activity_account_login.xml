@@ -15,8 +15,11 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
     <LinearLayout
+        android:id="@+id/llAccountLoginForm"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         android:orientation="vertical">
         <androidx.core.widget.NestedScrollView
             android:layout_weight="1"
@@ -149,7 +152,6 @@
             android:textColor="@color/white"
             />
     </LinearLayout>
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 
