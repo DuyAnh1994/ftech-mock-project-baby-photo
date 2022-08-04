@@ -1,11 +1,10 @@
-package ai.ftech.babyphoto.activity
+package ai.ftech.babyphoto.screen.activity
 
 import ai.ftech.babyphoto.R
 import ai.ftech.babyphoto.model.Account
-import ai.ftech.babyphoto.service.APIService
+import ai.ftech.babyphoto.base.service.APIService
 import android.os.Bundle
 import android.util.Log
-import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import retrofit2.Call

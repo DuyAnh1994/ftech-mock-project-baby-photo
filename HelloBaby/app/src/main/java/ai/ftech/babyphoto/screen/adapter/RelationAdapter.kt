@@ -1,6 +1,7 @@
-package ai.ftech.babyphoto.adapter
+package ai.ftech.babyphoto.screen.adapter
 
 import ai.ftech.babyphoto.R
+import ai.ftech.babyphoto.model.IRelation
 import ai.ftech.babyphoto.model.Relation
 import android.graphics.Color
 import android.view.LayoutInflater
@@ -10,12 +11,16 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
-class RelationAdapter(private val dataSet: MutableList<Relation>) :
+class RelationAdapter(
+    private val dataSet: MutableList<Relation>,
+    var iRelation: IRelation
+) :
     RecyclerView.Adapter<RelationAdapter.ViewHolder>() {
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val tvName: TextView
-        val ivCheckBox : ImageView
+        val ivCheckBox: ImageView
+
         init {
             tvName = view.findViewById(R.id.tvRelationName)
             ivCheckBox = view.findViewById(R.id.ivRelationCheckBox)
@@ -34,6 +39,7 @@ class RelationAdapter(private val dataSet: MutableList<Relation>) :
         holder.itemView.setOnClickListener {
             holder.tvName.setTextColor(Color.parseColor("#81D600"))
             holder.ivCheckBox.visibility = View.VISIBLE
+            iRelation.getName(arrayRelation.name)
         }
     }
 

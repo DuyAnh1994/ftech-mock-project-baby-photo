@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activity.PhotoFolderActivity">
+    tools:context=".screen.activity.PhotoFolderActivity">
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/ivPhotoFolderCancel"
@@ -22,11 +22,20 @@
         app:layout_constraintTop_toTopOf="@id/ivPhotoFolderCancel" />
 
     <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/ivPhotoFolderCamera"
         style="@style/BabyPhotoStyleText"
         android:background="@drawable/ic_camera1_24px"
         android:layout_marginRight="20dp"
         app:layout_constraintBottom_toBottomOf="@id/ivPhotoFolderCancel"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/ivPhotoFolderCancel" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvPhotoFolderImage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/ivPhotoFolderCancel"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

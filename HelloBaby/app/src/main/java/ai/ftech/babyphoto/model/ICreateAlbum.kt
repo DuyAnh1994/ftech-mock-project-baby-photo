@@ -9,5 +9,5 @@ interface ICreateAlbum {
   fun getGenderAlbum() : Int
   fun getBirthdayAlbum() : String
   fun getRelationAlbum() : String
-  fun hideKeybroad(view : View)
+//  fun hideKeybroad(view : View)
 }

@@ -1,4 +1,4 @@
-package ai.ftech.babyphoto.service
+package ai.ftech.babyphoto.base.service
 
 class APIService {
     companion object {

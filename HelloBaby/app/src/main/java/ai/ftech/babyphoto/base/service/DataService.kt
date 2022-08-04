@@ -1,4 +1,4 @@
-package ai.ftech.babyphoto.service
+package ai.ftech.babyphoto.base.service
 
 import ai.ftech.babyphoto.model.Account
 import retrofit2.Call

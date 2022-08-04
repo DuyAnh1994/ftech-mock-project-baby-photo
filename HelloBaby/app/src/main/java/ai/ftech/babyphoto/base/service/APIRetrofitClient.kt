@@ -1,4 +1,4 @@
-package ai.ftech.babyphoto.service
+package ai.ftech.babyphoto.base.service
 
 import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
@@ -9,12 +9,12 @@ import java.util.*
 import java.util.concurrent.TimeUnit
 
 object APIRetrofitClient {
-    private var retrofit: Retrofit? = null
+    private lateinit var retrofit: Retrofit
     fun getClient(base_url: String): Retrofit {
         val okHttpClient = OkHttpClient.Builder()
-            .readTimeout(1000000, TimeUnit.MILLISECONDS)
-            .writeTimeout(1000000, TimeUnit.MILLISECONDS)
-            .connectTimeout(1000000, TimeUnit.MILLISECONDS)
+            .readTimeout(30, TimeUnit.MILLISECONDS)
+            .writeTimeout(30, TimeUnit.MILLISECONDS)
+            .connectTimeout(30, TimeUnit.MILLISECONDS)
             .retryOnConnectionFailure(true)
             .protocols(Arrays.asList(Protocol.HTTP_1_1))
             .build()
