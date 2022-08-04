@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">Baby Photo</string>
+    <string name="add_baby">Add Baby</string>
+    <string name="join_album">Join Album</string>
+    <string name="about_baby">About Baby</string>
+    <string name="create">Create</string>
+    <string name="gender">Gender</string>
+    <string name="birthday">Birthday</string>
+    <string name="relation">Relation</string>
+    <string name="name">name</string>
+    <string name="album">Album</string>
+</resources>
