@@ -64,6 +64,11 @@
         <item name="android:textSize">@dimen/bp_text_size_15</item>
     </style>
 
+    <!-- font regular -->
+    <style name="BpStyleText15Regular" parent="BabyPhotoStyleRegular">
+        <item name="android:textSize">@dimen/bp_text_size_15</item>
+    </style>
+
     <style name="BpStyleText15MediumNoColor" parent="BabyPhotoStyleMediumNoColor">
         <item name="android:textSize">@dimen/bp_text_size_15</item>
     </style>
@@ -90,7 +95,15 @@
         <item name="android:layout_margin">@dimen/bp_margin_20</item>
     </style>
 
-    <style name="BpMargin25" parent="BpStyleText20Medium">
+    <style name="BpMarginMedium15" parent="BpStyleText15Medium">
+        <item name="android:layout_margin">@dimen/bp_margin_15</item>
+    </style>
+
+    <style name="BpMarginMedium20" parent="BpStyleText20Medium">
+        <item name="android:layout_margin">@dimen/bp_margin_20</item>
+    </style>
+
+    <style name="BpMargin25" parent="BpStyleText25Medium">
         <item name="android:layout_margin">@dimen/bp_margin_25</item>
     </style>
 

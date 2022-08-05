@@ -47,8 +47,14 @@ class PhotoFolderPresenter(activity: PhotoFolderActivity) : IPhotoFolder {
         val gridLayoutManager = GridLayoutManager(view, 3)
         gridLayoutManager.orientation = GridLayoutManager.VERTICAL
         view.rvPhotoFolderImage.layoutManager = gridLayoutManager
-        val adapter: PhotoFolderAdapter = PhotoFolderAdapter(arrayImage)
+        val adapter = PhotoFolderAdapter(view,arrayImage)
         view.rvPhotoFolderImage.adapter = adapter
         adapter.notifyDataSetChanged()
+    }
+
+    override fun backCreateAlbum() {
+        view.ivCancel.setOnClickListener {
+            view.openBackDialog()
+        }
     }
 }

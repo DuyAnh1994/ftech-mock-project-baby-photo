@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".screen.activity.PreviewActivity">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/ivPreviewCancel"
+        style="@style/BpMargin20"
+        android:src="@drawable/ic_cancel_24px" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/ivPreviewOk"
+        style="@style/BpMargin20"
+        android:layout_alignParentEnd="true"
+        android:src="@drawable/ic_checkbox_24px" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        style="@style/BpMarginMedium15"
+        android:text="Preview"
+        android:layout_centerHorizontal="true"/>
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/ivPreviewBaby"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/ivPreviewCancel" />
+</RelativeLayout>

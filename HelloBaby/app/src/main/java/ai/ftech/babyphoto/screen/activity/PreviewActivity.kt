@@ -1,39 +1,41 @@
 package ai.ftech.babyphoto.screen.activity
 
 import ai.ftech.babyphoto.R
-import ai.ftech.babyphoto.screen.presenter.PhotoFolderPresenter
+import ai.ftech.babyphoto.screen.presenter.PreviewPresenter
 import android.app.Dialog
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Gravity
 import android.view.Window
 import android.widget.Button
 import android.widget.ImageView
-import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.RecyclerView
 
-
-class PhotoFolderActivity : AppCompatActivity() {
+class PreviewActivity : AppCompatActivity() {
     lateinit var ivCancel: ImageView
-    lateinit var ivCamera: ImageView
-    lateinit var rvPhotoFolderImage: RecyclerView
-    private lateinit var photoFolderPresenter: PhotoFolderPresenter
+    lateinit var ivOk: ImageView
+    lateinit var ivBaby: ImageView
+    lateinit var previewPresenter: PreviewPresenter
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.photo_folder_activity)
+        setContentView(R.layout.preview_activity)
         initView()
-        photoFolderPresenter = PhotoFolderPresenter(this)
-        photoFolderPresenter.setImage()
-        photoFolderPresenter.backCreateAlbum()
+
+        val intent = intent
+        var uriBaby : String = intent.getStringExtra("uriImage")!!
+        previewPresenter.setCancel()
+        if(uriBaby != null) {
+            previewPresenter.setInsert(uriBaby)
+        }
     }
 
-
     private fun initView() {
-        ivCancel = findViewById(R.id.ivPhotoFolderCancel)
-        ivCamera = findViewById(R.id.ivPhotoFolderCamera)
-        rvPhotoFolderImage = findViewById(R.id.rvPhotoFolderImage)
+        ivCancel = findViewById(R.id.ivPreviewCancel)
+        ivOk = findViewById(R.id.ivPreviewOk)
+        ivBaby = findViewById(R.id.ivPreviewBaby)
+        previewPresenter = PreviewPresenter(this)
     }
 
     fun openBackDialog() {
@@ -51,7 +53,7 @@ class PhotoFolderActivity : AppCompatActivity() {
         val btnCancel: Button = dialog.findViewById(R.id.btnDialogBacKCancel)
         val btnOK: Button = dialog.findViewById(R.id.btnDialogBacKOk)
         btnOK.setOnClickListener {
-            val intent = Intent(this, CreateAlbumActivity::class.java)
+            val intent = Intent(this, PhotoFolderActivity::class.java)
             startActivity(intent)
             dialog.dismiss()
         }

@@ -2,7 +2,6 @@ package ai.ftech.babyphoto.screen.fragment
 
 import ai.ftech.babyphoto.R
 import ai.ftech.babyphoto.screen.adapter.RelationAdapter
-import ai.ftech.babyphoto.model.ICreateAlbum
 import ai.ftech.babyphoto.model.IRelation
 import ai.ftech.babyphoto.model.Relation
 import android.app.Dialog
@@ -18,7 +17,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 class DialogRelationFragment : BottomSheetDialogFragment() {
     private lateinit var rvRelation: RecyclerView
     private lateinit var bottomSheetDialog: BottomSheetDialog
-    val iCreateAlbum: ICreateAlbum? = null
+
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         bottomSheetDialog =
             BottomSheetDialog(requireContext(), R.style.BottomSheetDialogTheme)
@@ -50,7 +49,7 @@ class DialogRelationFragment : BottomSheetDialogFragment() {
             }
         }
         val adapter = RelationAdapter(arrayRelation, iRelation)
-        rvRelation?.adapter = adapter
+        rvRelation.adapter = adapter
     }
 
 

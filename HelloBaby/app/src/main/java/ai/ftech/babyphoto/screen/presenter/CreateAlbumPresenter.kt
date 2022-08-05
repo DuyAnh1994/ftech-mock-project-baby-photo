@@ -4,22 +4,15 @@ import ai.ftech.babyphoto.R
 import ai.ftech.babyphoto.model.ICreateAlbum
 import ai.ftech.babyphoto.screen.activity.CreateAlbumActivity
 import ai.ftech.babyphoto.screen.fragment.DialogRelationFragment
-import android.app.Activity
 import android.app.DatePickerDialog
-import android.view.View
-import android.view.inputmethod.InputMethodManager
+import android.os.Bundle
 import android.widget.DatePicker
-import androidx.core.content.getSystemService
+import android.widget.TextView
 import java.util.*
 
 class CreateAlbumPresenter(activity: CreateAlbumActivity) : ICreateAlbum {
     private val view = activity
     override fun getNameAlbum(): String {
-        view.edtName.onFocusChangeListener = View.OnFocusChangeListener { v, hasFocus ->
-            if (!hasFocus) {
-               // hideKeybroad(v)
-            }
-        }
         return view.edtName.text.toString()
     }
 
@@ -39,7 +32,8 @@ class CreateAlbumPresenter(activity: CreateAlbumActivity) : ICreateAlbum {
         return select
     }
 
-    override fun getBirthdayAlbum(): String {
+
+    override fun getBirthdayAlbum(tvBirthday : TextView): String {
 
         view.flBirthday.setOnClickListener {
             val calendar = Calendar.getInstance()
@@ -56,9 +50,8 @@ class CreateAlbumPresenter(activity: CreateAlbumActivity) : ICreateAlbum {
                         month: Int,
                         dayOfMonth: Int
                     ) {
-                       // view.tvBirthday.text = "${dayOfMonth}/${month + 1}/${year}"
+                        tvBirthday.text = "${dayOfMonth}/${month + 1}/${year}"
                     }
-
                 }, year, month, dayOfMonth)
             datePickerDialog.show()
         }
@@ -68,14 +61,11 @@ class CreateAlbumPresenter(activity: CreateAlbumActivity) : ICreateAlbum {
     override fun getRelationAlbum(): String {
         view.flRelation.setOnClickListener {
             val dialogRelationFragment = DialogRelationFragment()
+            val bundle : Bundle = Bundle()
             dialogRelationFragment.show(view.supportFragmentManager, dialogRelationFragment.tag)
         }
         return ""
     }
 
-//    override fun hideKeybroad(view1: View) {
-//        val inputMethodManager = view.getSystemService(
-//            (Activity.INPUT_METHOD_SERVICE) as InputMethodManager
-//        inputMethodManager.hideSoftInputFromWindow(view1.getWindowToken(), 0);
-//    }
+
 }
