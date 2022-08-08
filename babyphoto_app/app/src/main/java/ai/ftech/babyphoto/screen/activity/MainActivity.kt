@@ -22,12 +22,12 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setAccountUpdate() {
-        val dataService = APIService.getService()
+        val dataService = APIService().base()
         val password : String = ""
         val firstname : String = ""
         val lastname : String = "Quoc Cuong"
         val idaccount : Int = 20010412
-        val callback : Call<String> = dataService.setAccountUpdate(password,firstname,lastname,idaccount)
+        val callback : Call<String> = dataService.updateAccount(password,firstname,lastname,idaccount)
         callback.enqueue(object : Callback<String>{
             override fun onResponse(call: Call<String>, response: Response<String>) {
 
@@ -40,13 +40,13 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setAccountInsert() {
-        val dataService = APIService.getService()
+        val dataService = APIService().base()
         val email : String = "30464Cuong64IT4@nuce.edu.vn"
         val password : String = "123456"
         val firstname : String = "Vu"
         val lastname : String = "Cuong"
         val idaccount : Int = 20010412
-        val callback : Call<String> = dataService.setAccountInsert(email,password,firstname,lastname,idaccount)
+        val callback : Call<String> = dataService.insertAccount(email,password,firstname,lastname,idaccount)
         callback.enqueue(object : Callback<String>{
             override fun onResponse(call: Call<String>, response: Response<String>) {
                 Toast.makeText(this@MainActivity,response.body(),Toast.LENGTH_LONG).show()
@@ -60,8 +60,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun getAccount() {
-        val dataService = APIService.getService()
-        val callback: Call<List<Account>> = dataService.getAccount()
+        val dataService = APIService().base()
+        val callback: Call<List<Account>> = dataService.account()
         callback.enqueue(object : Callback<List<Account>> {
             override fun onResponse(
                 call: Call<List<Account>>?,

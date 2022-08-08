@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".screen.register.ActivityCreatePass"
+    android:padding="30dp">
+    <ImageButton
+        android:id="@+id/ibRegisterBackCreatePass"
+        style="@style/BabyButtonBackRegister"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tvRegisterPass"
+        style="@style/BabyTitleRegister"
+        android:text="Create A Password"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ibRegisterBackCreatePass" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilRegisterPass"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:background="@drawable/selector_str_white_color_white_selected"
+        app:endIconMode="password_toggle"
+        app:hintEnabled="false"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvRegisterPass">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/tieRegisterPass"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Password"
+            android:textColorHint="@color/black_34"
+            android:inputType="textPassword"
+            android:maxLength="50"
+            android:maxLines="1"
+            android:background="@color/white"
+            android:textColor="#000000"
+            android:textSize="14sp" />
+    </com.google.android.material.textfield.TextInputLayout>
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilRegisterRePass"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:background="@drawable/selector_str_white_color_white_selected"
+        app:endIconMode="password_toggle"
+        app:hintEnabled="false"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tilRegisterPass">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/tieRegisterRePass"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter the password"
+            android:textColorHint="@color/black_34"
+            android:inputType="textPassword"
+            android:maxLength="50"
+            android:background="@color/white"
+            android:maxLines="1"
+            android:textColor="#000000"
+            android:textSize="14sp" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <TextView
+        android:id="@+id/tvRegisterWarningPass"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="Passwords are between 6 and 8 characters, do not use special characters"
+        android:textColor="@color/black_40"
+        android:textSize="14sp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tilRegisterRePass" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnRegisterNext3"
+        style="@style/BabyButtonNextRegister"
+        android:layout_marginTop="100dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvRegisterWarningPass" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
