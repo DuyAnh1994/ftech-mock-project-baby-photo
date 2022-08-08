@@ -24,16 +24,13 @@
             android:name=".HomeTest"
             android:exported="false" />
         <activity
-            android:name=".screen.activity.PhotoFolderActivity"
+            android:name=".screen.album.PhotoFolderActivity"
             android:exported="false" />
         <activity
-            android:name=".screen.activity.HomeActivity"
+            android:name=".screen.home.HomeActivity"
             android:exported="false" />
         <activity
             android:name=".screen.login.AccountLogin"
-            android:exported="false" />
-        <activity
-            android:name=".screen.activity.MainActivity"
             android:exported="false" />
         <activity
             android:name=".screen.register.ActivityCreatePass"
@@ -45,10 +42,10 @@
             android:name=".screen.register.RegisterActivity"
             android:exported="false" />
         <activity
-            android:name=".screen.activity.CreateAlbumActivity"
+            android:name=".MainActivity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".screen.album.CreateAlbumActivity"
             android:exported="true"
              >
             <intent-filter>

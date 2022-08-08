@@ -5,6 +5,7 @@ import okhttp3.RequestBody
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.*
+import java.util.*
 
 interface DataService {
     //4. khai báo link api, phương thức và kiểu dữ liệu trả về
@@ -44,4 +45,17 @@ interface DataService {
         lastname: String,
         idaccount: Int
     ): Call<String>
+
+    @FormUrlEncoded
+    @POST("AlbumInsert.php")
+    fun setAlbumInsert(
+        @Field("idalbum ") idalbum: Int,
+        @Field("idaccount") idaccount: Int,
+        @Field("urlimage") urlimage: String,
+        @Field("name") name: String,
+        @Field("gender") gender: Boolean,
+        @Field("birthday") birthday: Date,
+        @Field("relation") relation: String,
+        @Field("amountimage") amountimage: Int
+    ) : Call<String>
 }

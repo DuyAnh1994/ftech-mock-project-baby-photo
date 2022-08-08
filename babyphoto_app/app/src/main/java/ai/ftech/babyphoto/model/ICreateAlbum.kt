@@ -1,13 +1,12 @@
 package ai.ftech.babyphoto.model
 
-import android.view.View
+import android.widget.TextView
 import java.util.*
-
 interface ICreateAlbum {
 
-  fun getNameAlbum() : String
-  fun getGenderAlbum() : Int
-  fun getBirthdayAlbum() : String
-  fun getRelationAlbum() : String
-//  fun hideKeybroad(view : View)
+    fun getNameAlbum(): String
+    fun getGenderAlbum(): Boolean
+    fun getBirthdayAlbum(tvBirthday: TextView): String
+    fun getRelationAlbum(relation: String): String
+
 }

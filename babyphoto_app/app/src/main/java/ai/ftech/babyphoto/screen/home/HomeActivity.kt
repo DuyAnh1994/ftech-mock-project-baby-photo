@@ -1,4 +1,4 @@
-package ai.ftech.babyphoto.screen.activity
+package ai.ftech.babyphoto.screen.home
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
