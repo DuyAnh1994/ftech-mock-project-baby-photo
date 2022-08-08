@@ -21,19 +21,19 @@
         android:theme="@style/Theme.BabyPhoto"
         tools:targetApi="31">
         <activity
-            android:name=".screen.activity.PreviewActivity"
+            android:name=".screen.album.PreviewActivity"
             android:exported="false" />
         <activity
-            android:name=".screen.activity.PhotoFolderActivity"
+            android:name=".screen.album.PhotoFolderActivity"
             android:exported="false" />
         <activity
-            android:name=".screen.activity.HomeActivity"
+            android:name=".screen.home.HomeActivity"
             android:exported="false" />
         <activity
-            android:name=".screen.activity.MainActivity"
+            android:name=".screen.home.MainActivity"
             android:exported="false" />
         <activity
-            android:name=".screen.activity.CreateAlbumActivity"
+            android:name=".screen.album.CreateAlbumActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -9,7 +9,9 @@
         <entry key="..\:/ProjectIntern/ftech-mock-project-baby-photo/HelloBaby/app/src/main/res/drawable/shape.xml" value="0.1385" />
         <entry key="..\:/ProjectIntern/ftech-mock-project-baby-photo/HelloBaby/app/src/main/res/drawable/shape_cir_grey_bg_corner_90.xml" value="0.1285" />
         <entry key="..\:/ProjectIntern/ftech-mock-project-baby-photo/HelloBaby/app/src/main/res/drawable/shape_cir_grey_bg_corner_large.xml" value="0.1385" />
+        <entry key="..\:/ProjectIntern/ftech-mock-project-baby-photo/HelloBaby/app/src/main/res/drawable/shape_cir_trans_bg_corner_90.xml" value="0.1265" />
         <entry key="..\:/ProjectIntern/ftech-mock-project-baby-photo/HelloBaby/app/src/main/res/drawable/shape_cir_yellow_bg_corner_large.xml" value="0.1385" />
+        <entry key="..\:/ProjectIntern/ftech-mock-project-baby-photo/HelloBaby/app/src/main/res/drawable/shape_gray_bg_corner_20.xml" value="0.1" />
         <entry key="..\:/ProjectIntern/ftech-mock-project-baby-photo/HelloBaby/app/src/main/res/drawable/shape_pink_bg_corner_10.xml" value="0.1285" />
         <entry key="..\:/ProjectIntern/ftech-mock-project-baby-photo/HelloBaby/app/src/main/res/drawable/shape_red_bg.xml" value="0.1285" />
         <entry key="..\:/ProjectIntern/ftech-mock-project-baby-photo/HelloBaby/app/src/main/res/drawable/shape_red_bg_corner_10.xml" value="0.1285" />
@@ -20,7 +22,7 @@
         <entry key="..\:/ProjectIntern/ftech-mock-project-baby-photo/HelloBaby/app/src/main/res/font/archivo_narrow_bold.xml" value="0.23076923076923078" />
         <entry key="..\:/ProjectIntern/ftech-mock-project-baby-photo/HelloBaby/app/src/main/res/layout/activity_home.xml" value="0.20416666666666666" />
         <entry key="..\:/ProjectIntern/ftech-mock-project-baby-photo/HelloBaby/app/src/main/res/layout/activity_main.xml" value="0.20416666666666666" />
-        <entry key="..\:/ProjectIntern/ftech-mock-project-baby-photo/HelloBaby/app/src/main/res/layout/create_album_activity.xml" value="0.20102564102564102" />
+        <entry key="..\:/ProjectIntern/ftech-mock-project-baby-photo/HelloBaby/app/src/main/res/layout/create_album_activity.xml" value="0.22" />
         <entry key="..\:/ProjectIntern/ftech-mock-project-baby-photo/HelloBaby/app/src/main/res/layout/diaglog_back_create_album_layout.xml" value="0.33" />
         <entry key="..\:/ProjectIntern/ftech-mock-project-baby-photo/HelloBaby/app/src/main/res/layout/dialog_back_create_album_layout.xml" value="0.25" />
         <entry key="..\:/ProjectIntern/ftech-mock-project-baby-photo/HelloBaby/app/src/main/res/layout/dialog_relation_fragment.xml" value="0.25" />

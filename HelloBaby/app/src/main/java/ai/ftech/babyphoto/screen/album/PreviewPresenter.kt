@@ -1,7 +1,8 @@
-package ai.ftech.babyphoto.screen.presenter
+package ai.ftech.babyphoto.screen.album
+
 
 import ai.ftech.babyphoto.model.IPreview
-import ai.ftech.babyphoto.screen.activity.PreviewActivity
+import android.content.Intent
 import android.graphics.BitmapFactory
 
 class PreviewPresenter(activity : PreviewActivity) : IPreview {
@@ -14,5 +15,13 @@ class PreviewPresenter(activity : PreviewActivity) : IPreview {
 
     override fun setInsert(uriBaby : String) {
         view.ivBaby.setImageBitmap(BitmapFactory.decodeFile(uriBaby))
+    }
+
+    override fun setIntent(uriBaby : String) {
+        view.ivOk.setOnClickListener {
+            val intent = Intent(view, PhotoFolderActivity::class.java)
+            intent.putExtra("uriImage",uriBaby )
+            view.startActivity(intent)
+        }
     }
 }

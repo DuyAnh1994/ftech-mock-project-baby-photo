@@ -1,11 +1,14 @@
 package ai.ftech.babyphoto.screen.fragment
 
 import ai.ftech.babyphoto.R
-import ai.ftech.babyphoto.screen.adapter.RelationAdapter
 import ai.ftech.babyphoto.model.IRelation
+
 import ai.ftech.babyphoto.model.Relation
+import ai.ftech.babyphoto.screen.adapter.RelationAdapter
 import android.app.Dialog
+import android.content.Context
 import android.os.Bundle
+import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -17,7 +20,6 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 class DialogRelationFragment : BottomSheetDialogFragment() {
     private lateinit var rvRelation: RecyclerView
     private lateinit var bottomSheetDialog: BottomSheetDialog
-
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         bottomSheetDialog =
             BottomSheetDialog(requireContext(), R.style.BottomSheetDialogTheme)
@@ -45,13 +47,30 @@ class DialogRelationFragment : BottomSheetDialogFragment() {
         )
         val iRelation: IRelation = object : IRelation {
             override fun getName(name: String) {
+                iCreateName.getName(name)
+                Handler().postDelayed(object : Runnable {
+                    override fun run() {
+                        bottomSheetDialog.dismiss()
+                    }
 
+                }, 300)
             }
         }
         val adapter = RelationAdapter(arrayRelation, iRelation)
         rvRelation.adapter = adapter
     }
 
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        if (context is ICreateName) {
+            iCreateName = context
+        }
+    }
 
+    lateinit var iCreateName: ICreateName
+
+    interface ICreateName {
+        fun getName(name: String)
+    }
 
 }

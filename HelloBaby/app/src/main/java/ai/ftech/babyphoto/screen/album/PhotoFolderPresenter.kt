@@ -1,7 +1,7 @@
-package ai.ftech.babyphoto.screen.presenter
+package ai.ftech.babyphoto.screen.album
+
 
 import ai.ftech.babyphoto.model.IPhotoFolder
-import ai.ftech.babyphoto.screen.activity.PhotoFolderActivity
 import ai.ftech.babyphoto.screen.adapter.PhotoFolderAdapter
 import android.Manifest
 import android.content.pm.PackageManager
@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 
 class PhotoFolderPresenter(activity: PhotoFolderActivity) : IPhotoFolder {
     private val view = activity
+
     override fun setImage() {
         // xin quyền truy cập trong máy ảnh
         if (ContextCompat.checkSelfPermission(view, Manifest.permission.READ_EXTERNAL_STORAGE)
@@ -19,7 +20,7 @@ class PhotoFolderPresenter(activity: PhotoFolderActivity) : IPhotoFolder {
         ) {
             ActivityCompat.requestPermissions(
                 view,
-                arrayOf<String>(Manifest.permission.READ_EXTERNAL_STORAGE), 999
+                arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), 999
             )
         }
 
@@ -47,7 +48,7 @@ class PhotoFolderPresenter(activity: PhotoFolderActivity) : IPhotoFolder {
         val gridLayoutManager = GridLayoutManager(view, 3)
         gridLayoutManager.orientation = GridLayoutManager.VERTICAL
         view.rvPhotoFolderImage.layoutManager = gridLayoutManager
-        val adapter = PhotoFolderAdapter(view,arrayImage)
+        val adapter = PhotoFolderAdapter(view, arrayImage)
         view.rvPhotoFolderImage.adapter = adapter
         adapter.notifyDataSetChanged()
     }
@@ -57,4 +58,6 @@ class PhotoFolderPresenter(activity: PhotoFolderActivity) : IPhotoFolder {
             view.openBackDialog()
         }
     }
+
 }
+

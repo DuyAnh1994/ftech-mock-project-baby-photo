@@ -1,39 +1,44 @@
-package ai.ftech.babyphoto.screen.presenter
+package ai.ftech.babyphoto.screen.album
 
 import ai.ftech.babyphoto.R
 import ai.ftech.babyphoto.model.ICreateAlbum
-import ai.ftech.babyphoto.screen.activity.CreateAlbumActivity
 import ai.ftech.babyphoto.screen.fragment.DialogRelationFragment
 import android.app.DatePickerDialog
-import android.os.Bundle
+import android.os.Build
+import android.util.Log
 import android.widget.DatePicker
 import android.widget.TextView
+import androidx.annotation.RequiresApi
+import java.text.SimpleDateFormat
+import java.time.format.DateTimeFormatter
 import java.util.*
 
 class CreateAlbumPresenter(activity: CreateAlbumActivity) : ICreateAlbum {
     private val view = activity
+    lateinit var birthday: Date
     override fun getNameAlbum(): String {
         return view.edtName.text.toString()
     }
 
-    override fun getGenderAlbum(): Int {
-        var select: Int = 1
+    override fun getGenderAlbum(): Boolean {
+        var select = true
         view.ivBoy.setOnClickListener {
             view.ivBoy.setBackgroundResource(R.drawable.shape_cir_yellow_bg_corner_large)
             view.ivGirl.setBackgroundResource(R.drawable.shape_cir_grey_bg_corner_90)
-            select = 1
+            select = true
         }
         view.ivGirl.setOnClickListener {
             view.ivGirl.setBackgroundResource(R.drawable.shape_cir_yellow_bg_corner_large)
             view.ivBoy.setBackgroundResource(R.drawable.shape_cir_grey_bg_corner_90)
-            select = 0
+            select = false
         }
 
         return select
     }
 
 
-    override fun getBirthdayAlbum(tvBirthday : TextView): String {
+    @RequiresApi(Build.VERSION_CODES.O)
+    override fun getBirthdayAlbum(tvBirthday: TextView): String {
 
         view.flBirthday.setOnClickListener {
             val calendar = Calendar.getInstance()
@@ -55,17 +60,19 @@ class CreateAlbumPresenter(activity: CreateAlbumActivity) : ICreateAlbum {
                 }, year, month, dayOfMonth)
             datePickerDialog.show()
         }
-        return view.tvBirthday.text.toString().trim()
+        val strBirthday = tvBirthday.text.toString()
+        Log.d("AAA", "getBirthdayAlbum: ${birthday}")
+        return strBirthday
     }
 
-    override fun getRelationAlbum(): String {
+    override fun getRelationAlbum(relation: String): String {
         view.flRelation.setOnClickListener {
             val dialogRelationFragment = DialogRelationFragment()
-            val bundle : Bundle = Bundle()
             dialogRelationFragment.show(view.supportFragmentManager, dialogRelationFragment.tag)
         }
-        return ""
+        view.tvRelation.text = relation
+        return relation
     }
 
-
 }
+

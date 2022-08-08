@@ -1,9 +1,8 @@
-package ai.ftech.babyphoto.screen.activity
+package ai.ftech.babyphoto.screen.album
 
 import ai.ftech.babyphoto.R
-import ai.ftech.babyphoto.screen.presenter.PreviewPresenter
+import ai.ftech.babyphoto.screen.album.PreviewPresenter
 import android.app.Dialog
-import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import androidx.appcompat.app.AppCompatActivity
@@ -29,6 +28,7 @@ class PreviewActivity : AppCompatActivity() {
         if(uriBaby != null) {
             previewPresenter.setInsert(uriBaby)
         }
+        previewPresenter.setIntent(uriBaby)
     }
 
     private fun initView() {
@@ -53,8 +53,7 @@ class PreviewActivity : AppCompatActivity() {
         val btnCancel: Button = dialog.findViewById(R.id.btnDialogBacKCancel)
         val btnOK: Button = dialog.findViewById(R.id.btnDialogBacKOk)
         btnOK.setOnClickListener {
-            val intent = Intent(this, PhotoFolderActivity::class.java)
-            startActivity(intent)
+            finish()
             dialog.dismiss()
         }
         btnCancel.setOnClickListener {
@@ -62,5 +61,6 @@ class PreviewActivity : AppCompatActivity() {
         }
         dialog.show()
     }
+
 
 }

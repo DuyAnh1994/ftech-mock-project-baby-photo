@@ -2,5 +2,5 @@ package ai.ftech.babyphoto.model
 
 interface IRelation {
 
-    fun getName(name : String)
+    fun getName(name: String)
 }
