@@ -1,34 +1,47 @@
 package ai.ftech.babyphoto.base.service
 
 import ai.ftech.babyphoto.model.Account
+import okhttp3.RequestBody
+import okhttp3.ResponseBody
 import retrofit2.Call
-import retrofit2.http.Field
-import retrofit2.http.FormUrlEncoded
-import retrofit2.http.GET
-import retrofit2.http.POST
+import retrofit2.http.*
 
 interface DataService {
+    //4. khai báo link api, phương thức và kiểu dữ liệu trả về
 
+    //get hàm account
     @GET("Account.php")
-    fun getAccount(): Call<List<Account>>
+    fun account(): Call<List<Account>>
 
+//    @GET("20tu/2?id={id}&qtype={qtype}")
+//    fun getValue(
+//        @Path("id") id: String,
+//        @Query("qtype") qtype: String
+//    ): Call<Any>
+
+    //thêm mới user
+    @POST("AccountInsert.php")
+    fun insertAccount(
+        @Body body: RequestBody
+    ): Call<ResponseBody>
     @FormUrlEncoded
     @POST("AccountInsert.php")
-    fun setAccountInsert(
+    fun insertAccount(
         @Field("email") email: String,
         @Field("password") password: String,
-        @Field("firstname") firstname: String,
-        @Field("lastname") lastname: String,
-        @Field("idaccount") idaccount: Int
-    ) : Call<String>
+        @Field("firstname") firstName: String,
+        @Field("lastname") lastName: String,
+        @Field("idaccount") idAccount: Int
+    ): Call<String>
 
+    //cập nhật người dùng
     @FormUrlEncoded
     @POST("AccountUpdate.php")
-    fun setAccountUpdate(
-        @Field("password") password: String,
-        @Field("firstname") firstname: String,
-        @Field("lastname") lastname: String,
-        @Field("idaccount") idaccount: Int
-    ) : Call<String>
-
+    fun updateAccount(
+        @Body
+        password: String,
+        firstname: String,
+        lastname: String,
+        idaccount: Int
+    ): Call<String>
 }

@@ -4,6 +4,229 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".screen.activity.MainActivity">
+    android:layout_gravity="center"
+    tools:context=".MainActivity">
+
+    <ImageView
+        android:id="@+id/ivMainImageBaby"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/ic_login"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tvMainTextBaby"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="27dp"
+        android:gravity="center"
+        android:layout_margin="10dp"
+        android:text="Save beautiful timeline moments of your child's life"
+        android:textColor="@color/black_87"
+        android:textSize="21sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ivMainImageBaby" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/acbMainEmail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
+        android:textSize="14sp"
+        android:background="@drawable/selector_rec_red_color_red_selected"
+        android:drawableStart="@drawable/ic_baseline_email_24"
+        android:paddingStart="100dp"
+        android:paddingEnd="80dp"
+        android:text="Sign in with Email"
+        android:layout_margin="10dp"
+        android:textColor="@color/white"
+        app:icon="@drawable/ic_baseline_email_24"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvMainTextBaby" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/acbMainFb"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/selector_rec_blue_color_blue_selected"
+        android:drawableStart="@drawable/ic_baseline_email_24"
+        android:paddingStart="100dp"
+        android:layout_margin="10dp"
+        android:paddingEnd="80dp"
+        android:textSize="14sp"
+        android:text="Sign in with Facebook"
+        android:textColor="@color/white"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/acbMainEmail" />
+
+    <TextView
+        android:id="@+id/tvMainWarning"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:gravity="center"
+        android:text="We won't post anything without your permisson"
+        android:textColor="@color/black_40"
+        android:textSize="13sp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/acbMainFb" />
+
+    <LinearLayout
+        android:id="@+id/lilMainRegister"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="136dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@+id/lilMainLogin"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvMainWarning">
+
+        <TextView
+            android:id="@+id/tvMainQuestionRegister"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Do not have an account?"
+            android:textColor="@color/black_40"
+            android:textSize="13sp" />
+
+        <TextView
+            android:id="@+id/tvMainRegister"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Create Account"
+            android:textColor="@color/blue_link"
+            android:textSize="13sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/lilMainLogin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <TextView
+            android:id="@+id/tvMainLogin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Sign In "
+            android:textColor="@color/blue_link"
+            android:textSize="13sp" />
+
+        <TextView
+            android:id="@+id/tvMainQuestionLogin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="now if you already have an account"
+            android:textColor="@color/black_40"
+            android:textSize="13sp" />
+    </LinearLayout>
+
+
+    <!--    <LinearLayout-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="match_parent"-->
+    <!--        android:layout_marginLeft="20dp"-->
+    <!--        android:layout_marginRight="20dp"-->
+    <!--        android:orientation="vertical">-->
+    <!--        <Button-->
+    <!--            android:layout_width="wrap_content"-->
+    <!--            android:layout_height="wrap_content"-->
+    <!--            android:text="Click here to regisster Account"/>-->
+
+    <!--        <TextView-->
+    <!--            android:id="@+id/tvListAccount"-->
+    <!--            android:layout_width="wrap_content"-->
+    <!--            android:layout_height="wrap_content"-->
+    <!--            android:layout_marginTop="30dp"-->
+    <!--            android:text="Danh sách tài khoản ban đầu"-->
+    <!--            app:layout_constraintBottom_toBottomOf="parent"-->
+    <!--            app:layout_constraintEnd_toEndOf="parent"-->
+    <!--            app:layout_constraintStart_toStartOf="parent"-->
+    <!--            app:layout_constraintTop_toTopOf="parent" />-->
+
+    <!--        <EditText-->
+    <!--            android:id="@+id/edtFirstName"-->
+    <!--            android:layout_width="match_parent"-->
+    <!--            android:layout_height="wrap_content"-->
+    <!--            android:layout_marginTop="20dp"-->
+    <!--            android:ems="10"-->
+    <!--            android:inputType="textPersonName"-->
+    <!--            android:hint="First name" />-->
+
+    <!--        <EditText-->
+    <!--            android:id="@+id/edtLastName"-->
+    <!--            android:layout_width="match_parent"-->
+    <!--            android:layout_height="wrap_content"-->
+    <!--            android:ems="10"-->
+    <!--            android:inputType="textPersonName"-->
+    <!--            android:hint="Last Name" />-->
+
+    <!--        <Button-->
+    <!--            android:id="@+id/btnInsert"-->
+    <!--            android:layout_width="match_parent"-->
+    <!--            android:layout_height="wrap_content"-->
+    <!--            android:text="Insert" />-->
+
+    <!--        <TextView-->
+    <!--            android:id="@+id/tvMethodPost"-->
+    <!--            android:layout_width="wrap_content"-->
+    <!--            android:layout_height="wrap_content"-->
+    <!--            android:layout_marginTop="20dp"-->
+    <!--            android:text="Phần này hiển thị dữ liệu trả về sau khi thêm mới"-->
+    <!--            app:layout_constraintBottom_toBottomOf="parent"-->
+    <!--            app:layout_constraintEnd_toEndOf="parent"-->
+    <!--            app:layout_constraintStart_toStartOf="parent"-->
+    <!--            app:layout_constraintTop_toTopOf="parent" />-->
+
+    <!--        <EditText-->
+    <!--            android:id="@+id/edtIdUpdate"-->
+    <!--            android:layout_width="match_parent"-->
+    <!--            android:layout_height="wrap_content"-->
+    <!--            android:layout_marginTop="20dp"-->
+    <!--            android:ems="10"-->
+    <!--            android:inputType="textPersonName"-->
+    <!--            android:hint="ID" />-->
+
+    <!--        <EditText-->
+    <!--            android:id="@+id/edtFirstNameUpdate"-->
+    <!--            android:layout_width="match_parent"-->
+    <!--            android:layout_height="wrap_content"-->
+    <!--            android:ems="10"-->
+    <!--            android:inputType="textPersonName"-->
+    <!--            android:hint="First name" />-->
+
+    <!--        <EditText-->
+    <!--            android:id="@+id/edtLastNameUpdate"-->
+    <!--            android:layout_width="match_parent"-->
+    <!--            android:layout_height="wrap_content"-->
+    <!--            android:ems="10"-->
+    <!--            android:inputType="textPersonName"-->
+    <!--            android:hint="Last Name" />-->
+
+    <!--        <Button-->
+    <!--            android:id="@+id/btnUpdate"-->
+    <!--            android:layout_width="match_parent"-->
+    <!--            android:layout_height="wrap_content"-->
+    <!--            android:text="Update" />-->
+
+    <!--        <TextView-->
+    <!--            android:id="@+id/tvLastUpdate"-->
+    <!--            android:layout_width="wrap_content"-->
+    <!--            android:layout_height="wrap_content"-->
+    <!--            android:layout_marginTop="20dp"-->
+    <!--            android:text="Phần này hiển thị danh sách tài khoản sau khi update"-->
+    <!--            app:layout_constraintBottom_toBottomOf="parent"-->
+    <!--            app:layout_constraintEnd_toEndOf="parent"-->
+    <!--            app:layout_constraintStart_toStartOf="parent"-->
+    <!--            app:layout_constraintTop_toTopOf="parent" />-->
+
+    <!--    </LinearLayout>-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>
