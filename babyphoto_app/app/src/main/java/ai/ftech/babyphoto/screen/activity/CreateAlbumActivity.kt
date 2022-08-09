@@ -45,6 +45,4 @@ class CreateAlbumActivity : AppCompatActivity() {
         flRelation = findViewById(R.id.flCreateAlbumRelation)
         createAlbumPresenter = CreateAlbumPresenter(this)
     }
-
-
 }

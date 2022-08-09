@@ -1,10 +1,10 @@
 package ai.ftech.babyphoto.screen.login
 
-import ai.ftech.babyphoto.HomeTest
 import ai.ftech.babyphoto.R
 import ai.ftech.babyphoto.base.Utils
 import ai.ftech.babyphoto.base.service.APIService
 import ai.ftech.babyphoto.model.Account
+import ai.ftech.babyphoto.screen.home.Home
 import android.app.Dialog
 import android.content.Intent
 import android.graphics.Color
@@ -54,7 +54,7 @@ class AccountLoginPresenter(activity: AccountLogin) {
         val password = view.tieAccountLoginPass.text.toString()
         if (email.trim().isEmpty() || password.trim().isEmpty()) return
         if (lAccount.any { account: Account -> account.email == email && account.password == password }) {
-            val intent = Intent(view, HomeTest::class.java)
+            val intent = Intent(view, Home::class.java)
             view.startActivity(intent)
             view.finish()
         } else {
