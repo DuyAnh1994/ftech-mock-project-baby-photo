@@ -8,7 +8,7 @@ data class Album(
     val urlimage: String,
     val name: String,
     val gender: Boolean,
-    val birthday: Date,
+    val birthday: String,
     val relation: String,
     val amountimage: Int
 ) {

@@ -36,7 +36,6 @@ class CreateAlbumPresenter(activity: CreateAlbumActivity) : ICreateAlbum {
     }
 
 
-    @RequiresApi(Build.VERSION_CODES.O)
     override fun getBirthdayAlbum(tvBirthday: TextView): String {
 
         view.flBirthday.setOnClickListener {

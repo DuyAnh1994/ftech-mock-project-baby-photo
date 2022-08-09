@@ -1,6 +1,7 @@
 package ai.ftech.babyphoto.screen.album
 
 import ai.ftech.babyphoto.R
+import ai.ftech.babyphoto.screen.fragment.DialogPreviewFragment
 import android.Manifest
 import android.app.Dialog
 import android.content.Intent
@@ -22,11 +23,11 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 
 
-class PhotoFolderActivity : AppCompatActivity() {
+class PhotoFolderActivity : AppCompatActivity(),DialogPreviewFragment.IPreviewUri {
     lateinit var ivCancel: ImageView
     lateinit var ivCamera: ImageView
     lateinit var rvPhotoFolderImage: RecyclerView
-
+     var bitmap: Bitmap? = null
     private lateinit var photoFolderPresenter: PhotoFolderPresenter
     lateinit var activityResultLauncher: ActivityResultLauncher<Intent>
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -34,7 +35,12 @@ class PhotoFolderActivity : AppCompatActivity() {
         setContentView(R.layout.photo_folder_activity)
         initView()
         default()
-
+        if(bitmap != null){
+            val intent = Intent()
+            intent.putExtra("bitmap",bitmap)
+            setResult(234,intent)
+            finish()
+        }
         photoFolderPresenter = PhotoFolderPresenter(this)
         photoFolderPresenter.setImage()
         photoFolderPresenter.backCreateAlbum()
@@ -106,5 +112,13 @@ class PhotoFolderActivity : AppCompatActivity() {
             dialog.cancel()
         }
         dialog.show()
+    }
+
+    override fun getBitmap(Uri: Bitmap) {
+        bitmap = Uri
+        val intent = Intent()
+        intent.putExtra("bitmap",bitmap)
+        setResult(234,intent)
+        finish()
     }
 }

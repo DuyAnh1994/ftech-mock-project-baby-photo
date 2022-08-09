@@ -24,11 +24,11 @@ class PreviewActivity : AppCompatActivity() {
 
         val intent = intent
         var uriBaby : String = intent.getStringExtra("uriImage")!!
-        previewPresenter.setCancel()
+       // previewPresenter.setCancel()
         if(uriBaby != null) {
             previewPresenter.setInsert(uriBaby)
         }
-        previewPresenter.setIntent(uriBaby)
+        //previewPresenter.setIntent(uriBaby)
     }
 
     private fun initView() {

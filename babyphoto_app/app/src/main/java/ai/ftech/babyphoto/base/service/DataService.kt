@@ -1,8 +1,8 @@
 package ai.ftech.babyphoto.base.service
 
 import ai.ftech.babyphoto.model.Account
-import okhttp3.RequestBody
-import okhttp3.ResponseBody
+import ai.ftech.babyphoto.model.Album
+import ai.ftech.babyphoto.model.Data
 import retrofit2.Call
 import retrofit2.http.*
 import java.util.*
@@ -11,44 +11,36 @@ interface DataService {
     //4. khai báo link api, phương thức và kiểu dữ liệu trả về
 
     //get hàm account
-    @GET("Account.php")
-    fun account(): Call<List<Account>>
-
-//    @GET("20tu/2?id={id}&qtype={qtype}")
-//    fun getValue(
-//        @Path("id") id: String,
-//        @Query("qtype") qtype: String
-//    ): Call<Any>
+    @GET("account")
+    fun account(): Call<List<Data<Account>>>
 
     //thêm mới user
-    @POST("AccountInsert.php")
-    fun insertAccount(
-        @Body body: RequestBody
-    ): Call<ResponseBody>
     @FormUrlEncoded
-    @POST("AccountInsert.php")
+    @POST("account_insert")
     fun insertAccount(
         @Field("email") email: String,
         @Field("password") password: String,
-        @Field("firstname") firstName: String,
-        @Field("lastname") lastName: String,
-        @Field("idaccount") idAccount: Int
-    ): Call<String>
+        @Field("firstname") firstname: String,
+        @Field("lastname") lastname: String,
+        @Field("idaccount") idaccount: Int
+    ): Call<List<Data<String>>>
 
     //cập nhật người dùng
     @FormUrlEncoded
-    @POST("AccountUpdate.php")
+    @POST("Account_update")
     fun updateAccount(
-        @Body
-        password: String,
-        firstname: String,
-        lastname: String,
-        idaccount: Int
-    ): Call<String>
+        @Field("password") password: String,
+        @Field("firstname") firstname: String,
+        @Field("lastname") lastname: String,
+        @Field("idaccount") idaccount: Int
+    ): Call<List<Data<String>>>
+
+    @GET("album")
+    fun album(): Call<List<Data<Album>>>
 
     @FormUrlEncoded
-    @POST("AlbumInsert.php")
-    fun setAlbumInsert(
+    @POST("album_insert")
+    fun albumInsert(
         @Field("idalbum ") idalbum: Int,
         @Field("idaccount") idaccount: Int,
         @Field("urlimage") urlimage: String,
@@ -57,5 +49,5 @@ interface DataService {
         @Field("birthday") birthday: Date,
         @Field("relation") relation: String,
         @Field("amountimage") amountimage: Int
-    ) : Call<String>
+    ) : Call<List<Data<String>>>
 }

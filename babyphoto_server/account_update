@@ -2,6 +2,15 @@
 
  require "Connect.php";
 
+ class Data
+  {
+    function Data($code,$msg,$data){
+      $this -> code = $code;
+      $this -> msg = $msg;
+      $this -> data =$data;
+    }
+  }
+
  $password =$_POST['password'];
  $firstname =$_POST['firstname'];
  $lastname =$_POST['lastname'];
@@ -10,7 +19,11 @@
 if( empty($password)){
      if(empty($firstname)){
         if (empty($lastname)) {
-           echo "FAIL";
+  $code = "code23";
+  $msg = "no data";
+  $arrayerror = array();
+  $array= array();
+  array_push($array,new Data($code,$msg,$arrayerror));
     }else{
       $queryupdatepw = "UPDATE Account SET lastname = '$lastname' WHERE idaccount = '$idaccount'";
       $datainsert = mysqli_query($con,$queryupdatepw);
@@ -23,9 +36,18 @@ if( empty($password)){
       $queryupdatepw = "UPDATE Account SET password = '$password' WHERE idaccount = '$idaccount'";
       $datainsert = mysqli_query($con,$queryupdatepw);
 }
+
  if ($datainsert) {
-    echo "Success";
+ $code = "code13";
+  $msg = "successfully";
+  $array= array();
+  array_push($array,new Data($code,$msg,$arrayAccount));
   }else{
-    echo "Fail";
+    $code = "code22";
+  $msg = "connect error";
+  $arrayerror = array();
+  $array= array();
+  array_push($array,new Data($code,$msg,$arrayerror));
   }
+  echo json_encode($array);
 ?>

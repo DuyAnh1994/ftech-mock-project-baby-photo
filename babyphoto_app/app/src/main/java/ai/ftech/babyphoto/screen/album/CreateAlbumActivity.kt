@@ -97,6 +97,27 @@ class CreateAlbumActivity : AppCompatActivity(), DialogRelationFragment.ICreateN
                     flCamera.visibility = View.GONE
                 }
             }
+
+            if(result?.resultCode == 234){
+                val intent = result.data
+                if (intent != null) {
+                    val bitmap: Bitmap = intent.extras?.get("bitmap") as Bitmap
+
+                    //chuyển bitmap về base64
+                    val baos = ByteArrayOutputStream()
+                    bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos)
+                    val b: ByteArray = baos.toByteArray()
+                    base64Avatar = Base64.getEncoder().encodeToString(b)
+
+                    //chuyển base64 về bitmap
+                    val encodeByte: ByteArray = Base64.getDecoder().decode(base64Avatar)
+                    val bitmapBaby =
+                        BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.count())
+                    ivAvatar.setImageBitmap(bitmapBaby)
+
+                    flCamera.visibility = View.GONE
+                }
+            }
         }
         edtName.onFocusChangeListener = View.OnFocusChangeListener { v, hasFocus ->
             if (!hasFocus) {
@@ -126,42 +147,42 @@ class CreateAlbumActivity : AppCompatActivity(), DialogRelationFragment.ICreateN
 
             birthday = SimpleDateFormat("dd/MM/yyyy").parse(strBirthday)
 
-            if (base64Avatar != null && name != null && relation != null && birthday != null) {
-                btnCreate.setBackgroundResource(R.drawable.shape_orange_bg_corner_20)
-                val dataService = APIService().base()
-                val callback: Call<String> = dataService.setAlbumInsert(
-                    123,
-                    234,
-                    base64Avatar,
-                    name,
-                    gender,
-                    birthday,
-                    relation,
-                    0
-                )
-                callback.enqueue(object : Callback<String> {
-                    override fun onResponse(call: Call<String>, response: Response<String>) {
-                        if (response.body() != null) {
-                            Toast.makeText(
-                                CreateAlbumActivity(),
-                                response.body(),
-                                Toast.LENGTH_LONG
-                            )
-                                .show()
-                        }
-                    }
-
-                    override fun onFailure(call: Call<String>, t: Throwable) {
-                        Toast.makeText(
-                            CreateAlbumActivity(),
-                            t.message.toString(),
-                            Toast.LENGTH_LONG
-                        )
-                            .show()
-                    }
-
-                })
-            }
+//            if (base64Avatar != null && name != null && relation != null && birthday != null) {
+//                btnCreate.setBackgroundResource(R.drawable.shape_orange_bg_corner_20)
+//                val dataService = APIService().base()
+//                val callback: Call<String> = dataService.setAlbumInsert(
+//                    123,
+//                    234,
+//                    base64Avatar,
+//                    name,
+//                    gender,
+//                    birthday,
+//                    relation,
+//                    0
+//                )
+//                callback.enqueue(object : Callback<String> {
+//                    override fun onResponse(call: Call<String>, response: Response<String>) {
+//                        if (response.body() != null) {
+//                            Toast.makeText(
+//                                CreateAlbumActivity(),
+//                                response.body(),
+//                                Toast.LENGTH_LONG
+//                            )
+//                                .show()
+//                        }
+//                    }
+//
+//                    override fun onFailure(call: Call<String>, t: Throwable) {
+//                        Toast.makeText(
+//                            CreateAlbumActivity(),
+//                            t.message.toString(),
+//                            Toast.LENGTH_LONG
+//                        )
+//                            .show()
+//                    }
+//
+//                })
+//            }
         }
     }
 
