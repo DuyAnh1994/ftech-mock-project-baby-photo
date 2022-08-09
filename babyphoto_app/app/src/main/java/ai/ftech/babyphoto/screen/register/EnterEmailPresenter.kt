@@ -4,6 +4,7 @@ import ai.ftech.babyphoto.R
 import ai.ftech.babyphoto.base.Utils
 import ai.ftech.babyphoto.base.service.APIService
 import ai.ftech.babyphoto.model.Account
+import ai.ftech.babyphoto.model.ResponseModel
 import android.content.Intent
 import android.util.Log
 import android.view.View
@@ -28,25 +29,25 @@ class EnterEmailPresenter(activity: ActivityEnterEmail) {
 
     //khai báo service
     private val apiService = APIService().base()
-    private var lAccount = mutableListOf<Account>()
+    private var lAccount = listOf<Account>()
 
     //hàm gọi lấy danh sách tài khoản
     fun getAccount() {
         apiService.account().enqueue(
-            object : Callback<List<Account>> {
+            object : Callback<ResponseModel<List<Account>>> {
                 override fun onResponse(
-                    call: Call<List<Account>>,
-                    response: Response<List<Account>>
+                    call: Call<ResponseModel<List<Account>>>,
+                    response: Response<ResponseModel<List<Account>>>
                 ) {
                     if (response.body() != null){
-                        lAccount = response.body() as MutableList<Account>
+                        lAccount = response.body()!!.data
                         Toast.makeText(view, "Get data success", Toast.LENGTH_SHORT).show()
                         return
                     }
                     Toast.makeText(view, "Data is empty", Toast.LENGTH_SHORT).show()
                 }
 
-                override fun onFailure(call: Call<List<Account>>, t: Throwable) {
+                override fun onFailure(call: Call<ResponseModel<List<Account>>>, t: Throwable) {
                     Toast.makeText(view, "Get data failed", Toast.LENGTH_SHORT).show()
                     Log.e("ERROR",t.toString())
                 }

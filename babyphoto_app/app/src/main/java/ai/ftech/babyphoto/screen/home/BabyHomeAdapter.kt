@@ -3,14 +3,19 @@ package ai.ftech.babyphoto.screen.home
 import ai.ftech.babyphoto.R
 import ai.ftech.babyphoto.model.AlbumBaby
 import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.net.Uri
+import android.util.Base64
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.graphics.scale
 import androidx.recyclerview.widget.RecyclerView
+
 
 class BabyHomeAdapter(
     val context: Context,
@@ -66,7 +71,17 @@ class BabyHomeAdapter(
         private val tvHomeViewBabyItem: TextView = view.findViewById(R.id.tvHomeViewBabyItem)
 
         fun bind(position: Int) {
-            ivHomeViewBaby.setImageURI(Uri.parse(dataViewBabyHome[position].urlimage))
+            val decodedString: ByteArray =
+                Base64.decode(dataViewBabyHome[position].urlimage, Base64.DEFAULT)
+            var decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.size)
+            val height = 150
+            val factor: Float = (height * 1.0 / decodedByte.height).toFloat()
+//            decodedByte = Bitmap.createScaledBitmap(
+//                decodedByte,
+//                (decodedByte.width * factor * 1.0).toInt(), height, true
+//            )
+
+            ivHomeViewBaby.setImageBitmap(decodedByte)
             tvHomeViewBabyName.text = dataViewBabyHome[position].name
             tvHomeViewBabyCountItem.text = dataViewBabyHome[position].amountimage
             tvHomeViewBabyItem.text = "images"

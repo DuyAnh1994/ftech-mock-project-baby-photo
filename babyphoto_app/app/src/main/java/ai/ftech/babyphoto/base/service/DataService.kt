@@ -2,6 +2,7 @@ package ai.ftech.babyphoto.base.service
 
 import ai.ftech.babyphoto.model.Account
 import ai.ftech.babyphoto.model.AlbumBaby
+import ai.ftech.babyphoto.model.ResponseModel
 import okhttp3.RequestBody
 import okhttp3.ResponseBody
 import retrofit2.Call
@@ -12,7 +13,7 @@ interface DataService {
 
     //get hàm account
     @GET("Account.php")
-    fun account(): Call<List<Account>>
+    fun account(): Call<ResponseModel<List<Account>>>
 
 //    @GET("20tu/2?id={id}&qtype={qtype}")
 //    fun getValue(
@@ -48,6 +49,6 @@ interface DataService {
     ): Call<String>
 
     //lấy danh sách album
-    @GET("Album.php")
-    fun getAlbum(): Call<List<AlbumBaby>>
+    @GET("album.php")
+    fun getAlbum(): Call<ResponseModel<List<AlbumBaby>>>
 }

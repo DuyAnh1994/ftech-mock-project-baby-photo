@@ -3,6 +3,7 @@ package ai.ftech.babyphoto.screen.home
 import ai.ftech.babyphoto.R
 import ai.ftech.babyphoto.base.service.APIService
 import ai.ftech.babyphoto.model.AlbumBaby
+import ai.ftech.babyphoto.model.ResponseModel
 import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -22,25 +23,32 @@ class Home : AppCompatActivity() {
         val recycleBaby: RecyclerView = findViewById(R.id.rcvHomeViewBaby)
 
         recycleBaby.layoutManager = LinearLayoutManager(this)
+        val mutableListBaby: MutableList<AlbumBaby> = ArrayList()
+//        mutableListBaby.add(AlbumBaby("", "nomo1", "4", "items", "", "", "", ""))
+//
+        recycleBaby.adapter =
+            BabyHomeAdapter(this@Home, mutableListBaby, "Add Baby Test")
+        val manager = GridLayoutManager(this@Home, 2, GridLayoutManager.VERTICAL, false)
+        recycleBaby.layoutManager = manager
 
         APIService().base().getAlbum().enqueue(
-            object : Callback<List<AlbumBaby>> {
+            object : Callback<ResponseModel<List<AlbumBaby>>> {
                 override fun onResponse(
-                    call: Call<List<AlbumBaby>>,
-                    response: Response<List<AlbumBaby>>
+                    call: Call<ResponseModel<List<AlbumBaby>>>,
+                    response: Response<ResponseModel<List<AlbumBaby>>>
                 ) {
                     val mutableListBaby: MutableList<AlbumBaby> = ArrayList()
-                    mutableListBaby.add(AlbumBaby("", "nomo1", "4", "items", "", "", "", ""))
+                    val res = response.body() as ResponseModel<List<AlbumBaby>>
 
-                    mutableListBaby.addAll(response.body() as List<AlbumBaby>)
+                    mutableListBaby.addAll(res.data)
 
                     recycleBaby.adapter =
                         BabyHomeAdapter(this@Home, mutableListBaby, "Add Baby Test")
-                    val manager = GridLayoutManager(this@Home, 2, GridLayoutManager.VERTICAL, false)
-                    recycleBaby.layoutManager = manager
+//                    val manager = GridLayoutManager(this@Home, 2, GridLayoutManager.VERTICAL, false)
+//                    recycleBaby.layoutManager = manager
                 }
 
-                override fun onFailure(call: Call<List<AlbumBaby>>, t: Throwable) {
+                override fun onFailure(call: Call<ResponseModel<List<AlbumBaby>>>, t: Throwable) {
                     Toast.makeText(this@Home, "Get album failed", Toast.LENGTH_SHORT).show()
                 }
 

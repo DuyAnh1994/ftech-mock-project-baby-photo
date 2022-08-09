@@ -17,11 +17,12 @@
 
         <ImageButton
             android:id="@+id/ibHomeMenu"
-            android:layout_width="wrap_content"
+            android:layout_width="20dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="10dp"
             android:background="@color/white"
             android:src="@drawable/ic_menu_home_24px"
+            android:layout_marginStart="5dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -33,7 +34,7 @@
             android:layout_marginTop="6dp"
             android:text="Baby Photo"
             android:textColor="#DF000000"
-            android:textSize="23sp"
+            android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintLeft_toRightOf="@id/ibHomeMenu"
             app:layout_constraintTop_toTopOf="parent" />
@@ -42,15 +43,15 @@
             android:id="@+id/cvFilterHome"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="5dp"
+            android:layout_marginRight="17dp"
             app:cardCornerRadius="100dp"
             app:layout_constraintEnd_toStartOf="@+id/cvQRHome"
             app:layout_constraintTop_toTopOf="parent">
 
             <ImageButton
                 android:id="@+id/ibHomeFilter"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
                 android:background="#F0F0F0"
                 android:src="@drawable/ic_filter_home_24px" />
         </androidx.cardview.widget.CardView>
@@ -59,15 +60,15 @@
             android:id="@+id/cvQRHome"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
             app:cardCornerRadius="100dp"
+            android:layout_marginRight="5dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
             <ImageButton
                 android:id="@+id/ibHomeQR"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
                 android:background="#F0F0F0"
                 android:src="@drawable/ic_qrcode_24px" />
         </androidx.cardview.widget.CardView>
@@ -78,6 +79,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
+        android:layout_marginStart="5dp"
         android:text="Your Baby"
         android:textColor="#56000000"
         android:textSize="14sp"
@@ -86,15 +88,16 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rcvHomeAddBaby"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tvHomeYourBaby" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rcvHomeViewBaby"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="@+id/tvHomeYourBaby"
         app:layout_constraintStart_toEndOf="@+id/rcvHomeAddBaby"
         app:layout_constraintTop_toBottomOf="@id/tvHomeYourBaby" />
 </androidx.constraintlayout.widget.ConstraintLayout>
