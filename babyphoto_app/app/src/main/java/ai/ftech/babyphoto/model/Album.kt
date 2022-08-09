@@ -1,6 +1,5 @@
 package ai.ftech.babyphoto.model
 
-import java.util.*
 
 data class Album(
     val idalbum: Int,
@@ -11,5 +10,4 @@ data class Album(
     val birthday: String,
     val relation: String,
     val amountimage: Int
-) {
-}
+)

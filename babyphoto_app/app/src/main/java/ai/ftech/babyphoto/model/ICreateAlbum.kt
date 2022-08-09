@@ -4,9 +4,8 @@ import android.widget.TextView
 import java.util.*
 interface ICreateAlbum {
 
-    fun getNameAlbum(): String
-    fun getGenderAlbum(): Int
-    fun getBirthdayAlbum(tvBirthday: TextView): String
-    fun getRelationAlbum(relation: String): String
+    fun getGenderAlbum() : Int
+    fun getBirthdayAlbum(tvBirthday: TextView)
+    fun getRelationAlbum(relation: String)
 
 }

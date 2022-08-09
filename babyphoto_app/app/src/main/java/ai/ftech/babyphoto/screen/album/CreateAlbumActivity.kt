@@ -2,7 +2,6 @@ package ai.ftech.babyphoto.screen.album
 
 import ai.ftech.babyphoto.R
 import ai.ftech.babyphoto.base.service.APIService
-import ai.ftech.babyphoto.base.service.DataService
 import ai.ftech.babyphoto.model.Album
 import ai.ftech.babyphoto.model.Data
 import ai.ftech.babyphoto.screen.fragment.DialogRelationFragment
@@ -21,6 +20,7 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import com.google.gson.Gson
 import de.hdodenhof.circleimageview.CircleImageView
 import retrofit2.Call
 import retrofit2.Callback
@@ -43,7 +43,8 @@ class CreateAlbumActivity : AppCompatActivity(), DialogRelationFragment.ICreateN
     lateinit var flCamera: FrameLayout
     lateinit var createAlbumPresenter: CreateAlbumPresenter
     lateinit var activityResultLauncher: ActivityResultLauncher<Intent>
-    private var base64Avatar: String? = ""
+    var base64Avatar: String? = ""
+    private var album: Album? = null
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -52,12 +53,11 @@ class CreateAlbumActivity : AppCompatActivity(), DialogRelationFragment.ICreateN
         initView()
         getUriBaby()
         getAvatar()
-        createAlbumPresenter.getNameAlbum()
+        //album = Gson().fromJson(get("album") as String, Album::class.java)
         createAlbumPresenter.getGenderAlbum()
-        createAlbumPresenter.getBirthdayAlbum(tvBirthday)
         createAlbumPresenter.getRelationAlbum(tvRelation.text.toString())
+        createAlbumPresenter.getBirthdayAlbum(tvBirthday)
         createAlbum()
-
     }
 
     private fun initView() {
@@ -96,7 +96,7 @@ class CreateAlbumActivity : AppCompatActivity(), DialogRelationFragment.ICreateN
                     val bitmapBaby =
                         BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.count())
                     ivAvatar.setImageBitmap(bitmapBaby)
-
+                    createAlbumPresenter.setBackgroundButton()
                     flCamera.visibility = View.GONE
                 }
             }
@@ -117,7 +117,7 @@ class CreateAlbumActivity : AppCompatActivity(), DialogRelationFragment.ICreateN
                     val bitmapBaby =
                         BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.count())
                     ivAvatar.setImageBitmap(bitmapBaby)
-
+                    createAlbumPresenter.setBackgroundButton()
                     flCamera.visibility = View.GONE
                 }
             }
@@ -136,19 +136,15 @@ class CreateAlbumActivity : AppCompatActivity(), DialogRelationFragment.ICreateN
         }
     }
 
-    override fun getName(name: String) {
-        tvRelation.text = name
-    }
-
     @RequiresApi(Build.VERSION_CODES.O)
     private fun createAlbum() {
         btnCreate.setOnClickListener {
-            val name: String = createAlbumPresenter.getNameAlbum()
-            val gender: Int = createAlbumPresenter.getGenderAlbum()
-            val relation: String = createAlbumPresenter.getRelationAlbum(tvRelation.text.toString())
-            val birthday: String = createAlbumPresenter.getBirthdayAlbum(tvBirthday)
 
-            if (base64Avatar != "" && name != "" && relation != "" && birthday != "") {
+            var name = edtName.text.toString()
+            var gender = createAlbumPresenter.getGenderAlbum()
+            var birthday : String= tvBirthday.text.toString()
+            var relation : String = tvRelation.text.toString()
+            if (base64Avatar != "" && edtName.text.toString() != "" && tvRelation.text != "" && tvBirthday.text != "") {
                 btnCreate.setBackgroundResource(R.drawable.shape_orange_bg_corner_20)
                 val dataService = APIService.base()
                 val callback = dataService.albumInsert(
@@ -191,5 +187,9 @@ class CreateAlbumActivity : AppCompatActivity(), DialogRelationFragment.ICreateN
         val inputMethodManager =
             getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
         inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
+    }
+
+    override fun getName(name: String) {
+        tvRelation.text = name
     }
 }
