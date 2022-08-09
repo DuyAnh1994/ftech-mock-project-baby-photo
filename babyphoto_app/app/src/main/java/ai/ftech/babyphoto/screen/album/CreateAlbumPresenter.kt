@@ -4,13 +4,8 @@ import ai.ftech.babyphoto.R
 import ai.ftech.babyphoto.model.ICreateAlbum
 import ai.ftech.babyphoto.screen.fragment.DialogRelationFragment
 import android.app.DatePickerDialog
-import android.os.Build
-import android.util.Log
 import android.widget.DatePicker
 import android.widget.TextView
-import androidx.annotation.RequiresApi
-import java.text.SimpleDateFormat
-import java.time.format.DateTimeFormatter
 import java.util.*
 
 class CreateAlbumPresenter(activity: CreateAlbumActivity) : ICreateAlbum {
@@ -19,17 +14,17 @@ class CreateAlbumPresenter(activity: CreateAlbumActivity) : ICreateAlbum {
         return view.edtName.text.toString()
     }
 
-    override fun getGenderAlbum(): Boolean {
-        var select = true
+    override fun getGenderAlbum(): Int {
+        var select = 1
         view.ivBoy.setOnClickListener {
             view.ivBoy.setBackgroundResource(R.drawable.shape_cir_yellow_bg_corner_large)
             view.ivGirl.setBackgroundResource(R.drawable.shape_cir_grey_bg_corner_90)
-            select = true
+            select = 1
         }
         view.ivGirl.setOnClickListener {
             view.ivGirl.setBackgroundResource(R.drawable.shape_cir_yellow_bg_corner_large)
             view.ivBoy.setBackgroundResource(R.drawable.shape_cir_grey_bg_corner_90)
-            select = false
+            select = 0
         }
 
         return select
@@ -58,8 +53,7 @@ class CreateAlbumPresenter(activity: CreateAlbumActivity) : ICreateAlbum {
                 }, year, month, dayOfMonth)
             datePickerDialog.show()
         }
-        val strBirthday = tvBirthday.text.toString()
-        return strBirthday
+        return tvBirthday.text.toString()
     }
 
     override fun getRelationAlbum(relation: String): String {

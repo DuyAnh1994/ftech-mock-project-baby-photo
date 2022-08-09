@@ -27,15 +27,13 @@
   if ($datainsert) {
   $code = "code32";
   $msg = "insert successfully";
-  $arrayerror = array();
-  $array= array();
-  array_push($array,new Data($code,$msg,$arrayerror));
+  $array = array();
+  $object = new Data($code,$msg,$array);
   }else{
   $code = "code22";
   $msg = "connect error";
   $arrayerror = array();
-  $array= array();
-  array_push($array,new Data($code,$msg,$arrayerror));
+  $object = new Data($code,$msg,$arrayerror);
   }
-  echo json_encode($array);
+ echo json_encode($object);
 ?>

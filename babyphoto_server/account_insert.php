@@ -22,26 +22,24 @@ if(is_null($email) || is_null($password) || is_null($firstname)
   $code = "code21";
   $msg = "Incorrect transmission data ";
   $arrayerror = array();
-  $array= array();
-  array_push($array,new Data($code,$msg,$arrayerror));
-   echo json_encode($array);
+  $object = new Data($code,$msg,$arrayerror);
+  echo json_encode($object);
 }else{
- 	$queryinsert = "INSERT INTO Account VALUES ('$email','$password','$firstname','$lastname','$idaccount')";
- 	$datainsert = mysqli_query($con,$queryinsert);
+  $queryinsert = "INSERT INTO Account VALUES ('$email','$password','$firstname','$lastname','$idaccount')";
+  $datainsert = mysqli_query($con,$queryinsert);
 
   if ($datainsert) {
   $code = "code13";
   $msg = "insert successfully";
-  $arrayerror = array();
   $array= array();
-  array_push($array,new Data($code,$msg,$arrayerror));
+  $object = new Data($code,$msg,$array);
   }else{
   $code = "code22";
   $msg = "connect error";
   $arrayerror = array();
-  $array= array();
-  array_push($array,new Data($code,$msg,$arrayerror));
+  $object = new Data($code,$msg,$arrayerror);
   }
+  echo json_encode($object);
 }
 
 ?>

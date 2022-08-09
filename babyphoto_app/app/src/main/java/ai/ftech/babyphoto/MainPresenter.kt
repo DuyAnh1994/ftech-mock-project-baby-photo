@@ -11,7 +11,7 @@ import java.util.*
 //lấy file này để xử lý logic
 class MainPresenter(mainActivity: MainActivity) {
     //khai báo service
-    private val apiService = APIService().base()
+    private val apiService = APIService.base()
     private val view = mainActivity
 
     //hàm gọi lấy danh sách tài khoản

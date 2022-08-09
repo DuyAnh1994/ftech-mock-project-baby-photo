@@ -5,6 +5,7 @@ import ai.ftech.babyphoto.R
 import ai.ftech.babyphoto.base.Utils
 import ai.ftech.babyphoto.base.service.APIService
 import ai.ftech.babyphoto.model.Account
+import ai.ftech.babyphoto.model.Data
 import android.app.Dialog
 import android.content.Intent
 import android.graphics.Color
@@ -25,7 +26,8 @@ class CreatePassPresenter(activity: ActivityCreatePass) {
             account = Gson().fromJson(get("account") as String, Account::class.java)
         }
     }
-    fun checkPass(pass: String): Boolean{
+
+    fun checkPass(pass: String): Boolean {
         val isValidPassCharacter = Utils().isValidPassCharacter(pass)
         val isValidPassCount = Utils().isValidPassCount(pass)
         if (!isValidPassCharacter || !isValidPassCount
@@ -35,7 +37,8 @@ class CreatePassPresenter(activity: ActivityCreatePass) {
             view.tvRegisterWarningPass.setTextColor(Color.parseColor("#FFFFFF"))
         return !isValidPassCount || !isValidPassCharacter
     }
-    fun checkRePass(pass: String, rePass: String): Boolean{
+
+    fun checkRePass(pass: String, rePass: String): Boolean {
         val isMatchPass = Utils().isMatchPass(pass, rePass)
         if (!isMatchPass) {
             view.tvRegisterWarningPass.text = "Confirm password doesn't match"
@@ -47,6 +50,7 @@ class CreatePassPresenter(activity: ActivityCreatePass) {
         }
         return !isMatchPass
     }
+
     fun openDialog(): Dialog {
         var dialogLoadPass = Dialog(view)
         dialogLoadPass.setContentView(R.layout.dialog_loading_register_layout)
@@ -57,9 +61,14 @@ class CreatePassPresenter(activity: ActivityCreatePass) {
         dialogLoadPass.show()
         return dialogLoadPass
     }
+
     fun submit() {
         Log.d("TAG", "submit: ${Gson().toJson(account)} ")
-        if (checkRePass(view.tieRegisterPass.text.toString(), view.tieRegisterRePass.text.toString())) return
+        if (checkRePass(
+                view.tieRegisterPass.text.toString(),
+                view.tieRegisterRePass.text.toString()
+            )
+        ) return
 
         account?.password = view.tieRegisterPass.text.toString()
 
@@ -67,26 +76,29 @@ class CreatePassPresenter(activity: ActivityCreatePass) {
 
         val dialog = openDialog()
 
-        APIService().base().insertAccount(
+        APIService.base().insertAccount(
             account!!.email,
             account!!.password,
             account!!.firstname,
             account!!.lastname,
             account!!.idaccount
         ).enqueue(
-            object : Callback<String> {
-                override fun onResponse(call: Call<String>, response: Response<String>) {
+            object : Callback<Data<String>> {
+                override fun onResponse(
+                    call: Call<Data<String>>,
+                    response: Response<Data<String>>
+                ) {
                     dialog.dismiss()
                     Toast.makeText(
                         view.applicationContext,
-                        response.body().toString(),
+                        response.body()!!.msg,
                         Toast.LENGTH_SHORT
                     ).show()
                     val intent = Intent(view, MainActivity::class.java)
                     view.startActivity(intent)
                 }
 
-                override fun onFailure(call: Call<String>, t: Throwable) {
+                override fun onFailure(call: Call<Data<String>>, t: Throwable) {
                     dialog.dismiss()
                     Toast.makeText(view.applicationContext, "Insert failed", Toast.LENGTH_SHORT)
                         .show()

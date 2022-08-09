@@ -2,13 +2,18 @@ package ai.ftech.babyphoto.screen.album
 
 import ai.ftech.babyphoto.R
 import ai.ftech.babyphoto.base.service.APIService
+import ai.ftech.babyphoto.base.service.DataService
+import ai.ftech.babyphoto.model.Album
+import ai.ftech.babyphoto.model.Data
 import ai.ftech.babyphoto.screen.fragment.DialogRelationFragment
+import ai.ftech.babyphoto.screen.home.HomeActivity
 import android.app.Activity
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
@@ -21,7 +26,6 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.io.ByteArrayOutputStream
-import java.text.SimpleDateFormat
 import java.util.*
 
 
@@ -39,8 +43,7 @@ class CreateAlbumActivity : AppCompatActivity(), DialogRelationFragment.ICreateN
     lateinit var flCamera: FrameLayout
     lateinit var createAlbumPresenter: CreateAlbumPresenter
     lateinit var activityResultLauncher: ActivityResultLauncher<Intent>
-    lateinit var base64Avatar: String
-    lateinit var birthday: Date
+    private var base64Avatar: String? = ""
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -53,7 +56,7 @@ class CreateAlbumActivity : AppCompatActivity(), DialogRelationFragment.ICreateN
         createAlbumPresenter.getGenderAlbum()
         createAlbumPresenter.getBirthdayAlbum(tvBirthday)
         createAlbumPresenter.getRelationAlbum(tvRelation.text.toString())
-        //createAlbum()
+        createAlbum()
 
     }
 
@@ -98,7 +101,7 @@ class CreateAlbumActivity : AppCompatActivity(), DialogRelationFragment.ICreateN
                 }
             }
 
-            if(result?.resultCode == 234){
+            if (result?.resultCode == 234) {
                 val intent = result.data
                 if (intent != null) {
                     val bitmap: Bitmap = intent.extras?.get("bitmap") as Bitmap
@@ -141,56 +144,52 @@ class CreateAlbumActivity : AppCompatActivity(), DialogRelationFragment.ICreateN
     private fun createAlbum() {
         btnCreate.setOnClickListener {
             val name: String = createAlbumPresenter.getNameAlbum()
-            val gender: Boolean = createAlbumPresenter.getGenderAlbum()
+            val gender: Int = createAlbumPresenter.getGenderAlbum()
             val relation: String = createAlbumPresenter.getRelationAlbum(tvRelation.text.toString())
-            val strBirthday: String = createAlbumPresenter.getBirthdayAlbum(tvBirthday)
+            val birthday: String = createAlbumPresenter.getBirthdayAlbum(tvBirthday)
 
-            birthday = SimpleDateFormat("dd/MM/yyyy").parse(strBirthday)
+            if (base64Avatar != "" && name != "" && relation != "" && birthday != "") {
+                btnCreate.setBackgroundResource(R.drawable.shape_orange_bg_corner_20)
+                val dataService = APIService.base()
+                val callback = dataService.albumInsert(
+                    456,
+                    234,
+                    base64Avatar!!,
+                    name,
+                    gender,
+                    birthday,
+                    relation,
+                    0
+                )
+                callback.enqueue(object : Callback<Data<Album>> {
+                    override fun onResponse(
+                        call: Call<Data<Album>>,
+                        response: Response<Data<Album>>
+                    ) {
+                        if (response.body() != null) {
+                            Toast.makeText(
+                                CreateAlbumActivity(),
+                                response.body()!!.msg,
+                                Toast.LENGTH_LONG
+                            )
+                                .show()
+                        }
+                        val intent = Intent(CreateAlbumActivity(), HomeActivity::class.java)
+                        startActivity(intent)
+                    }
 
-//            if (base64Avatar != null && name != null && relation != null && birthday != null) {
-//                btnCreate.setBackgroundResource(R.drawable.shape_orange_bg_corner_20)
-//                val dataService = APIService().base()
-//                val callback: Call<String> = dataService.setAlbumInsert(
-//                    123,
-//                    234,
-//                    base64Avatar,
-//                    name,
-//                    gender,
-//                    birthday,
-//                    relation,
-//                    0
-//                )
-//                callback.enqueue(object : Callback<String> {
-//                    override fun onResponse(call: Call<String>, response: Response<String>) {
-//                        if (response.body() != null) {
-//                            Toast.makeText(
-//                                CreateAlbumActivity(),
-//                                response.body(),
-//                                Toast.LENGTH_LONG
-//                            )
-//                                .show()
-//                        }
-//                    }
-//
-//                    override fun onFailure(call: Call<String>, t: Throwable) {
-//                        Toast.makeText(
-//                            CreateAlbumActivity(),
-//                            t.message.toString(),
-//                            Toast.LENGTH_LONG
-//                        )
-//                            .show()
-//                    }
-//
-//                })
-//            }
+                    override fun onFailure(call: Call<Data<Album>>, t: Throwable) {
+                        Log.d("AAA", "onFailure: ${t.message}")
+                    }
+
+                })
+            }
         }
     }
 
     private fun hideKeybroad(view: View) {
         val inputMethodManager =
             getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
-        inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0);
+        inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
     }
-
-
 }

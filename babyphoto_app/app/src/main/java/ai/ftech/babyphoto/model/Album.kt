@@ -7,7 +7,7 @@ data class Album(
     val idaccount: Int,
     val urlimage: String,
     val name: String,
-    val gender: Boolean,
+    val gender: Int,
     val birthday: String,
     val relation: String,
     val amountimage: Int

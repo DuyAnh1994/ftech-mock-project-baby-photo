@@ -5,7 +5,7 @@ import java.util.*
 interface ICreateAlbum {
 
     fun getNameAlbum(): String
-    fun getGenderAlbum(): Boolean
+    fun getGenderAlbum(): Int
     fun getBirthdayAlbum(tvBirthday: TextView): String
     fun getRelationAlbum(relation: String): String
 

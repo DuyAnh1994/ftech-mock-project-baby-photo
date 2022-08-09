@@ -22,8 +22,8 @@ if( empty($password)){
   $code = "code23";
   $msg = "no data";
   $arrayerror = array();
-  $array= array();
-  array_push($array,new Data($code,$msg,$arrayerror));
+  $object = new Data($code,$msg,$arrayerror);
+  echo json_encode($object);
     }else{
       $queryupdatepw = "UPDATE Account SET lastname = '$lastname' WHERE idaccount = '$idaccount'";
       $datainsert = mysqli_query($con,$queryupdatepw);
@@ -41,13 +41,12 @@ if( empty($password)){
  $code = "code13";
   $msg = "successfully";
   $array= array();
-  array_push($array,new Data($code,$msg,$arrayAccount));
+  $object = new Data($code,$msg,$array);
   }else{
     $code = "code22";
   $msg = "connect error";
   $arrayerror = array();
-  $array= array();
-  array_push($array,new Data($code,$msg,$arrayerror));
+  $object = new Data($code,$msg,$arrayerror);
   }
-  echo json_encode($array);
+  echo json_encode($object);
 ?>

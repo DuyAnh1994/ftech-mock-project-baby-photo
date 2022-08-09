@@ -1,33 +1,32 @@
 package ai.ftech.babyphoto.base.service
 
 import com.google.gson.GsonBuilder
-import okhttp3.Interceptor
-import okhttp3.OkHttpClient
-import okhttp3.Request
-import okhttp3.Response
+import okhttp3.*
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.io.IOException
+import java.util.*
 import java.util.concurrent.TimeUnit
 
-class APIRetrofitClient {
-    private var retrofit: Retrofit? = null
-    fun get(baseUrl: String): DataService {
-        if (retrofit == null) {
-            val clientHTTP = OkHttpClient.Builder()
-                .connectTimeout(30, TimeUnit.SECONDS)
-                .retryOnConnectionFailure(false)
-                .build()
-            retrofit = Retrofit.Builder()
-                .baseUrl(baseUrl)
-                .client(clientHTTP)
-                .addConverterFactory(
-                    GsonConverterFactory.create(
-                        GsonBuilder().setLenient().create()
-                    )
-                )
-                .build()
-        }
-        return retrofit!!.create(DataService::class.java)
+object APIRetrofitClient {
+    private lateinit var retrofit: Retrofit
+    fun getClient(base_url: String): Retrofit {
+        val okHttpClient = OkHttpClient.Builder()
+            .readTimeout(1000000, TimeUnit.MILLISECONDS)
+            .writeTimeout(1000000, TimeUnit.MILLISECONDS)
+            .connectTimeout(1000000, TimeUnit.MILLISECONDS)
+            .retryOnConnectionFailure(true)
+            .protocols(Arrays.asList(Protocol.HTTP_1_1))
+            .build()
+
+        val gson = GsonBuilder().setLenient().create()
+
+        val retrofit = Retrofit.Builder()
+            .baseUrl(base_url)
+            .client(okHttpClient)
+            .addConverterFactory(GsonConverterFactory.create(gson))
+            .build();
+
+        return retrofit
     }
 }
