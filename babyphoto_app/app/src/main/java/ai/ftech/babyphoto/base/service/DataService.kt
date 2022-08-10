@@ -41,7 +41,7 @@ interface DataService {
     @FormUrlEncoded
     @POST("album_insert.php")
     fun albumInsert(
-        @Field("idalbum ") idalbum: Int,
+        @Field("idalbum") idalbum: Int,
         @Field("idaccount") idaccount: Int,
         @Field("urlimage") urlimage: String,
         @Field("name") name: String,
@@ -49,5 +49,5 @@ interface DataService {
         @Field("birthday") birthday: String,
         @Field("relation") relation: String,
         @Field("amountimage") amountimage: Int
-    ) : Call<Data<Album>>
+    ) : Call<Data<String>>
 }

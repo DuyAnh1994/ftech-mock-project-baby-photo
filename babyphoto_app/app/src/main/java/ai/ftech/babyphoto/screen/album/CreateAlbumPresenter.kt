@@ -10,9 +10,8 @@ import java.util.*
 
 class CreateAlbumPresenter(activity: CreateAlbumActivity) : ICreateAlbum {
     private val view = activity
-
+    var select = 1
     override fun getGenderAlbum() : Int{
-        var select = 1
         view.ivBoy.setOnClickListener {
             view.ivBoy.setBackgroundResource(R.drawable.shape_cir_yellow_bg_corner_large)
             view.ivGirl.setBackgroundResource(R.drawable.shape_cir_grey_bg_corner_90)
@@ -30,7 +29,6 @@ class CreateAlbumPresenter(activity: CreateAlbumActivity) : ICreateAlbum {
     override fun getBirthdayAlbum(tvBirthday: TextView) {
 
         view.flBirthday.setOnClickListener {
-            setBackgroundButton()
             val calendar = Calendar.getInstance()
             calendar.timeInMillis = System.currentTimeMillis()
             val year = calendar[Calendar.YEAR]
@@ -50,19 +48,15 @@ class CreateAlbumPresenter(activity: CreateAlbumActivity) : ICreateAlbum {
                 }, year, month, dayOfMonth)
             datePickerDialog.show()
         }
+
     }
 
-    override fun getRelationAlbum(relation: String) {
+    override fun getRelationAlbum(relation1: String) {
         view.flRelation.setOnClickListener {
-            setBackgroundButton()
             val dialogRelationFragment = DialogRelationFragment()
             dialogRelationFragment.show(view.supportFragmentManager, dialogRelationFragment.tag)
         }
-        view.tvRelation.text = relation
-    }
-    fun setBackgroundButton() {
-        if (view.edtName.text.toString() != "" && view.tvBirthday.text != "" && view.tvRelation.text != "")
-            view.btnCreate.setBackgroundResource(R.drawable.shape_orange_bg_corner_20)
+        view.tvRelation.text = relation1
     }
 
 

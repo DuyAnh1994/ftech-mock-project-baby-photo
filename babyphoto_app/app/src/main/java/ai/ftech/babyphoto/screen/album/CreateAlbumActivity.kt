@@ -2,7 +2,6 @@ package ai.ftech.babyphoto.screen.album
 
 import ai.ftech.babyphoto.R
 import ai.ftech.babyphoto.base.service.APIService
-import ai.ftech.babyphoto.model.Album
 import ai.ftech.babyphoto.model.Data
 import ai.ftech.babyphoto.screen.fragment.DialogRelationFragment
 import ai.ftech.babyphoto.screen.home.HomeActivity
@@ -12,6 +11,8 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Build
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
@@ -20,13 +21,13 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
-import com.google.gson.Gson
 import de.hdodenhof.circleimageview.CircleImageView
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.io.ByteArrayOutputStream
 import java.util.*
+import kotlin.random.Random
 
 
 class CreateAlbumActivity : AppCompatActivity(), DialogRelationFragment.ICreateName {
@@ -44,7 +45,6 @@ class CreateAlbumActivity : AppCompatActivity(), DialogRelationFragment.ICreateN
     lateinit var createAlbumPresenter: CreateAlbumPresenter
     lateinit var activityResultLauncher: ActivityResultLauncher<Intent>
     var base64Avatar: String? = ""
-    private var album: Album? = null
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -53,7 +53,6 @@ class CreateAlbumActivity : AppCompatActivity(), DialogRelationFragment.ICreateN
         initView()
         getUriBaby()
         getAvatar()
-        //album = Gson().fromJson(get("album") as String, Album::class.java)
         createAlbumPresenter.getGenderAlbum()
         createAlbumPresenter.getRelationAlbum(tvRelation.text.toString())
         createAlbumPresenter.getBirthdayAlbum(tvBirthday)
@@ -96,7 +95,8 @@ class CreateAlbumActivity : AppCompatActivity(), DialogRelationFragment.ICreateN
                     val bitmapBaby =
                         BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.count())
                     ivAvatar.setImageBitmap(bitmapBaby)
-                    createAlbumPresenter.setBackgroundButton()
+                    setBackgroundButton()
+
                     flCamera.visibility = View.GONE
                 }
             }
@@ -117,7 +117,8 @@ class CreateAlbumActivity : AppCompatActivity(), DialogRelationFragment.ICreateN
                     val bitmapBaby =
                         BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.count())
                     ivAvatar.setImageBitmap(bitmapBaby)
-                    createAlbumPresenter.setBackgroundButton()
+                    setBackgroundButton()
+
                     flCamera.visibility = View.GONE
                 }
             }
@@ -127,6 +128,28 @@ class CreateAlbumActivity : AppCompatActivity(), DialogRelationFragment.ICreateN
                 hideKeybroad(v)
             }
         }
+        edtName.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                if (count > 0) {
+                    setBackgroundButton()
+                } else {
+                    btnCreate.setBackgroundResource(R.drawable.shape_gray_bg_corner_20)
+                }
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                if (count > 0) {
+                    setBackgroundButton()
+                } else {
+                    btnCreate.setBackgroundResource(R.drawable.shape_gray_bg_corner_20)
+                }
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+                setBackgroundButton()
+
+            }
+        })
     }
 
     private fun getUriBaby() {
@@ -139,17 +162,16 @@ class CreateAlbumActivity : AppCompatActivity(), DialogRelationFragment.ICreateN
     @RequiresApi(Build.VERSION_CODES.O)
     private fun createAlbum() {
         btnCreate.setOnClickListener {
-
+            val ID_ALBUM: Int = Random.nextInt(1000, 999999999)
             var name = edtName.text.toString()
             var gender = createAlbumPresenter.getGenderAlbum()
-            var birthday : String= tvBirthday.text.toString()
-            var relation : String = tvRelation.text.toString()
-            if (base64Avatar != "" && edtName.text.toString() != "" && tvRelation.text != "" && tvBirthday.text != "") {
-                btnCreate.setBackgroundResource(R.drawable.shape_orange_bg_corner_20)
+            var birthday: String = tvBirthday.text.toString()
+            var relation: String = tvRelation.text.toString()
+            if (base64Avatar != "" && name != "" && relation != "" && birthday!= "") {
                 val dataService = APIService.base()
-                val callback = dataService.albumInsert(
-                    456,
-                    234,
+                val callback: Call<Data<String>> = dataService.albumInsert(
+                    ID_ALBUM,
+                    1299999293,
                     base64Avatar!!,
                     name,
                     gender,
@@ -157,27 +179,35 @@ class CreateAlbumActivity : AppCompatActivity(), DialogRelationFragment.ICreateN
                     relation,
                     0
                 )
-                callback.enqueue(object : Callback<Data<Album>> {
+                callback.enqueue(object : Callback<Data<String>> {
                     override fun onResponse(
-                        call: Call<Data<Album>>,
-                        response: Response<Data<Album>>
+                        call: Call<Data<String>>,
+                        response: Response<Data<String>>
                     ) {
-                        if (response.body() != null) {
+                        if (response.body()!!.code == "code32") {
+                            val intent = Intent(applicationContext, HomeActivity::class.java)
+                            startActivity(intent)
                             Toast.makeText(
-                                CreateAlbumActivity(),
-                                response.body()!!.msg,
-                                Toast.LENGTH_LONG
-                            )
-                                .show()
+                                applicationContext,
+                                "create album successfully",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        } else {
+                            Toast.makeText(
+                                applicationContext,
+                                response.body()!!.msg + ", Please retry",
+                                Toast.LENGTH_SHORT
+                            ).show()
                         }
-                        val intent = Intent(CreateAlbumActivity(), HomeActivity::class.java)
-                        startActivity(intent)
                     }
 
-                    override fun onFailure(call: Call<Data<Album>>, t: Throwable) {
-                        Log.d("AAA", "onFailure: ${t.message}")
+                    override fun onFailure(call: Call<Data<String>>, t: Throwable) {
+                        Toast.makeText(
+                            applicationContext,
+                            t.message,
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
-
                 })
             }
         }
@@ -191,5 +221,11 @@ class CreateAlbumActivity : AppCompatActivity(), DialogRelationFragment.ICreateN
 
     override fun getName(name: String) {
         tvRelation.text = name
+        setBackgroundButton()
+    }
+
+    fun setBackgroundButton() {
+        if (base64Avatar != "" && edtName.text.toString() != "" && tvBirthday.text != "" && tvRelation.text != "")
+            btnCreate.setBackgroundResource(R.drawable.shape_orange_bg_corner_20)
     }
 }

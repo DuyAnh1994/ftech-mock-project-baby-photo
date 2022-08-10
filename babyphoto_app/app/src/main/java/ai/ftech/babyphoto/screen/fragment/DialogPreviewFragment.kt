@@ -1,17 +1,23 @@
 package ai.ftech.babyphoto.screen.fragment
 
+
+
 import ai.ftech.babyphoto.R
-import ai.ftech.babyphoto.screen.album.PhotoFolderActivity
+import android.app.Activity
 import android.app.Dialog
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Bundle
+import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.View
+import android.view.WindowManager
 import android.widget.ImageView
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+
 
 class DialogPreviewFragment :  BottomSheetDialogFragment() {
     private lateinit var bottomSheetDialog: BottomSheetDialog
@@ -21,6 +27,18 @@ class DialogPreviewFragment :  BottomSheetDialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         bottomSheetDialog =
             BottomSheetDialog(requireContext())
+
+        bottomSheetDialog.setOnShowListener {
+
+            val bottomSheetDialog = it as BottomSheetDialog
+            val parentLayout =
+                bottomSheetDialog.findViewById<View>(com.google.android.material.R.id.design_bottom_sheet)
+            parentLayout?.let { it ->
+                val behaviour = BottomSheetBehavior.from(it)
+                setupFullHeight(it)
+                behaviour.state = BottomSheetBehavior.STATE_EXPANDED
+            }
+        }
         val view: View =
             LayoutInflater.from(context).inflate(R.layout.preview_activity, null)
         bottomSheetDialog.setContentView(view)
@@ -54,6 +72,12 @@ class DialogPreviewFragment :  BottomSheetDialogFragment() {
     lateinit var iPreviewUri: IPreviewUri
     interface IPreviewUri {
         fun getBitmap(Uri: Bitmap)
+    }
+
+    private fun setupFullHeight(bottomSheet: View) {
+        val layoutParams = bottomSheet.layoutParams
+        layoutParams.height = WindowManager.LayoutParams.MATCH_PARENT
+        bottomSheet.layoutParams = layoutParams
     }
 
 }
