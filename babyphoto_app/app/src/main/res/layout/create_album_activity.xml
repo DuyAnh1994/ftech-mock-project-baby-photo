@@ -11,10 +11,11 @@
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/ivCreateAlbumBackHome"
-        style="@style/BabyPhotoStyleText"
+        android:layout_height="20dp"
+        android:layout_width="20dp"
         android:layout_marginStart="20dp"
         android:layout_marginTop="30dp"
-        android:background="@drawable/ic_back_home_24px"
+        android:background="@drawable/ic_back_home"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -146,10 +147,11 @@
             android:textSize="15sp" />
 
         <androidx.appcompat.widget.AppCompatImageView
-            style="@style/BabyPhotoStyleText"
+            android:layout_height="16dp"
+            android:layout_width="16dp"
             android:layout_gravity="center_vertical|end"
             android:layout_marginEnd="10dp"
-            android:background="@drawable/ic_calendarbd_24px" />
+            android:background="@drawable/ic_calendarbd" />
     </FrameLayout>
 
     <TextView
@@ -180,9 +182,10 @@
             android:textSize="15sp" />
 
         <androidx.appcompat.widget.AppCompatImageView
-            style="@style/BabyPhotoStyleText"
+            android:layout_height="14dp"
+            android:layout_width="14dp"
             android:layout_gravity="center_vertical|end"
             android:layout_marginEnd="10dp"
-            android:background="@drawable/ic_relation_24px" />
+            android:background="@drawable/ic_relation" />
     </FrameLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

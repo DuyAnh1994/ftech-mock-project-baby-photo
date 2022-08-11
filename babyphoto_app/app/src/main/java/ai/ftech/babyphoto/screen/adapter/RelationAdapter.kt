@@ -17,6 +17,7 @@ class RelationAdapter(
 ) :
     RecyclerView.Adapter<RelationAdapter.ViewHolder>() {
     var count: Int = 0
+
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val tvName: TextView
         val ivCheckBox: ImageView
@@ -37,17 +38,14 @@ class RelationAdapter(
         val arrayRelation = dataSet[position]
         holder.tvName.text = arrayRelation.name
 
-
         holder.itemView.setOnClickListener {
-           count++
+            count++
             if (count == 1) {
                 iRelation.getName(arrayRelation.name)
                 holder.tvName.setTextColor(Color.parseColor("#81D600"))
                 holder.ivCheckBox.visibility = View.VISIBLE
             }
-
         }
-
 
     }
 

@@ -1,6 +1,6 @@
 package ai.ftech.babyphoto.model
 
 interface IPhotoFolder {
-    fun setImage()
+    fun checkPermission()
     fun backCreateAlbum()
 }

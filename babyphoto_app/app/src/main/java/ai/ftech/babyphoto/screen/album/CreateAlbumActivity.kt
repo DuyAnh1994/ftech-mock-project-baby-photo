@@ -1,10 +1,7 @@
 package ai.ftech.babyphoto.screen.album
 
 import ai.ftech.babyphoto.R
-import ai.ftech.babyphoto.base.service.APIService
-import ai.ftech.babyphoto.model.Data
 import ai.ftech.babyphoto.screen.fragment.DialogRelationFragment
-import ai.ftech.babyphoto.screen.home.HomeActivity
 import android.app.Activity
 import android.content.Intent
 import android.graphics.Bitmap
@@ -13,7 +10,6 @@ import android.os.Build
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
@@ -22,12 +18,8 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import de.hdodenhof.circleimageview.CircleImageView
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import java.io.ByteArrayOutputStream
 import java.util.*
-import kotlin.random.Random
 
 
 class CreateAlbumActivity : AppCompatActivity(), DialogRelationFragment.ICreateName {
@@ -52,11 +44,11 @@ class CreateAlbumActivity : AppCompatActivity(), DialogRelationFragment.ICreateN
         setContentView(R.layout.create_album_activity)
         initView()
         getUriBaby()
-        getAvatar()
         createAlbumPresenter.getGenderAlbum()
         createAlbumPresenter.getRelationAlbum(tvRelation.text.toString())
         createAlbumPresenter.getBirthdayAlbum(tvBirthday)
-        createAlbum()
+        changeButton()
+        getAvatar()
     }
 
     private fun initView() {
@@ -96,7 +88,7 @@ class CreateAlbumActivity : AppCompatActivity(), DialogRelationFragment.ICreateN
                         BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.count())
                     ivAvatar.setImageBitmap(bitmapBaby)
                     setBackgroundButton()
-
+                    createAlbumPresenter.createAlbum(base64Avatar!!)
                     flCamera.visibility = View.GONE
                 }
             }
@@ -118,11 +110,14 @@ class CreateAlbumActivity : AppCompatActivity(), DialogRelationFragment.ICreateN
                         BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.count())
                     ivAvatar.setImageBitmap(bitmapBaby)
                     setBackgroundButton()
-
+                    createAlbumPresenter.createAlbum(base64Avatar!!)
                     flCamera.visibility = View.GONE
                 }
             }
         }
+    }
+
+    private fun changeButton() {
         edtName.onFocusChangeListener = View.OnFocusChangeListener { v, hasFocus ->
             if (!hasFocus) {
                 hideKeybroad(v)
@@ -157,61 +152,11 @@ class CreateAlbumActivity : AppCompatActivity(), DialogRelationFragment.ICreateN
             val intent = Intent(this, PhotoFolderActivity::class.java)
             activityResultLauncher.launch(intent)
         }
-    }
-
-    @RequiresApi(Build.VERSION_CODES.O)
-    private fun createAlbum() {
-        btnCreate.setOnClickListener {
-            val ID_ALBUM: Int = Random.nextInt(1000, 999999999)
-            var name = edtName.text.toString()
-            var gender = createAlbumPresenter.getGenderAlbum()
-            var birthday: String = tvBirthday.text.toString()
-            var relation: String = tvRelation.text.toString()
-            if (base64Avatar != "" && name != "" && relation != "" && birthday!= "") {
-                val dataService = APIService.base()
-                val callback: Call<Data<String>> = dataService.albumInsert(
-                    ID_ALBUM,
-                    1299999293,
-                    base64Avatar!!,
-                    name,
-                    gender,
-                    birthday,
-                    relation,
-                    0
-                )
-                callback.enqueue(object : Callback<Data<String>> {
-                    override fun onResponse(
-                        call: Call<Data<String>>,
-                        response: Response<Data<String>>
-                    ) {
-                        if (response.body()!!.code == "code32") {
-                            val intent = Intent(applicationContext, HomeActivity::class.java)
-                            startActivity(intent)
-                            Toast.makeText(
-                                applicationContext,
-                                "create album successfully",
-                                Toast.LENGTH_SHORT
-                            ).show()
-                        } else {
-                            Toast.makeText(
-                                applicationContext,
-                                response.body()!!.msg + ", Please retry",
-                                Toast.LENGTH_SHORT
-                            ).show()
-                        }
-                    }
-
-                    override fun onFailure(call: Call<Data<String>>, t: Throwable) {
-                        Toast.makeText(
-                            applicationContext,
-                            t.message,
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
-                })
-            }
+        ivBackHome.setOnClickListener {
+            createAlbumPresenter.openBackDialog()
         }
     }
+
 
     private fun hideKeybroad(view: View) {
         val inputMethodManager =

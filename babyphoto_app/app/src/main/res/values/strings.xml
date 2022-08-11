@@ -12,4 +12,5 @@
     <string name="back">You really want to go back?</string>
     <string name="cancel">Cancel</string>
     <string name="Ok">Ok</string>
+    <string name="add_moment">Add Moment</string>
 </resources>
