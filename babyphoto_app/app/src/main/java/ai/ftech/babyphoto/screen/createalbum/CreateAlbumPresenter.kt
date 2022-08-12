@@ -1,10 +1,9 @@
-package ai.ftech.babyphoto.screen.album
+package ai.ftech.babyphoto.screen.createalbum
 
 import ai.ftech.babyphoto.R
 import ai.ftech.babyphoto.base.service.APIService
 import ai.ftech.babyphoto.model.Data
-import ai.ftech.babyphoto.model.ICreateAlbum
-import ai.ftech.babyphoto.screen.fragment.DialogRelationFragment
+import ai.ftech.babyphoto.screen.createalbum.relation.DialogRelationFragment
 import ai.ftech.babyphoto.screen.home.HomeActivity
 import android.app.DatePickerDialog
 import android.app.Dialog
@@ -69,18 +68,18 @@ class CreateAlbumPresenter(activity: CreateAlbumActivity) : ICreateAlbum {
 
     }
 
-    override fun getRelationAlbum(relation1: String) {
+    override fun getRelationAlbum(relation: String) {
         view.flRelation.setOnClickListener {
             val dialogRelationFragment = DialogRelationFragment()
             dialogRelationFragment.show(view.supportFragmentManager, dialogRelationFragment.tag)
         }
-        view.tvRelation.text = relation1
+        view.tvRelation.text = relation
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun createAlbum(base64Avatar: String) {
         view.btnCreate.setOnClickListener {
-            val progressdialog = ProgressDialog(view, R.style.AppCompatAlertDialogStyle)
+            var progressdialog = ProgressDialog(view, R.style.AppCompatAlertDialogStyle)
             progressdialog.setMessage("Updating")
             progressdialog.setCancelable(false)
             progressdialog.show()

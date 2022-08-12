@@ -1,8 +1,6 @@
-package ai.ftech.babyphoto.screen.adapter
+package ai.ftech.babyphoto.screen.createalbum.relation
 
 import ai.ftech.babyphoto.R
-import ai.ftech.babyphoto.model.IRelation
-import ai.ftech.babyphoto.model.Relation
 import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View

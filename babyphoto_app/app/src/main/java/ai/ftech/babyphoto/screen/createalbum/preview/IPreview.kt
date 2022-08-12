@@ -1,4 +1,4 @@
-package ai.ftech.babyphoto.model
+package ai.ftech.babyphoto.screen.createalbum.preview
 
 interface IPreview  {
     fun setInsert(uriBaby : String)

@@ -1,9 +1,6 @@
-package ai.ftech.babyphoto.screen.fragment
+package ai.ftech.babyphoto.screen.createalbum.relation
 
 import ai.ftech.babyphoto.R
-import ai.ftech.babyphoto.model.IRelation
-import ai.ftech.babyphoto.model.Relation
-import ai.ftech.babyphoto.screen.adapter.RelationAdapter
 import android.app.Dialog
 import android.content.Context
 import android.os.Bundle

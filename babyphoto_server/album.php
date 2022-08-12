@@ -44,15 +44,13 @@ class Data
   if ($data) {
   $code = "code31";
   $msg = "successfully";
-  $array= array();
-  array_push($array,new Data($code,$msg,$arrayAlbum));
+  $object = new Data($code,$msg,$arrayAlbum);
 }else{
   $code = "code22";
   $msg = "connect error";
   $arrayerror = array();
-  $array= array();
-  array_push($array,new Data($code,$msg,$arrayerror));
+  $object = new Data($code,$msg,$arrayerror);
 }
- echo json_encode($array);
+ echo json_encode($object);
 
 ?>

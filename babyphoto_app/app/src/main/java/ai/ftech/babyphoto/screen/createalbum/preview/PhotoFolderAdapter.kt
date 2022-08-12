@@ -1,7 +1,6 @@
-package ai.ftech.babyphoto.screen.adapter
+package ai.ftech.babyphoto.screen.createalbum.preview
 
 import ai.ftech.babyphoto.R
-import ai.ftech.babyphoto.model.IPreview
 import android.content.Context
 import android.graphics.BitmapFactory
 import android.view.LayoutInflater

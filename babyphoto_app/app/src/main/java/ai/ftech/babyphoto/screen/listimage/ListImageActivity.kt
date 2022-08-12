@@ -1,38 +1,51 @@
-package ai.ftech.babyphoto.screen.album
+package ai.ftech.babyphoto.screen.listimage
 
 import ai.ftech.babyphoto.R
-import ai.ftech.babyphoto.screen.fragment.DialogPreviewFragment
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
+import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
+import android.widget.Button
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
+import java.io.ByteArrayOutputStream
+import java.util.*
 
-
-class PhotoFolderActivity : AppCompatActivity(), DialogPreviewFragment.IPreviewUri {
+class ListImageActivity : AppCompatActivity() {
+    lateinit var rvImageView: RecyclerView
     lateinit var ivCancel: ImageView
-    lateinit var ivCamera: ImageView
-    lateinit var rvPhotoFolderImage: RecyclerView
-    var bitmap: Bitmap? = null
-    private lateinit var photoFolderPresenter: PhotoFolderPresenter
+    lateinit var btnAdd: Button
+    lateinit var tvTitle: TextView
+    private lateinit var listImagePresent: ListImagePresenter
     lateinit var activityResultLauncher: ActivityResultLauncher<Intent>
+
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.photo_folder_activity)
+        setContentView(R.layout.list_image_activity)
         initView()
         default()
-        photoFolderPresenter = PhotoFolderPresenter(this)
-        photoFolderPresenter.checkPermission()
-        photoFolderPresenter.backCreateAlbum()
-        photoFolderPresenter.setCamera()
-
+        listImagePresent.checkPermission()
+        listImagePresent.cancelCreate()
     }
 
+
+    private fun initView() {
+        rvImageView = findViewById(R.id.rvListImage)
+        ivCancel = findViewById(R.id.ivListImageCancel)
+        btnAdd = findViewById(R.id.btnListImageAdd)
+        tvTitle = findViewById(R.id.tvListImageTitle)
+        listImagePresent = ListImagePresenter(this)
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun default() {
         // nhận kết quả trả về từ máy ảnh
         activityResultLauncher = registerForActivityResult(
@@ -42,31 +55,17 @@ class PhotoFolderActivity : AppCompatActivity(), DialogPreviewFragment.IPreviewU
                 val intent = result.data
                 if (intent != null) {
                     val bitmap: Bitmap = intent.extras?.get("data") as Bitmap
-                    val intent1 = Intent()
-                    intent1.putExtra("uriImage", bitmap)
-                    setResult(123, intent1)
-                    finish()
+                    val baos = ByteArrayOutputStream()
+                    bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos)
+                    val b: ByteArray = baos.toByteArray()
+                    val base64Avatar = Base64.getEncoder().encodeToString(b)
+                    listImagePresent.postServer(base64Avatar)
                 }
             }
         }
     }
 
-
-    private fun initView() {
-        ivCancel = findViewById(R.id.ivPhotoFolderCancel)
-        ivCamera = findViewById(R.id.ivPhotoFolderCamera)
-        rvPhotoFolderImage = findViewById(R.id.rvPhotoFolderImage)
-    }
-
-
-    override fun getBitmap(Uri: Bitmap) {
-        bitmap = Uri
-        val intent = Intent()
-        intent.putExtra("bitmap", bitmap)
-        setResult(234, intent)
-        finish()
-    }
-
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
@@ -75,10 +74,9 @@ class PhotoFolderActivity : AppCompatActivity(), DialogPreviewFragment.IPreviewU
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         when (requestCode) {
             998 -> {
-                photoFolderPresenter.getImage()
+                listImagePresent.getImage()
             }
             999 -> {
-                // If request is cancelled, the result arrays are empty.
                 if ((grantResults.isNotEmpty() &&
                             grantResults[0] == PackageManager.PERMISSION_GRANTED)
                 ) {
@@ -93,5 +91,6 @@ class PhotoFolderActivity : AppCompatActivity(), DialogPreviewFragment.IPreviewU
             }
         }
     }
+
 
 }

@@ -1,7 +1,8 @@
-package ai.ftech.babyphoto.screen.album
+package ai.ftech.babyphoto.screen.createalbum
 
 import ai.ftech.babyphoto.R
-import ai.ftech.babyphoto.screen.fragment.DialogRelationFragment
+import ai.ftech.babyphoto.screen.createalbum.preview.PhotoFolderActivity
+import ai.ftech.babyphoto.screen.createalbum.relation.DialogRelationFragment
 import android.app.Activity
 import android.content.Intent
 import android.graphics.Bitmap
@@ -75,7 +76,6 @@ class CreateAlbumActivity : AppCompatActivity(), DialogRelationFragment.ICreateN
                 val intent = result.data
                 if (intent != null) {
                     val bitmap: Bitmap = intent.extras?.get("uriImage") as Bitmap
-
                     //chuyển bitmap về base64
                     val baos = ByteArrayOutputStream()
                     bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos)

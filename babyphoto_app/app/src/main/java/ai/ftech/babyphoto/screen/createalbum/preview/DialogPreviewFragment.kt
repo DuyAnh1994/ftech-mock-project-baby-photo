@@ -1,15 +1,13 @@
-package ai.ftech.babyphoto.screen.fragment
+package ai.ftech.babyphoto.screen.createalbum.preview
 
 
 
 import ai.ftech.babyphoto.R
-import android.app.Activity
 import android.app.Dialog
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Bundle
-import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.View
 import android.view.WindowManager

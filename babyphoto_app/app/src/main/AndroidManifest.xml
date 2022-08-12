@@ -21,16 +21,16 @@
         android:theme="@style/Theme.BabyPhoto"
         tools:targetApi="31">
         <activity
-            android:name=".screen.ListImage.ListImageActivity"
+            android:name=".screen.listimage.ListImageActivity"
             android:exported="false" />
         <activity
             android:name=".HomeTest"
             android:exported="false" />
         <activity
-            android:name=".screen.album.PhotoFolderActivity"
+            android:name=".screen.createalbum.preview.PhotoFolderActivity"
             android:exported="false" />
         <activity
-            android:name=".screen.album.CreateAlbumActivity"
+            android:name=".screen.createalbum.CreateAlbumActivity"
             android:exported="false" />
         <activity
             android:name=".screen.login.AccountLogin"

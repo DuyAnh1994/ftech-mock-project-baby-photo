@@ -1,11 +1,7 @@
-package ai.ftech.babyphoto.screen.album
+package ai.ftech.babyphoto.screen.createalbum.preview
 
 
 import ai.ftech.babyphoto.R
-import ai.ftech.babyphoto.model.IPhotoFolder
-import ai.ftech.babyphoto.model.IPreview
-import ai.ftech.babyphoto.screen.adapter.PhotoFolderAdapter
-import ai.ftech.babyphoto.screen.fragment.DialogPreviewFragment
 import android.Manifest
 import android.app.Dialog
 import android.content.Intent

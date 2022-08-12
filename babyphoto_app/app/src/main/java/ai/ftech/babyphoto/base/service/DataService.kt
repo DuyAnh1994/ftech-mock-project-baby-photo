@@ -3,6 +3,7 @@ package ai.ftech.babyphoto.base.service
 import ai.ftech.babyphoto.model.Account
 import ai.ftech.babyphoto.model.Album
 import ai.ftech.babyphoto.model.Data
+import ai.ftech.babyphoto.model.Image
 import retrofit2.Call
 import retrofit2.http.*
 import java.util.*
@@ -49,5 +50,18 @@ interface DataService {
         @Field("birthday") birthday: String,
         @Field("relation") relation: String,
         @Field("amountimage") amountimage: Int
+    ) : Call<Data<String>>
+
+    @GET("image.php")
+    fun image(): Call<Data<Image>>
+
+    @FormUrlEncoded
+    @POST("image_insert.php")
+    fun imageInsert(
+        @Field("idimage") idimage: Int,
+        @Field("idalbum") idalbum: Int,
+        @Field("urlimage") urlimage: String,
+        @Field("description") description: String,
+        @Field("timeline") timeline: String,
     ) : Call<Data<String>>
 }

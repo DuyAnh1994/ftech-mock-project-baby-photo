@@ -1,12 +1,11 @@
 package ai.ftech.babyphoto.screen.home
 
 import ai.ftech.babyphoto.R
-import ai.ftech.babyphoto.screen.ListImage.ListImageActivity
-import ai.ftech.babyphoto.screen.album.CreateAlbumActivity
+import ai.ftech.babyphoto.screen.listimage.ListImageActivity
+import ai.ftech.babyphoto.screen.createalbum.CreateAlbumActivity
 import android.content.Intent
 import android.os.Bundle
 import android.widget.FrameLayout
-import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
 
 
