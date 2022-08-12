@@ -56,7 +56,7 @@ class ListImageActivity : AppCompatActivity() {
                 if (intent != null) {
                     val bitmap: Bitmap = intent.extras?.get("data") as Bitmap
                     val baos = ByteArrayOutputStream()
-                    bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos)
+                    bitmap.compress(Bitmap.CompressFormat.JPEG, 5, baos)
                     val b: ByteArray = baos.toByteArray()
                     val base64Avatar = Base64.getEncoder().encodeToString(b)
                     listImagePresent.postServer(base64Avatar)

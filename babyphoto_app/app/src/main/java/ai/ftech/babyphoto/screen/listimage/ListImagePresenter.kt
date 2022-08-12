@@ -1,8 +1,11 @@
 package ai.ftech.babyphoto.screen.listimage
 
 import ai.ftech.babyphoto.R
+import ai.ftech.babyphoto.base.service.APIService
+import ai.ftech.babyphoto.model.Data
 import android.Manifest
 import android.app.Dialog
+import android.app.ProgressDialog
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
@@ -15,10 +18,14 @@ import android.util.Log
 import android.view.Gravity
 import android.view.Window
 import android.widget.Button
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.GridLayoutManager
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import java.io.ByteArrayOutputStream
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -127,7 +134,6 @@ class ListImagePresenter(activity: ListImageActivity) {
                     val b: ByteArray = baos.toByteArray()
                     var bsImage = Base64.getEncoder().encodeToString(b)
                     postServer(bsImage)
-
                 }
             }
         }
@@ -135,46 +141,52 @@ class ListImagePresenter(activity: ListImageActivity) {
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun postServer(bsImage: String) {
+        var progressdialog = ProgressDialog(view, R.style.AppCompatAlertDialogStyle)
+        progressdialog.setMessage("Updating")
+        progressdialog.setCancelable(false)
+        progressdialog.show()
         //random id ảnh
         val ID_IMAGE: Int = Random.nextInt(1000, 999999999)
         //lấy thời gian hiện tại
         val current = LocalDateTime.now()
         val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
         val formatted: String = current.format(formatter)
-        Log.d("AAA", "addImage: ${ID_IMAGE} ${formatted} ${bsImage}")
-//        val dataService = APIService.base()
-//        val callback =
-//            dataService.imageInsert(ID_IMAGE, 123, bsImage, "hello", formatted)
-//        callback.enqueue(object : Callback<Data<String>> {
-//            override fun onResponse(
-//                call: Call<Data<String>>,
-//                response: Response<Data<String>>
-//            ) {
-//                if (response.body()!!.code == "code13") {
-//                    Toast.makeText(
-//                        view,
-//                        "create image successfully",
-//                        Toast.LENGTH_SHORT
-//                    ).show()
-//                } else {
-//                    Toast.makeText(
-//                        view,
-//                        response.body()!!.msg + ", please retry",
-//                        Toast.LENGTH_SHORT
-//                    ).show()
-//                }
-//
-//            }
-//
-//            override fun onFailure(call: Call<Data<String>>, t: Throwable) {
-//                Toast.makeText(
-//                    view,
-//                    t.message,
-//                    Toast.LENGTH_SHORT
-//                ).show()
-//            }
-//
-//        })
+        val dataService = APIService.base()
+        val callback =
+            dataService.imageInsert(ID_IMAGE, 123, bsImage, "hello", formatted)
+        callback.enqueue(object : Callback<Data<String>> {
+            override fun onResponse(
+                call: Call<Data<String>>,
+                response: Response<Data<String>>
+            ) {
+                if (response.body()!!.code == "code13") {
+                    Toast.makeText(
+                        view,
+                        "create image successfully",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    progressdialog.dismiss()
+                } else {
+                    Toast.makeText(
+                        view,
+                        response.body()!!.msg + ", please retry",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    progressdialog.dismiss()
+                }
+
+            }
+
+            override fun onFailure(call: Call<Data<String>>, t: Throwable) {
+                Toast.makeText(
+                    view,
+                    t.message,
+                    Toast.LENGTH_SHORT
+                ).show()
+                progressdialog.dismiss()
+            }
+
+        })
     }
 
     fun cancelCreate() {
