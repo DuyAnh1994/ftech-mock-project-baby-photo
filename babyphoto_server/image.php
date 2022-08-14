@@ -2,7 +2,8 @@
 
   require "Connect.php";
 
-  $query = "SELECT  *FROM Image";
+  $idalbum = $_POST['$idalbum'];
+  $query = "SELECT  *FROM Image WHERE idalbum = '$idalbum'";
   $data = mysqli_query($con,$query);
 
   class Image

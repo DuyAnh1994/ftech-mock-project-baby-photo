@@ -37,7 +37,9 @@ class ListImagePresenter(activity: ListImageActivity) {
     private val view = activity
     private var arrayImage: MutableList<String> = ArrayList()
     private var arrayCb: MutableList<Boolean> = ArrayList()
+    var arrayError: MutableList<Int> = ArrayList()
     private var count: Int = 0
+    var progressdialog = ProgressDialog(view, R.style.AppCompatAlertDialogStyle)
 
     // xin quyền truy cập thư viện
     @RequiresApi(Build.VERSION_CODES.O)
@@ -125,7 +127,7 @@ class ListImagePresenter(activity: ListImageActivity) {
     @RequiresApi(Build.VERSION_CODES.O)
     fun addImage() {
         view.btnAdd.setOnClickListener {
-            for (position in 0 until arrayImage.size - 1) {
+            for (position in 0 until arrayImage.size) {
                 if (arrayCb[position]) {
                     // chuyển bitmap về base64
                     val bitmap: Bitmap = BitmapFactory.decodeFile(arrayImage[position])
@@ -133,60 +135,63 @@ class ListImagePresenter(activity: ListImageActivity) {
                     bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos)
                     val b: ByteArray = baos.toByteArray()
                     var bsImage = Base64.getEncoder().encodeToString(b)
-                    postServer(bsImage)
+                    postServer(bsImage, position)
                 }
             }
+//            if (arrayError.size == 0) {
+//                Toast.makeText(
+//                    view,
+//                    "create album successfully",
+//                    Toast.LENGTH_SHORT
+//                ).show()
+//                progressdialog.dismiss()
+//            } else {
+//                for (i in 0 until arrayError.size - 1) {
+//                    Toast.makeText(
+//                        view,
+//                        "image ${arrayError[i]} update no successfully ",
+//                        Toast.LENGTH_SHORT
+//                    ).show()
+//                    progressdialog.dismiss()
+//                }
+//            }
         }
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    fun postServer(bsImage: String) {
-        var progressdialog = ProgressDialog(view, R.style.AppCompatAlertDialogStyle)
-        progressdialog.setMessage("Updating")
-        progressdialog.setCancelable(false)
-        progressdialog.show()
+    fun postServer(bsImage: String, position: Int) {
+//        progressdialog.setMessage("Updating")
+//        progressdialog.setCancelable(false)
+//        progressdialog.show()
         //random id ảnh
         val ID_IMAGE: Int = Random.nextInt(1000, 999999999)
         //lấy thời gian hiện tại
         val current = LocalDateTime.now()
         val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
         val formatted: String = current.format(formatter)
-        val dataService = APIService.base()
-        val callback =
-            dataService.imageInsert(ID_IMAGE, 123, bsImage, "hello", formatted)
-        callback.enqueue(object : Callback<Data<String>> {
-            override fun onResponse(
-                call: Call<Data<String>>,
-                response: Response<Data<String>>
-            ) {
-                if (response.body()!!.code == "code13") {
-                    Toast.makeText(
-                        view,
-                        "create image successfully",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                    progressdialog.dismiss()
-                } else {
-                    Toast.makeText(
-                        view,
-                        response.body()!!.msg + ", please retry",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                    progressdialog.dismiss()
-                }
 
-            }
-
-            override fun onFailure(call: Call<Data<String>>, t: Throwable) {
-                Toast.makeText(
-                    view,
-                    t.message,
-                    Toast.LENGTH_SHORT
-                ).show()
-                progressdialog.dismiss()
-            }
-
-        })
+        Log.d("BBB", "postServer: ${bsImage}")
+//        val dataService = APIService.base()
+//        val callback =
+//            dataService.imageInsert(ID_IMAGE, 123, bsImage, "hello", formatted)
+//        callback.enqueue(object : Callback<Data<String>> {
+//            override fun onResponse(
+//                call: Call<Data<String>>,
+//                response: Response<Data<String>>
+//            ) {
+//                if (response.body()!!.code == "code13") {
+//
+//                } else {
+//                    arrayError.add(position)
+//                }
+//
+//            }
+//
+//            override fun onFailure(call: Call<Data<String>>, t: Throwable) {
+//                arrayError.add(position)
+//            }
+//
+//        })
     }
 
     fun cancelCreate() {

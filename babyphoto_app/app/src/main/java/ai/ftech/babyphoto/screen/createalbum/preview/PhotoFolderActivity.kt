@@ -4,6 +4,7 @@ import ai.ftech.babyphoto.R
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
+import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.widget.ImageView
@@ -17,7 +18,7 @@ class PhotoFolderActivity : AppCompatActivity(), DialogPreviewFragment.IPreviewU
     lateinit var ivCancel: ImageView
     lateinit var ivCamera: ImageView
     lateinit var rvPhotoFolderImage: RecyclerView
-    var bitmap: Bitmap? = null
+    var uriImage: String? = null
     private lateinit var photoFolderPresenter: PhotoFolderPresenter
     lateinit var activityResultLauncher: ActivityResultLauncher<Intent>
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,7 +41,7 @@ class PhotoFolderActivity : AppCompatActivity(), DialogPreviewFragment.IPreviewU
             if (result?.resultCode == RESULT_OK) {
                 val intent = result.data
                 if (intent != null) {
-                    val bitmap: Bitmap = intent.extras?.get("data") as Bitmap
+                    val bitmap  = intent.extras?.get("data") as Bitmap
                     val intent1 = Intent()
                     intent1.putExtra("uriImage", bitmap)
                     setResult(123, intent1)
@@ -58,10 +59,10 @@ class PhotoFolderActivity : AppCompatActivity(), DialogPreviewFragment.IPreviewU
     }
 
 
-    override fun getBitmap(Uri: Bitmap) {
-        bitmap = Uri
+    override fun getBitmap(uri: String) {
+        uriImage = uri
         val intent = Intent()
-        intent.putExtra("bitmap", bitmap)
+        intent.putExtra("uri", uriImage)
         setResult(234, intent)
         finish()
     }

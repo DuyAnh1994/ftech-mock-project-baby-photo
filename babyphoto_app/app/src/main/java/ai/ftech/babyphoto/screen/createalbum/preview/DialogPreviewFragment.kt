@@ -46,16 +46,16 @@ class DialogPreviewFragment :  BottomSheetDialogFragment() {
 
         val urlImage = arguments?.getString("urlImage")
         ivBaby.setImageBitmap(BitmapFactory.decodeFile(urlImage))
-            setOnClick(BitmapFactory.decodeFile(urlImage))
+            setOnClick(urlImage)
         return bottomSheetDialog
     }
 
-    private fun setOnClick(urlImage: Bitmap) {
+    private fun setOnClick(urlImage: String?) {
         ivCancel.setOnClickListener {
             bottomSheetDialog.dismiss()
         }
         ivOk.setOnClickListener {
-            iPreviewUri.getBitmap(urlImage)
+            iPreviewUri.getBitmap(urlImage!!)
             bottomSheetDialog.dismiss()
         }
     }
@@ -69,7 +69,7 @@ class DialogPreviewFragment :  BottomSheetDialogFragment() {
 
     lateinit var iPreviewUri: IPreviewUri
     interface IPreviewUri {
-        fun getBitmap(Uri: Bitmap)
+        fun getBitmap(Uri: String)
     }
 
     private fun setupFullHeight(bottomSheet: View) {

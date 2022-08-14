@@ -9,9 +9,13 @@ import android.app.DatePickerDialog
 import android.app.Dialog
 import android.app.ProgressDialog
 import android.content.Intent
+import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.net.Uri
 import android.os.Build
+import android.provider.MediaStore
+import android.util.Log
 import android.view.Gravity
 import android.view.Window
 import android.widget.Button
@@ -19,15 +23,21 @@ import android.widget.DatePicker
 import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.io.ByteArrayOutputStream
+import java.io.File
 import java.util.*
 import kotlin.random.Random
+
 
 class CreateAlbumPresenter(activity: CreateAlbumActivity) : ICreateAlbum {
     private val view = activity
     var select = 1
+    lateinit var file: Uri
     override fun getGenderAlbum(): Int {
         view.ivBoy.setOnClickListener {
             view.ivBoy.setBackgroundResource(R.drawable.shape_cir_yellow_bg_corner_large)
@@ -77,9 +87,42 @@ class CreateAlbumPresenter(activity: CreateAlbumActivity) : ICreateAlbum {
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    fun createAlbum(base64Avatar: String) {
+    fun sendImageToFirebase(uri: Uri, dataImage: String)  {
+        var storageReference: StorageReference =
+            FirebaseStorage.getInstance().getReferenceFromUrl("gs://baby-photo-fb591.appspot.com")
+
+        val fileReference: StorageReference = storageReference.child(
+            System.currentTimeMillis().toString() + ".png"
+        )
+        file = if (dataImage != "") {
+            Uri.fromFile(File(dataImage))
+        } else {
+            uri
+        }
+        val uploadTask = fileReference.putFile(file)
+        uploadTask.continueWithTask { task ->
+            if (!task.isSuccessful) {
+                task.exception?.let {
+                    throw it
+                }
+            }
+            fileReference.downloadUrl
+        }.addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                val downloadUri = task.result.toString()
+                createAlbum(downloadUri)
+            } else {
+                Toast.makeText(view, "Fail, please retry", Toast.LENGTH_SHORT).show()
+            }
+        }.addOnFailureListener { e ->
+            Toast.makeText(view, "Fail, please retry", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun createAlbum(urlImage : String) {
         view.btnCreate.setOnClickListener {
-            var progressdialog = ProgressDialog(view, R.style.AppCompatAlertDialogStyle)
+             var progressdialog = ProgressDialog(view, R.style.AppCompatAlertDialogStyle)
             progressdialog.setMessage("Updating")
             progressdialog.setCancelable(false)
             progressdialog.show()
@@ -88,12 +131,12 @@ class CreateAlbumPresenter(activity: CreateAlbumActivity) : ICreateAlbum {
             var gender = getGenderAlbum()
             var birthday: String = view.tvBirthday.text.toString()
             var relation: String = view.tvRelation.text.toString()
-            if (base64Avatar != "" && name != "" && relation != "" && birthday != "") {
+            if ( name != "" && relation != "" && birthday != "") {
                 val dataService = APIService.base()
                 val callback: Call<Data<String>> = dataService.albumInsert(
                     ID_ALBUM,
                     129,
-                    base64Avatar,
+                    urlImage,
                     name,
                     gender,
                     birthday,
@@ -120,6 +163,7 @@ class CreateAlbumPresenter(activity: CreateAlbumActivity) : ICreateAlbum {
                                 response.body()!!.msg + ", please retry",
                                 Toast.LENGTH_SHORT
                             ).show()
+                            Log.d("AAA", "onResponse: connect error")
                             progressdialog.dismiss()
                         }
                     }
@@ -130,6 +174,7 @@ class CreateAlbumPresenter(activity: CreateAlbumActivity) : ICreateAlbum {
                             t.message,
                             Toast.LENGTH_SHORT
                         ).show()
+                        Log.d("AAA", "onFailure: ${t.message}")
                         progressdialog.dismiss()
                     }
                 })
@@ -156,6 +201,19 @@ class CreateAlbumPresenter(activity: CreateAlbumActivity) : ICreateAlbum {
             dialog.cancel()
         }
         dialog.show()
+    }
+
+    fun convertUri(bitmap: Bitmap): Uri {
+        //convert bitmap to uri
+        val bytes = ByteArrayOutputStream()
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, bytes)
+        val path: String = MediaStore.Images.Media.insertImage(
+            view.getContentResolver(),
+            bitmap,
+            "Title",
+            null
+        )
+        return Uri.parse(path)
     }
 
 }

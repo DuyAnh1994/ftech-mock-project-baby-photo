@@ -59,7 +59,7 @@ class ListImageActivity : AppCompatActivity() {
                     bitmap.compress(Bitmap.CompressFormat.JPEG, 5, baos)
                     val b: ByteArray = baos.toByteArray()
                     val base64Avatar = Base64.getEncoder().encodeToString(b)
-                    listImagePresent.postServer(base64Avatar)
+                    listImagePresent.postServer(base64Avatar,1)
                 }
             }
         }

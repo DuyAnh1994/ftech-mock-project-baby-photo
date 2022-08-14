@@ -36,8 +36,9 @@ interface DataService {
         @Field("idaccount") idaccount: Int
     ): Call<Data<String>>
 
-    @GET("album.php")
-    fun album(): Call<Data<Album>>
+    @FormUrlEncoded
+    @POST("album.php")
+    fun album( @Field("idaccount") idaccount: Int): Call<Data<Album>>
 
     @FormUrlEncoded
     @POST("album_insert.php")

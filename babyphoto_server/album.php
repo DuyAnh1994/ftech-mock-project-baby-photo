@@ -2,8 +2,10 @@
 
   require "Connect.php";
 
-  $query = "SELECT * FROM Album";
+  $idaccount ='1';
+  $query = "SELECT * FROM Album WHERE idaccount = '$idaccount'";
   $data = mysqli_query($con,$query);
+
 
   class Album
   {

@@ -7,6 +7,7 @@ import android.app.Activity
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.text.Editable
@@ -19,8 +20,6 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import de.hdodenhof.circleimageview.CircleImageView
-import java.io.ByteArrayOutputStream
-import java.util.*
 
 
 class CreateAlbumActivity : AppCompatActivity(), DialogRelationFragment.ICreateName {
@@ -37,7 +36,7 @@ class CreateAlbumActivity : AppCompatActivity(), DialogRelationFragment.ICreateN
     lateinit var flCamera: FrameLayout
     lateinit var createAlbumPresenter: CreateAlbumPresenter
     lateinit var activityResultLauncher: ActivityResultLauncher<Intent>
-    var base64Avatar: String? = ""
+     var bitmapAvatar: Boolean =false
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -76,19 +75,12 @@ class CreateAlbumActivity : AppCompatActivity(), DialogRelationFragment.ICreateN
                 val intent = result.data
                 if (intent != null) {
                     val bitmap: Bitmap = intent.extras?.get("uriImage") as Bitmap
-                    //chuyển bitmap về base64
-                    val baos = ByteArrayOutputStream()
-                    bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos)
-                    val b: ByteArray = baos.toByteArray()
-                    base64Avatar = Base64.getEncoder().encodeToString(b)
-
-                    //chuyển base64 về bitmap
-                    val encodeByte: ByteArray = Base64.getDecoder().decode(base64Avatar)
-                    val bitmapBaby =
-                        BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.count())
-                    ivAvatar.setImageBitmap(bitmapBaby)
+                    bitmapAvatar = true
+                    //convert bitmap to uri
+                    val uri =createAlbumPresenter.convertUri(bitmap)
+                    ivAvatar.setImageBitmap(bitmap)
                     setBackgroundButton()
-                    createAlbumPresenter.createAlbum(base64Avatar!!)
+                    createAlbumPresenter.sendImageToFirebase(uri,"")
                     flCamera.visibility = View.GONE
                 }
             }
@@ -96,21 +88,12 @@ class CreateAlbumActivity : AppCompatActivity(), DialogRelationFragment.ICreateN
             if (result?.resultCode == 234) {
                 val intent = result.data
                 if (intent != null) {
-                    val bitmap: Bitmap = intent.extras?.get("bitmap") as Bitmap
-
-                    //chuyển bitmap về base64
-                    val baos = ByteArrayOutputStream()
-                    bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos)
-                    val b: ByteArray = baos.toByteArray()
-                    base64Avatar = Base64.getEncoder().encodeToString(b)
-
-                    //chuyển base64 về bitmap
-                    val encodeByte: ByteArray = Base64.getDecoder().decode(base64Avatar)
-                    val bitmapBaby =
-                        BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.count())
-                    ivAvatar.setImageBitmap(bitmapBaby)
+                    val dataImage: String = intent.extras?.get("uri")  as String
+                    ivAvatar.setImageBitmap(BitmapFactory.decodeFile(dataImage))
+                    bitmapAvatar = true
+                    val uri : Uri =  Uri.parse("")
                     setBackgroundButton()
-                    createAlbumPresenter.createAlbum(base64Avatar!!)
+                    createAlbumPresenter.sendImageToFirebase(uri,dataImage)
                     flCamera.visibility = View.GONE
                 }
             }
@@ -170,7 +153,7 @@ class CreateAlbumActivity : AppCompatActivity(), DialogRelationFragment.ICreateN
     }
 
     fun setBackgroundButton() {
-        if (base64Avatar != "" && edtName.text.toString() != "" && tvBirthday.text != "" && tvRelation.text != "")
+        if (bitmapAvatar && edtName.text.toString() != "" && tvBirthday.text != "" && tvRelation.text != "")
             btnCreate.setBackgroundResource(R.drawable.shape_orange_bg_corner_20)
     }
 }

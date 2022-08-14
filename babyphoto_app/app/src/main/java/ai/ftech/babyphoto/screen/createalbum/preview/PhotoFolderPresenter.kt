@@ -65,7 +65,7 @@ class PhotoFolderPresenter(activity: PhotoFolderActivity) : IPhotoFolder {
                 val dialogPreviewFragment = DialogPreviewFragment()
                 val bundle = Bundle()
                 bundle.putString("urlImage", uriBaby)
-                dialogPreviewFragment.setArguments(bundle)
+                dialogPreviewFragment.arguments = bundle
                 dialogPreviewFragment.show(view.supportFragmentManager, dialogPreviewFragment.tag)
             }
 
