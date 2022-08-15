@@ -23,7 +23,6 @@ interface DataService {
         @Field("password") password: String,
         @Field("firstname") firstname: String,
         @Field("lastname") lastname: String,
-        @Field("idaccount") idaccount: Int
     ): Call<Data<String>>
 
     //cập nhật người dùng
@@ -43,7 +42,6 @@ interface DataService {
     @FormUrlEncoded
     @POST("album_insert.php")
     fun albumInsert(
-        @Field("idalbum") idalbum: Int,
         @Field("idaccount") idaccount: Int,
         @Field("urlimage") urlimage: String,
         @Field("name") name: String,
@@ -59,7 +57,6 @@ interface DataService {
     @FormUrlEncoded
     @POST("image_insert.php")
     fun imageInsert(
-        @Field("idimage") idimage: Int,
         @Field("idalbum") idalbum: Int,
         @Field("urlimage") urlimage: String,
         @Field("description") description: String,

@@ -11,13 +11,18 @@
     }
   }
 
- $idimage =$_POST['idimage'];
  $idalbum =$_POST['idalbum'];
  $urlimage =$_POST['urlimage'];
  $description =$_POST['description'];
  $timeline =$_POST['timeline'];
+ 
+  $query = "SELECT * FROM Image ORDER BY idimage DESC Limit 1";
+ $data = mysqli_query($con,$query);
+ $row = mysqli_fetch_assoc($data);
+ $idimage = $row['idimage'];
+ $idimage = $idimage +1;
 
-if(is_null($idimage) || is_null($idalbum) || is_null($urlimage)
+if(is_null($idalbum) || is_null($urlimage)
     || is_null($description) || is_null($timeline)){
   $code = "code21";
   $msg = "Incorrect transmission data ";

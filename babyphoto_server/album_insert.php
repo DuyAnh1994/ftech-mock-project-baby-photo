@@ -11,7 +11,6 @@
     }
   }
 
- $idalbum =$_POST['idalbum'];
  $idaccount =$_POST['idaccount'];
  $urlimage =$_POST['urlimage'];
  $name =$_POST['name'];
@@ -20,18 +19,13 @@
  $relation =$_POST['relation'];
  $amountimage = $_POST['amountimage'];
 
-if(is_null($idalbum) || is_null($idaccount) || is_null($urlimage)
-    || is_null($name) || is_null($gender) || is_null($birthday) || is_null($relation) || is_null($amountimage) ){
-  $code = "code21";
-  $msg = "Incorrect transmission data ";
-  $arrayerror = array();
-  $object = new Data($code,$msg,$arrayerror);
-  echo json_encode($object);
-}
-
-else{
-    $queryinsert = "INSERT INTO Album 
-                VALUES ('$idalbum','$idaccount','$urlimage','$name','$gender','$birthday','$relation','$amountimage')";
+ $query = "SELECT * FROM Album ORDER BY idalbum DESC Limit 1";
+ $data = mysqli_query($con,$query);
+ $row = mysqli_fetch_assoc($data);
+ $idalbum = $row['idalbum'];
+ $idalbum = $idalbum +1;
+ 
+    $queryinsert = "INSERT INTO Album VALUES ('$idalbum','$idaccount','$urlimage','$name','$gender','$birthday','$relation','$amountimage')";
     $datainsert = mysqli_query($con,$queryinsert);
 
   if ($datainsert) {
@@ -46,5 +40,4 @@ else{
   $object = new Data($code,$msg,$arrayerror);
   }
  echo json_encode($object);
-}
 ?>

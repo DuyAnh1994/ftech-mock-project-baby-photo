@@ -4,6 +4,7 @@ import ai.ftech.babyphoto.R
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
@@ -55,11 +56,8 @@ class ListImageActivity : AppCompatActivity() {
                 val intent = result.data
                 if (intent != null) {
                     val bitmap: Bitmap = intent.extras?.get("data") as Bitmap
-                    val baos = ByteArrayOutputStream()
-                    bitmap.compress(Bitmap.CompressFormat.JPEG, 5, baos)
-                    val b: ByteArray = baos.toByteArray()
-                    val base64Avatar = Base64.getEncoder().encodeToString(b)
-                    listImagePresent.postServer(base64Avatar,1)
+                    var uri : Uri = listImagePresent.convertUri(bitmap)
+                    listImagePresent.sendImageToFirebase(uri)
                 }
             }
         }

@@ -59,13 +59,13 @@ class ListImageAdapter(
             ivImage.setImageBitmap(BitmapFactory.decodeFile(dataSet[position]))
             cbImage.setOnClickListener {
                 if (arrayCb[position]) {
-                    arrayCb[position] =  false
+                    arrayCb[position] = false
                     cbImage.setImageResource(R.drawable.ic_select_off)
-                    iListImage.setImage(position,false)
+                    iListImage.setImage(position, false)
                 } else {
-                    arrayCb[position]  = true
+                    arrayCb[position] = true
                     cbImage.setImageResource(R.drawable.ic_select_on)
-                    iListImage.setImage(position,true)
+                    iListImage.setImage(position, true)
                 }
             }
         }

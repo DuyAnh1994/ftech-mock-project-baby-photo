@@ -126,7 +126,6 @@ class CreateAlbumPresenter(activity: CreateAlbumActivity) : ICreateAlbum {
             progressdialog.setMessage("Updating")
             progressdialog.setCancelable(false)
             progressdialog.show()
-            val ID_ALBUM: Int = Random.nextInt(1000, 999999999)
             var name = view.edtName.text.toString()
             var gender = getGenderAlbum()
             var birthday: String = view.tvBirthday.text.toString()
@@ -134,7 +133,6 @@ class CreateAlbumPresenter(activity: CreateAlbumActivity) : ICreateAlbum {
             if ( name != "" && relation != "" && birthday != "") {
                 val dataService = APIService.base()
                 val callback: Call<Data<String>> = dataService.albumInsert(
-                    ID_ALBUM,
                     129,
                     urlImage,
                     name,

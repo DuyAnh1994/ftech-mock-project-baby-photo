@@ -15,17 +15,22 @@
  $password =$_POST['password'];
  $firstname =$_POST['firstname'];
  $lastname =$_POST['lastname'];
- $idaccount =$_POST['idaccount'];
+
+ $query = "SELECT * FROM Account ORDER BY idaccount DESC Limit 1";
+ $data = mysqli_query($con,$query);
+ $row = mysqli_fetch_assoc($data);
+ $idaccount = $row['idaccount'];
+ $idaccount = $idaccount +1;
 
 if(is_null($email) || is_null($password) || is_null($firstname)
-    || is_null($lastname) || is_null($idaccount)){
+    || is_null($lastname)){
   $code = "code21";
   $msg = "Incorrect transmission data ";
   $arrayerror = array();
   $object = new Data($code,$msg,$arrayerror);
   echo json_encode($object);
 }else{
-  $queryinsert = "INSERT INTO Account VALUES ('$email','$password','$firstname','$lastname','$idaccount')";
+  $queryinsert = "INSERT INTO Account VALUES ('$idaccount','$email','$password','$firstname','$lastname')";
   $datainsert = mysqli_query($con,$queryinsert);
 
   if ($datainsert) {

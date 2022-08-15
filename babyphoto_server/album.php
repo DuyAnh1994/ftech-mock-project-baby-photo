@@ -2,7 +2,7 @@
 
   require "Connect.php";
 
-  $idaccount ='1';
+  $idaccount =$_POST['idaccount'];
   $query = "SELECT * FROM Album WHERE idaccount = '$idaccount'";
   $data = mysqli_query($con,$query);
 
