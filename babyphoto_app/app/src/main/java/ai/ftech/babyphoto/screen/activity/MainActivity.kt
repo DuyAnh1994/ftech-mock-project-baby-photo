@@ -47,7 +47,7 @@ class MainActivity : AppCompatActivity() {
         val firstname : String = "Vu"
         val lastname : String = "Cuong"
         val idaccount : Int = 20010412
-        val callback : Call<String> = dataService.insertAccount(email,password,firstname,lastname,idaccount)
+        val callback : Call<String> = dataService.insertAccount(email,password,firstname,lastname)
         callback.enqueue(object : Callback<String>{
             override fun onResponse(call: Call<String>, response: Response<String>) {
                 Toast.makeText(this@MainActivity,response.body(),Toast.LENGTH_LONG).show()

@@ -71,19 +71,18 @@ class CreatePassPresenter(activity: ActivityCreatePass) {
             account!!.email,
             account!!.password,
             account!!.firstname,
-            account!!.lastname,
-            account!!.idaccount
+            account!!.lastname
         ).enqueue(
             object : Callback<String> {
                 override fun onResponse(call: Call<String>, response: Response<String>) {
                     dialog.dismiss()
+                    val intent = Intent(view, MainActivity::class.java)
+                    view.startActivity(intent)
                     Toast.makeText(
                         view.applicationContext,
                         response.body().toString(),
                         Toast.LENGTH_SHORT
                     ).show()
-                    val intent = Intent(view, MainActivity::class.java)
-                    view.startActivity(intent)
                 }
 
                 override fun onFailure(call: Call<String>, t: Throwable) {

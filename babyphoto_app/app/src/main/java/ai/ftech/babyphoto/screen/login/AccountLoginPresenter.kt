@@ -20,11 +20,13 @@ import kotlinx.android.synthetic.main.activity_enter_email.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import kotlin.collections.indexOf as indexOf
 
 class AccountLoginPresenter(activity: AccountLogin) {
     private val view = activity
     private val apiService = APIService().base()
-    private var lAccount = listOf<Account>()
+    private var lAccount = mutableListOf<Account>()
+    private var index1: Int = 0
 
     fun getAccount() {
         apiService.account().enqueue(
@@ -34,7 +36,7 @@ class AccountLoginPresenter(activity: AccountLogin) {
                     response: Response<ResponseModel<List<Account>>>
                 ) {
                     if (response.body() != null) {
-                        lAccount = response.body()!!.data
+                        response.body()!!.data.also { lAccount = it as MutableList<Account> }
                         Toast.makeText(view, "Get data success", Toast.LENGTH_SHORT).show()
                         return
                     }
@@ -50,12 +52,30 @@ class AccountLoginPresenter(activity: AccountLogin) {
         )
     }
 
+//    fun <T> List<T>.getItemPositionByEmail(item: T): Int {
+//        this.forEachIndexed { index, it ->
+//            if (it == item)
+//                return index
+//        }
+//        return 0
+//    }
+
     fun login() {
         val email = view.tieAccountLoginEmail.text.toString()
         val password = view.tieAccountLoginPass.text.toString()
+        var account: Account
+
         if (email.trim().isEmpty() || password.trim().isEmpty()) return
         if (lAccount.any { account: Account -> account.email == email && account.password == password }) {
             val intent = Intent(view, Home::class.java)
+
+            lAccount.forEachIndexed { index, account ->
+                if (account.email == email)
+                    index1 = index
+            }
+//            val one = lAccount.getItemPositionByEmail(email)
+//            var next = ()
+            intent.putExtra("idaccount", lAccount[index1].idaccount)
             view.startActivity(intent)
             view.finish()
         } else {
@@ -70,10 +90,10 @@ class AccountLoginPresenter(activity: AccountLogin) {
         if (!isValid2 && isValid) {
             view.tvAccountLoginWarning.visibility = View.INVISIBLE
             view.acbAccountLogin.setBackgroundResource(R.drawable.selector_rec_orange_color)
-        } else if (!isValid2 && !isValid){
+        } else if (!isValid2 && !isValid) {
             view.tvAccountLoginWarning.visibility = View.VISIBLE
             view.acbAccountLogin.setBackgroundResource(R.drawable.selector_rec_orange_color)
-        }else{
+        } else {
             view.tvAccountLoginWarning.visibility = View.VISIBLE
             view.acbAccountLogin.setBackgroundResource(R.drawable.selector_rec_gray_color_orange_selected)
         }
