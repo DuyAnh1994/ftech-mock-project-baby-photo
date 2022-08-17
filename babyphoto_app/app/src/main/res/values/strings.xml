@@ -9,4 +9,6 @@
     <string name="relation">Relation</string>
     <string name="name">name</string>
     <string name="album">Album</string>
+    <string name="open">Open</string>
+    <string name="close">Close</string>
 </resources>

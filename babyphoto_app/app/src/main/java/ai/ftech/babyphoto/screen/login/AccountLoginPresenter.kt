@@ -102,10 +102,6 @@ class AccountLoginPresenter(activity: AccountLogin) {
     }
 
     fun showBottomSheet(): Dialog {
-//        var bottomSheetDialog = BottomSheetDialog(this)
-//        bottomSheetDialog.setContentView(R.layout.password_recovery_bottomsheet_layout)
-//        bottomSheetDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-//        bottomSheetDialog.show()
         var dialog = Dialog(view)
         dialog.setContentView(R.layout.password_recovery_bottomsheet_layout)
         dialog.window?.setLayout(

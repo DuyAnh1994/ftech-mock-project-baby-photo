@@ -28,7 +28,7 @@
             android:name=".screen.detailaccount.DetailAccount"
             android:exported="false" />
         <activity
-            android:name=".screen.home.Home"
+            android:name=".MainActivity"
             android:exported="false" />
         <activity
             android:name=".screen.activity.PhotoFolderActivity"
@@ -55,7 +55,7 @@
             android:name=".screen.activity.CreateAlbumActivity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".screen.home.Home"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

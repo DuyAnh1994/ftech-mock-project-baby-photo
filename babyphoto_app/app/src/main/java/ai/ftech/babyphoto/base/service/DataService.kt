@@ -18,6 +18,7 @@ interface DataService {
     @GET("account.php")
     fun account(): Call<ResponseModel<List<Account>>>
 
+
 //    @GET("20tu/2?id={id}&qtype={qtype}")
 //    fun getValue(
 //        @Path("id") id: String,
@@ -41,13 +42,12 @@ interface DataService {
 
     //cập nhật người dùng
     @FormUrlEncoded
-    @POST("AccountUpdate.php")
+    @POST("account_update.php")
     fun updateAccount(
-        @Body
-        password: String,
-        firstname: String,
-        lastname: String,
-        idaccount: Int
+        @Field("email") email: String,
+        @Field("firstname") firstName: String,
+        @Field("lastname") lastName: String,
+        @Field("idaccount") idaccount: Int
     ): Call<String>
 
     //lấy danh sách album
@@ -60,4 +60,7 @@ interface DataService {
     @FormUrlEncoded
     @POST("image.php")
     fun getImageId(@Field("idalbum") idalbum: Any?): Call<ResponseModel<List<Image>>>
+    @FormUrlEncoded
+    @POST("account_id.php")
+    fun getAccountId(@Field("idaccount") idaccount: Int): Call<ResponseModel<List<Account>>>
 }
