@@ -40,8 +40,7 @@ class Home : AppCompatActivity(), BabyHomeAdapter.onItemClickListenerr {
         drawerLayout = findViewById(R.id.drawableLayout)
         navigationView = findViewById(R.id.nvHomeToDetailAccount)
         val bundle: Bundle? = intent.extras
-//        val idaccount = bundle?.get("idaccount")
-        val idaccount: Int = 2
+        val idaccount = bundle?.get("idaccount")
         val recycleBaby: RecyclerView = findViewById(R.id.rcvHomeViewBaby)
         recycleBaby.layoutManager = LinearLayoutManager(this)
 
@@ -61,7 +60,7 @@ class Home : AppCompatActivity(), BabyHomeAdapter.onItemClickListenerr {
 
 //        val idaccount = bundle.get("idaccount")
 //        APIService().base().getAlbumId(idaccount as Int).enqueue(
-        APIService().base().getAlbumId(idaccount).enqueue(
+        APIService().base().getAlbumId(idaccount as Int).enqueue(
             object : Callback<ResponseModel<List<AlbumBaby>>> {
                 override fun onResponse(
                     call: Call<ResponseModel<List<AlbumBaby>>>,

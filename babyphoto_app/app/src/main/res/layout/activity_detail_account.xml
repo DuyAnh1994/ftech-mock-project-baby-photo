@@ -243,6 +243,7 @@
             android:background="@drawable/ic_rectangle_account_24px" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/clProfileChangePass"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center">

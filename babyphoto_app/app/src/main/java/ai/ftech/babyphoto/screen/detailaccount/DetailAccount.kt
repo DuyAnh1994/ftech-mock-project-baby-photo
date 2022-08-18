@@ -7,6 +7,7 @@ import ai.ftech.babyphoto.model.Account
 import ai.ftech.babyphoto.model.AccountUpdate
 import ai.ftech.babyphoto.model.AlbumBaby
 import ai.ftech.babyphoto.model.ResponseModel
+import ai.ftech.babyphoto.screen.changepass.ChangePass
 import ai.ftech.babyphoto.screen.home.BabyHomeAdapter
 import android.content.Context
 import android.content.Intent
@@ -32,6 +33,7 @@ class DetailAccount : AppCompatActivity() {
     private var firstname: String = ""
     private var lastname: String = ""
     private var index1: Int = 0
+    private var idaccount: Int = 0
 
     //    private var mutableListAccount: MutableList<AccountUpdate> = mutableListOf()
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,7 +41,6 @@ class DetailAccount : AppCompatActivity() {
         setContentView(ai.ftech.babyphoto.R.layout.activity_detail_account)
         val bundle: Bundle? = intent.extras
         val idaccount = bundle?.get("idaccount")
-//        var idaccount = 2
         presenter = DetailAccountPresenter(this)
         tvCoppyIDAccount.setOnClickListener {
             presenter!!.coppyClipboardManager()
@@ -79,12 +80,6 @@ class DetailAccount : AppCompatActivity() {
 
             }
         )
-//        edtAccountDetailName.text.toString()
-//edtViewEmailAccountDetail.text
-//        edtAccountDetailNameLast.text
-//        tvViewIDAccountDetail.text
-//        edtViewEmailAccountDetail.text
-
        llAccountDetailSaveChange.setOnClickListener {
 
            APIService().base().updateAccount(
@@ -93,12 +88,8 @@ class DetailAccount : AppCompatActivity() {
            ).enqueue(
                object : Callback<String> {
                    override fun onResponse(call: Call<String>, response: Response<String>) {
-//                       tvViewIDAccountDetail.text = idaccount.toString()
-//                       edtViewEmailAccountDetail.setText(edtViewEmailAccountDetail.text.toString())
-//                       edt
                        Log.d("TAG", "onResponse: Update Success")
 
-//                       Log.d("TAG", "onResponse: ${response.body()}")
                    }
                    override fun onFailure(call: Call<String>, t: Throwable) {
                        Log.d("TAG", "ERROR: Update Fail")
@@ -107,6 +98,11 @@ class DetailAccount : AppCompatActivity() {
        }
         llAccountDetailLogout.setOnClickListener{
             var intent = Intent(this@DetailAccount, MainActivity::class.java)
+            startActivity(intent)
+        }
+        clProfileChangePass.setOnClickListener {
+            var intent = Intent(this@DetailAccount, ChangePass::class.java)
+            intent.putExtra("idaccount", idaccount as Int)
             startActivity(intent)
         }
 //        val notificationBuilder: NotificationCompat.Builder = NotificationCompat.Builder(this)
@@ -129,7 +125,6 @@ class DetailAccount : AppCompatActivity() {
             ai.ftech.babyphoto.R.string.add_baby,
             Snackbar.LENGTH_SHORT
         ).show()
-//        val mySnackbar = Snackbar.make(this, "stringId", "duration")
-//        mySnackbar.show()
+
     }
 }
