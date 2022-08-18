@@ -11,13 +11,11 @@
     }
   }
 
-  $email =$_POST['email'];
- $firstname =$_POST['firstname'];
- $lastname =$_POST['lastname'];
- $idaccount =$_POST['idaccount'];
+  $idaccount =$_POST['idaccount'];
+  $password =$_POST['password'];
 
-if(isset($email) && isset($firstname) && isset($lastname) && isset($idaccount)){
- $query="UPDATE Account SET email = '$email' ,firstname = '$firstname' ,lastname = '$lastname' WHERE idaccount = '$idaccount'";
+if(isset($password) && isset($idaccount)){
+ $query="UPDATE Account SET password = '$password' WHERE idaccount = '$idaccount'";
  $dataupdate = mysqli_query($con,$query);
 }
 

@@ -57,7 +57,7 @@ class ListImageActivity : AppCompatActivity() {
                 if (intent != null) {
                     val bitmap: Bitmap = intent.extras?.get("data") as Bitmap
                     var uri : Uri = listImagePresent.convertUri(bitmap)
-                    listImagePresent.sendImageToFirebase(uri)
+                   // listImagePresent.sendImageToFirebase(uri)
                 }
             }
         }

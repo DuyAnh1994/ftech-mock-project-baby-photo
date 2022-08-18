@@ -2,7 +2,8 @@
 
   require "Connect.php";
 
-  $query = "SELECT  *FROM Account";
+  $idaccount = $_POST['idaccount'];
+  $query = "SELECT  *FROM Account WHERE idaccount = '$idaccount'";
   $data = mysqli_query($con,$query);
 
   class Account
@@ -35,13 +36,11 @@
 if ($data) {
   $code = "code12";
   $msg = "successfully";
-  $object =  Data($code,$msg,$arrayAccount);
-
+  $object = new Data($code,$msg,$arrayAccount);
 }else{
   $code = "code22";
   $msg = "connect error";
   $arrayerror = array();
-  $array= array();
   $object = new Data($code,$msg,$arrayerror);
 }
  echo json_encode($object);

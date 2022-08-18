@@ -4,9 +4,10 @@ import ai.ftech.babyphoto.model.Account
 import ai.ftech.babyphoto.model.Album
 import ai.ftech.babyphoto.model.Data
 import ai.ftech.babyphoto.model.Image
+import okhttp3.MultipartBody
+import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.*
-import java.util.*
 
 interface DataService {
     //4. khai báo link api, phương thức và kiểu dữ liệu trả về
@@ -37,7 +38,7 @@ interface DataService {
 
     @FormUrlEncoded
     @POST("album.php")
-    fun album( @Field("idaccount") idaccount: Int): Call<Data<Album>>
+    fun album(@Field("idaccount") idaccount: Int): Call<Data<Album>>
 
     @FormUrlEncoded
     @POST("album_insert.php")
@@ -49,7 +50,7 @@ interface DataService {
         @Field("birthday") birthday: String,
         @Field("relation") relation: String,
         @Field("amountimage") amountimage: Int
-    ) : Call<Data<String>>
+    ): Call<Data<String>>
 
     @GET("image.php")
     fun image(): Call<Data<Image>>
@@ -58,8 +59,14 @@ interface DataService {
     @POST("image_insert.php")
     fun imageInsert(
         @Field("idalbum") idalbum: Int,
-        @Field("urlimage") urlimage: String,
+       // @Part urlimage : MultipartBody.Part,
         @Field("description") description: String,
         @Field("timeline") timeline: String,
-    ) : Call<Data<String>>
+    ): Call<Data<String>>
+
+    @Multipart
+    @POST("image_test1.php")
+    fun imageInsert_muti(
+        @Part urlimage : MultipartBody.Part,
+    ): Call<ResponseBody>
 }

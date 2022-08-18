@@ -15,6 +15,7 @@ import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Build
 import android.provider.MediaStore
+import android.util.Log
 import android.view.Gravity
 import android.view.Window
 import android.widget.Button
@@ -25,6 +26,10 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
+import okhttp3.MediaType
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -32,7 +37,6 @@ import java.io.ByteArrayOutputStream
 import java.io.File
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
-import kotlin.random.Random
 
 
 class ListImagePresenter(activity: ListImageActivity) {
@@ -40,7 +44,7 @@ class ListImagePresenter(activity: ListImageActivity) {
     private var arrayImage: MutableList<String> = ArrayList()
     private var arrayCb: MutableList<Boolean> = ArrayList()
     private var count: Int = 0
-    var arrayError: MutableList<Int> = ArrayList()
+    var arrayUrl: MutableList<String> = ArrayList()
     var progressdialog = ProgressDialog(view, R.style.AppCompatAlertDialogStyle)
 
     // xin quyền truy cập thư viện
@@ -129,37 +133,39 @@ class ListImagePresenter(activity: ListImageActivity) {
     @RequiresApi(Build.VERSION_CODES.O)
     fun addImage() {
         view.btnAdd.setOnClickListener {
-            progressdialog.setMessage("Updating")
-            progressdialog.setCancelable(false)
-            progressdialog.show()
+//            progressdialog.setMessage("Updating")
+//            progressdialog.setCancelable(false)
+//            progressdialog.show()
             for (position in 0 until arrayImage.size) {
                 if (arrayCb[position]) {
-                    sendImageToFirebase(arrayImage[position], position + 1)
+                    var file = File(arrayImage[position])
+                    var file_path : String= file.absolutePath
+                    var requestBody :  RequestBody = RequestBody.create(MediaType.parse("multipart/form-data"),file)
+                    var urlimage : MultipartBody.Part = MultipartBody.Part.createFormData("uploaded_file",file_path,requestBody)
+                    var dataService = APIService.base()
+                    var callback = dataService.imageInsert_muti(urlimage)
+                    callback.enqueue(object  : Callback<ResponseBody>{
+                        override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+
+                            if(response.body() != null){
+                                Log.d("AAA", "onResponse: ${response.body().toString()}")
+                            }else{
+                                Log.d("AAA", "onResponse: fail")
+                            }
+                        }
+
+                        override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                            Log.d("AAA", "onFailure: ${t.message}")
+                        }
+                    })
                 }
             }
         }
-//            for (i in 0 until arrayError.size) {
-//                Toast.makeText(
-//                    view,
-//                    "image ${arrayError[i]} add no successfully ",
-//                    Toast.LENGTH_SHORT
-//                ).show()
-//                progressdialog.dismiss()
-//            }
-//        }
-//        Toast.makeText(
-//            view,
-//            "create album successfully",
-//            Toast.LENGTH_SHORT
-//        ).show()
-//        val intent = Intent(view, HomeActivity::class.java)
-//        view.startActivity(intent)
-//        progressdialog.dismiss()
     }
 
     // gửi ảnh từ thư viện lên server
     @RequiresApi(Build.VERSION_CODES.O)
-    fun sendImageToFirebase(dataImage: String, position: Int) {
+    fun sendImageToFirebase(dataImage: String) {
         var storageReference: StorageReference =
             FirebaseStorage.getInstance().getReferenceFromUrl("gs://baby-photo-fb591.appspot.com")
 
@@ -178,64 +184,16 @@ class ListImagePresenter(activity: ListImageActivity) {
         }.addOnCompleteListener { task ->
             if (task.isSuccessful) {
                 val downloadUri = task.result.toString()
-                postServer(downloadUri, position, arrayError)
+                arrayUrl.add(downloadUri)
             } else {
                 Toast.makeText(view, "Fail, please retry", Toast.LENGTH_SHORT).show()
+                Log.d("AAA", "sendImageToFirebase: Fail, please retry")
             }
         }.addOnFailureListener { e ->
             Toast.makeText(view, "Fail, please retry", Toast.LENGTH_SHORT).show()
+            Log.d("AAA", "sendImageToFirebase: Fail, please retry1")
         }
     }
-
-    @RequiresApi(Build.VERSION_CODES.O)
-    fun postServer(bsImage: String, position: Int, arrayError: MutableList<Int>) {
-        //lấy thời gian hiện tại
-        val current = LocalDateTime.now()
-        val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
-        val formatted: String = current.format(formatter)
-
-        val dataService = APIService.base()
-        val callback =
-            dataService.imageInsert( 123, bsImage, "hello", formatted)
-        callback.enqueue(object : Callback<Data<String>> {
-            override fun onResponse(
-                call: Call<Data<String>>,
-                response: Response<Data<String>>
-            ) {
-                if (response.body()!!.code == "code13") {
-//                    Toast.makeText(
-//                        view,
-//                        "create album successfully",
-//                        Toast.LENGTH_SHORT
-//                    ).show()
-//                    progressdialog.dismiss()
-                } else {
-                    arrayError.add(position)
-//                    val intent = Intent(view, HomeActivity::class.java)
-//                    view.startActivity(intent)
-//                    Toast.makeText(
-//                        view,
-//                        response.body()!!.msg,
-//                        Toast.LENGTH_SHORT
-//                    ).show()
-//                    progressdialog.dismiss()
-                }
-            }
-
-            override fun onFailure(call: Call<Data<String>>, t: Throwable) {
-                arrayError.add(position)
-//                Toast.makeText(
-//                    view,
-//                    t.message,
-//                    Toast.LENGTH_SHORT
-//                ).show()
-//                progressdialog.dismiss()
-            }
-
-        })
-
-    }
-
 
     // gửi ảnh từ camera lên server
     @RequiresApi(Build.VERSION_CODES.O)
@@ -261,7 +219,7 @@ class ListImagePresenter(activity: ListImageActivity) {
         }.addOnCompleteListener { task ->
             if (task.isSuccessful) {
                 val downloadUri = task.result.toString()
-                postServer(downloadUri)
+                arrayUrl.add(downloadUri)
             } else {
                 Toast.makeText(view, "Fail, please retry", Toast.LENGTH_SHORT).show()
             }
@@ -271,51 +229,53 @@ class ListImagePresenter(activity: ListImageActivity) {
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    fun postServer(bsImage: String) {
+    fun postServer(arrayUrl: MutableList<String>) {
         //random id ảnh
         //lấy thời gian hiện tại
         val current = LocalDateTime.now()
         val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
         val formatted: String = current.format(formatter)
 
-        val dataService = APIService.base()
-        val callback =
-            dataService.imageInsert(123, bsImage, "hello", formatted)
-        callback.enqueue(object : Callback<Data<String>> {
-            override fun onResponse(
-                call: Call<Data<String>>,
-                response: Response<Data<String>>
-            ) {
-                if (response.body()!!.code == "code13") {
-                    Toast.makeText(
-                        view,
-                        "add image successfully",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                    val intent = Intent(view, HomeActivity::class.java)
-                    view.startActivity(intent)
-                    progressdialog.dismiss()
-                } else {
-                    Toast.makeText(
-                        view,
-                        response.body()!!.msg,
-                        Toast.LENGTH_SHORT
-                    ).show()
-                    progressdialog.dismiss()
-                }
+        //  val dataService = APIService.base()
+        // val callback =
+//            dataService.imageInsert(123, arrayUrl, "hello", formatted)
+//        callback.enqueue(object : Callback<Data<String>> {
+//            override fun onResponse(
+//                call: Call<Data<String>>,
+//                response: Response<Data<String>>
+//            ) {
+//                if (response.body()!!.code == "code13") {
+//                    Toast.makeText(
+//                        view,
+//                        "add image successfully",
+//                        Toast.LENGTH_SHORT
+//                    ).show()
+//                    val intent = Intent(view, HomeActivity::class.java)
+//                    view.startActivity(intent)
+//                    progressdialog.dismiss()
+//                } else {
+//                    Toast.makeText(
+//                        view,
+//                        response.body()!!.msg,
+//                        Toast.LENGTH_SHORT
+//                    ).show()
+//                    Log.d("AAA", "onResponse: ${response.body()!!.msg}")
+//                    progressdialog.dismiss()
+//                }
 
-            }
-
-            override fun onFailure(call: Call<Data<String>>, t: Throwable) {
-                Toast.makeText(
-                    view,
-                    t.message,
-                    Toast.LENGTH_SHORT
-                ).show()
-                progressdialog.dismiss()
-            }
-
-        })
+//            }
+//
+//            override fun onFailure(call: Call<Data<String>>, t: Throwable) {
+//                Toast.makeText(
+//                    view,
+//                    t.message,
+//                    Toast.LENGTH_SHORT
+//                ).show()
+//                Log.d("AAA", "onFailure: ${t.message}")
+//                progressdialog.dismiss()
+//            }
+//
+//        })
 
     }
 
