@@ -3,6 +3,7 @@ package ai.ftech.babyphoto.screen.activity
 import ai.ftech.babyphoto.R
 import ai.ftech.babyphoto.model.Account
 import ai.ftech.babyphoto.base.service.APIService
+import ai.ftech.babyphoto.model.ResponseModel
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
@@ -46,7 +47,7 @@ class MainActivity : AppCompatActivity() {
         val firstname : String = "Vu"
         val lastname : String = "Cuong"
         val idaccount : Int = 20010412
-        val callback : Call<String> = dataService.insertAccount(email,password,firstname,lastname,idaccount)
+        val callback : Call<String> = dataService.insertAccount(email,password,firstname,lastname)
         callback.enqueue(object : Callback<String>{
             override fun onResponse(call: Call<String>, response: Response<String>) {
                 Toast.makeText(this@MainActivity,response.body(),Toast.LENGTH_LONG).show()
@@ -61,17 +62,17 @@ class MainActivity : AppCompatActivity() {
 
     private fun getAccount() {
         val dataService = APIService().base()
-        val callback: Call<List<Account>> = dataService.account()
-        callback.enqueue(object : Callback<List<Account>> {
+        val callback: Call<ResponseModel<List<Account>>> = dataService.account()
+        callback.enqueue(object : Callback<ResponseModel<List<Account>>> {
             override fun onResponse(
-                call: Call<List<Account>>?,
-                response: Response<List<Account>>?
+                call: Call<ResponseModel<List<Account>>>?,
+                response: Response<ResponseModel<List<Account>>>?
             ) {
-              val array : ArrayList<Account> = response?.body() as ArrayList<Account>
+              val array : List<Account> = response?.body()!!.data
                 Log.d("AAA", "onResponse: ${array[1].email}")
             }
 
-            override fun onFailure(call: Call<List<Account>>, t: Throwable) {
+            override fun onFailure(call: Call<ResponseModel<List<Account>>>, t: Throwable) {
 
             }
 
