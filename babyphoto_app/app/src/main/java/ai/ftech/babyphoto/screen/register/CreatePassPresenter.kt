@@ -25,7 +25,8 @@ class CreatePassPresenter(activity: ActivityCreatePass) {
             account = Gson().fromJson(get("account") as String, Account::class.java)
         }
     }
-    fun checkPass(pass: String): Boolean{
+
+    fun checkPass(pass: String): Boolean {
         val isValidPassCharacter = Utils().isValidPassCharacter(pass)
         val isValidPassCount = Utils().isValidPassCount(pass)
         if (!isValidPassCharacter || !isValidPassCount
@@ -35,7 +36,8 @@ class CreatePassPresenter(activity: ActivityCreatePass) {
             view.tvRegisterWarningPass.setTextColor(Color.parseColor("#FFFFFF"))
         return !isValidPassCount || !isValidPassCharacter
     }
-    fun checkRePass(pass: String, rePass: String): Boolean{
+
+    fun checkRePass(pass: String, rePass: String): Boolean {
         val isMatchPass = Utils().isMatchPass(pass, rePass)
         if (!isMatchPass) {
             view.tvRegisterWarningPass.text = "Confirm password doesn't match"
@@ -47,6 +49,7 @@ class CreatePassPresenter(activity: ActivityCreatePass) {
         }
         return !isMatchPass
     }
+
     fun openDialog(): Dialog {
         var dialogLoadPass = Dialog(view)
         dialogLoadPass.setContentView(R.layout.dialog_loading_register_layout)
@@ -57,9 +60,14 @@ class CreatePassPresenter(activity: ActivityCreatePass) {
         dialogLoadPass.show()
         return dialogLoadPass
     }
+
     fun submit() {
         Log.d("TAG", "submit: ${Gson().toJson(account)} ")
-        if (checkRePass(view.tieRegisterPass.text.toString(), view.tieRegisterRePass.text.toString())) return
+        if (checkRePass(
+                view.tieRegisterPass.text.toString(),
+                view.tieRegisterRePass.text.toString()
+            )
+        ) return
 
         account?.password = view.tieRegisterPass.text.toString()
 
@@ -76,18 +84,15 @@ class CreatePassPresenter(activity: ActivityCreatePass) {
             object : Callback<String> {
                 override fun onResponse(call: Call<String>, response: Response<String>) {
                     dialog.dismiss()
-                    val intent = Intent(view, MainActivity::class.java)
-                    view.startActivity(intent)
-                    Toast.makeText(
-                        view.applicationContext,
-                        response.body().toString(),
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    Toast.makeText(view.applicationContext, "Insert failed", Toast.LENGTH_SHORT)
+                        .show()
                 }
 
                 override fun onFailure(call: Call<String>, t: Throwable) {
                     dialog.dismiss()
-                    Toast.makeText(view.applicationContext, "Insert failed", Toast.LENGTH_SHORT)
+                    val intent = Intent(view, MainActivity::class.java)
+                    view.startActivity(intent)
+                    Toast.makeText(view.applicationContext, "Insert Success!", Toast.LENGTH_SHORT)
                         .show()
                 }
             }

@@ -11,16 +11,16 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="15dp">
+        android:layout_marginTop="20dp">
 
         <ImageButton
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
             android:background="@drawable/ic_avatar_account_detail_24px" />
 
         <ImageButton
-            android:layout_width="25dp"
-            android:layout_height="25dp"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
             android:layout_gravity="bottom|right"
             android:background="@drawable/ic_add_avatar_account_detail_24px" />
     </FrameLayout>
@@ -28,8 +28,8 @@
         android:id="@+id/tvHeaderNameAccount"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="6dp"
-        android:text="Thuy MaMi"
+        android:layout_marginTop="15dp"
+        android:text="Your Account"
         android:gravity="center"
         android:textSize="16sp"
         android:textStyle="bold"

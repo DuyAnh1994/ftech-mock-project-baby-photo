@@ -7,6 +7,7 @@ import ai.ftech.babyphoto.model.Account
 import ai.ftech.babyphoto.model.ResponseModel
 import ai.ftech.babyphoto.screen.home.Home
 import android.app.Dialog
+import android.content.Context.INPUT_METHOD_SERVICE
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
@@ -14,7 +15,10 @@ import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat.getSystemService
 import kotlinx.android.synthetic.main.activity_account_login.*
 import kotlinx.android.synthetic.main.activity_enter_email.*
 import retrofit2.Call
@@ -52,18 +56,10 @@ class AccountLoginPresenter(activity: AccountLogin) {
         )
     }
 
-//    fun <T> List<T>.getItemPositionByEmail(item: T): Int {
-//        this.forEachIndexed { index, it ->
-//            if (it == item)
-//                return index
-//        }
-//        return 0
-//    }
 
     fun login() {
         val email = view.tieAccountLoginEmail.text.toString()
         val password = view.tieAccountLoginPass.text.toString()
-        var account: Account
 
         if (email.trim().isEmpty() || password.trim().isEmpty()) return
         if (lAccount.any { account: Account -> account.email == email && account.password == password }) {
@@ -73,8 +69,6 @@ class AccountLoginPresenter(activity: AccountLogin) {
                 if (account.email == email)
                     index1 = index
             }
-//            val one = lAccount.getItemPositionByEmail(email)
-//            var next = ()
             intent.putExtra("idaccount", lAccount[index1].idaccount)
             view.startActivity(intent)
             view.finish()
@@ -89,13 +83,13 @@ class AccountLoginPresenter(activity: AccountLogin) {
         val isValid2 = Utils().checkNull(email, pass)// true->null
         if (!isValid2 && isValid) {
             view.tvAccountLoginWarning.visibility = View.INVISIBLE
-            view.acbAccountLogin.setBackgroundResource(R.drawable.selector_rec_orange_color)
+            view.acbAccountLogin.setBackgroundResource(R.drawable.selector_rec_orange_color_correct_login)
         } else if (!isValid2 && !isValid) {
             view.tvAccountLoginWarning.visibility = View.VISIBLE
-            view.acbAccountLogin.setBackgroundResource(R.drawable.selector_rec_orange_color)
+            view.acbAccountLogin.setBackgroundResource(R.drawable.selector_rec_orange_color_correct_login)
         } else {
             view.tvAccountLoginWarning.visibility = View.VISIBLE
-            view.acbAccountLogin.setBackgroundResource(R.drawable.selector_rec_gray_color_orange_selected)
+            view.acbAccountLogin.setBackgroundResource(R.drawable.selector_rec_gray_incorrect_login)
         }
         return !isValid2 && isValid
 
@@ -113,6 +107,10 @@ class AccountLoginPresenter(activity: AccountLogin) {
         dialog.window?.setGravity(Gravity.BOTTOM)
         return dialog
     }
+//    fun hideKeyboard(view: View) {
+//        val inputMethodManager = getSystemService(view.context.applicationContext.INPUT_METHOD_SERVICE) as InputMethodManager
+//        inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
+//    }
 //    fun nextScreen(){
 //        if (checkValidAccount(view.tieAccountLoginEmail.text.toString(), view.tieAccountLoginPass.text.toString())) return
 //        val intent = Intent(view, ActivityCreatePass::class.java)

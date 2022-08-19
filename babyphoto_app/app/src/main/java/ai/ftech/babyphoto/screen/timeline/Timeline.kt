@@ -21,7 +21,6 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
-import kotlin.collections.ArrayList
 
 
 class Timeline : AppCompatActivity() {
@@ -49,6 +48,7 @@ class Timeline : AppCompatActivity() {
         val staggeredGridLayoutManager = StaggeredGridLayoutManager(2, LinearLayoutManager.VERTICAL)
         rvTimelineViewImage.layoutManager = staggeredGridLayoutManager
 
+
         // on below line we are setting
         // adapter to our recycler view.
         rvTimelineViewImage.adapter = timelineAdapter
@@ -71,7 +71,7 @@ class Timeline : AppCompatActivity() {
         // that data has been updated.
         timelineAdapter.notifyDataSetChanged()
 
-        APIService().base().getImageId(idalbum).enqueue(
+        APIService().base().getImageId(1).enqueue(
             object : Callback<ResponseModel<List<Image>>> {
                 @RequiresApi(Build.VERSION_CODES.O)
                 override fun onResponse(
@@ -108,7 +108,7 @@ class Timeline : AppCompatActivity() {
                 }
 
                 override fun onFailure(call: Call<ResponseModel<List<Image>>>, t: Throwable) {
-                    Toast.makeText(this@Timeline, "Get album failed", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@Timeline, "Get image failed", Toast.LENGTH_SHORT).show()
                 }
 
             }

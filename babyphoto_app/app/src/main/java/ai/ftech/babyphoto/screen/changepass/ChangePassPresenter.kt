@@ -1,6 +1,5 @@
 package ai.ftech.babyphoto.screen.changepass
 
-import ai.ftech.babyphoto.MainActivity
 import ai.ftech.babyphoto.R
 import ai.ftech.babyphoto.base.Utils
 import ai.ftech.babyphoto.base.service.APIService
@@ -13,11 +12,14 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.Log
+import android.view.Gravity
 import android.view.View
+import android.widget.FrameLayout
 import android.widget.Toast
-import com.google.gson.Gson
+import com.google.android.material.snackbar.BaseTransientBottomBar
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_change_pass.*
-import kotlinx.android.synthetic.main.activity_create_pass.*
+import kotlinx.android.synthetic.main.activity_detail_account.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -102,6 +104,22 @@ class ChangePassPresenter(activity: ChangePass) {
     }
     fun backScreen(){
         view.finish()
+        showSnackbar()
+    }
+    fun showSnackbar() {
+        val mSnackBar = Snackbar.make(view.detailAcccountMain, "Your new password has updated", Snackbar.LENGTH_LONG)
+//        mSnackBar.setAction("close", View.OnClickListener {
+//
+//        })
+            .setActionTextColor(Color.parseColor("#FFFFFF"))
+            .setBackgroundTint(Color.parseColor("#FECE00"))
+            .setTextColor(Color.parseColor("#FFFFFF"))
+
+        val params = mSnackBar.view.layoutParams as FrameLayout.LayoutParams
+        params.gravity = Gravity.TOP
+        mSnackBar.view.layoutParams = params
+        mSnackBar.animationMode = BaseTransientBottomBar.ANIMATION_MODE_FADE
+        mSnackBar.show()
     }
     fun submit() {
 
@@ -120,6 +138,7 @@ class ChangePassPresenter(activity: ChangePass) {
                 override fun onFailure(call: Call<String>, t: Throwable) {
                     dialog.dismiss()
                     val intent = Intent(view, DetailAccount::class.java)
+                    intent.putExtra("showTop", "showTop")
                     view.startActivity(intent)
                     Log.d("TAG", "onFailure: update pass fail")
                 }

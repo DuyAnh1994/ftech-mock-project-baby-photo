@@ -44,22 +44,13 @@ class Home : AppCompatActivity(), BabyHomeAdapter.onItemClickListenerr {
         val recycleBaby: RecyclerView = findViewById(R.id.rcvHomeViewBaby)
         recycleBaby.layoutManager = LinearLayoutManager(this)
 
-//        mutableListBaby.add(AlbumBaby("", "nomo1", "4", "items", "", "", "", ""))
-//
         var adapter =
             BabyHomeAdapter(this@Home, mutableListBaby, "Add Baby")
         recycleBaby.adapter = adapter
-//        adapter.setOnItemClickListener(object : BabyHomeAdapter.onItemClickListener{
-//            override fun onItemClick(position: Int) {
-//                Toast.makeText(this@Home, "You Click on$position", Toast.LENGTH_SHORT).show()
-//            }
-//
-//        })
         val manager = GridLayoutManager(this@Home, 2, GridLayoutManager.VERTICAL, false)
         recycleBaby.layoutManager = manager
 
-//        val idaccount = bundle.get("idaccount")
-//        APIService().base().getAlbumId(idaccount as Int).enqueue(
+
         APIService().base().getAlbumId(idaccount as Int).enqueue(
             object : Callback<ResponseModel<List<AlbumBaby>>> {
                 override fun onResponse(
@@ -84,17 +75,25 @@ class Home : AppCompatActivity(), BabyHomeAdapter.onItemClickListenerr {
             }
         )
 
-        toggle = ActionBarDrawerToggle(this, drawerLayout, R.string.open,R.string.close)
+        toggle = ActionBarDrawerToggle(this, drawerLayout, R.string.open, R.string.close)
         drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         navigationView.setNavigationItemSelectedListener {
             var intent = Intent(this, DetailAccount::class.java)
             intent.putExtra("idaccount", idaccount)
-            when(it.itemId){
-                R.id.itemAcc-> startActivity(intent)
-                R.id.itemNoti-> Toast.makeText(applicationContext, "Click on Notifications", Toast.LENGTH_SHORT).show()
-                R.id.itemSto-> Toast.makeText(applicationContext, "Click on Storate", Toast.LENGTH_SHORT).show()
+            when (it.itemId) {
+                R.id.itemAcc -> startActivity(intent)
+                R.id.itemNoti -> Toast.makeText(
+                    applicationContext,
+                    "Click on Notifications",
+                    Toast.LENGTH_SHORT
+                ).show()
+                R.id.itemSto -> Toast.makeText(
+                    applicationContext,
+                    "Click on Storate",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
             true
         }
@@ -111,7 +110,7 @@ class Home : AppCompatActivity(), BabyHomeAdapter.onItemClickListenerr {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (toggle.onOptionsItemSelected(item)){
+        if (toggle.onOptionsItemSelected(item)) {
             true
         }
         return super.onOptionsItemSelected(item)
