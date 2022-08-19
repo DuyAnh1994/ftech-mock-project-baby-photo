@@ -64,7 +64,7 @@ class ListImagePresenter(activity: ListImageActivity) {
     //lấy ảnh từ thư viện để hiển thị ra 1 danh sách
     @RequiresApi(Build.VERSION_CODES.O)
     fun getImage() {
-        var projection = arrayOf(
+        val projection = arrayOf(
             MediaStore.Images.ImageColumns._ID,
             MediaStore.Images.ImageColumns.DISPLAY_NAME,
             MediaStore.Images.ImageColumns.DATA,
@@ -133,7 +133,7 @@ class ListImagePresenter(activity: ListImageActivity) {
     @RequiresApi(Build.VERSION_CODES.O)
     fun addImage() {
         view.btnAdd.setOnClickListener {
-            var files: MutableList<MultipartBody.Part> = ArrayList()
+            val files: MutableList<MultipartBody.Part> = ArrayList()
             progressdialog.setMessage("Updating")
             progressdialog.setCancelable(false)
             progressdialog.show()
@@ -156,8 +156,8 @@ class ListImagePresenter(activity: ListImageActivity) {
 
             getInfoImage()
 
-            var dataService = APIService.base()
-            var callback = dataService.imageInsertMulti(files, idalbum, description, timeline)
+            val dataService = APIService.base()
+            val callback = dataService.imageInsertMulti(files, idalbum, description, timeline)
             callback.enqueue(object : Callback<Data<String>> {
                 override fun onResponse(
                     call: Call<Data<String>>,
@@ -166,7 +166,7 @@ class ListImagePresenter(activity: ListImageActivity) {
 
                     if (response.body()!!.code == "code13") {
                         Toast.makeText(view, response.body()!!.msg, Toast.LENGTH_SHORT).show()
-                        var intent = Intent(view, HomeActivity::class.java)
+                        val intent = Intent(view, HomeActivity::class.java)
                         intent.putExtra("idalbum", "1")
                         view.startActivity(intent)
                         progressdialog.dismiss()
@@ -185,10 +185,10 @@ class ListImagePresenter(activity: ListImageActivity) {
     }
 
     fun convertToFile(linkImage: String) {
-        var file = File(linkImage)
-        var file_path: String = file.absolutePath + System.currentTimeMillis() + ".png"
+        val file = File(linkImage)
+        val file_path: String = file.absolutePath + System.currentTimeMillis() + ".png"
 
-        var requestBody: RequestBody =
+        val requestBody: RequestBody =
             RequestBody.create(MediaType.parse("multipart/form-data"), file)
         multiFile = MultipartBody.Part.createFormData("file[]", file_path, requestBody)
     }
@@ -211,17 +211,17 @@ class ListImagePresenter(activity: ListImageActivity) {
         progressdialog.setCancelable(false)
         progressdialog.show()
 
-        var image_path = getRealPathFromUri(uri)
-        var file = File(image_path)
-        var file_path: String = file.absolutePath + System.currentTimeMillis() + ".png"
+        val image_path = getRealPathFromUri(uri)
+        val file = File(image_path)
+        val file_path: String = file.absolutePath + System.currentTimeMillis() + ".png"
 
-        var requestBody: RequestBody =
+        val requestBody: RequestBody =
             RequestBody.create(MediaType.parse("multipart/form-data"), file)
-        var singFile = MultipartBody.Part.createFormData("file", file_path, requestBody)
+        val singFile = MultipartBody.Part.createFormData("file", file_path, requestBody)
 
         getInfoImage()
-        var dataService = APIService.base()
-        var callback = dataService.imageInsertSingle(singFile, idalbum, description, timeline)
+        val dataService = APIService.base()
+        val callback = dataService.imageInsertSingle(singFile, idalbum, description, timeline)
         callback.enqueue(object : Callback<Data<String>> {
             override fun onResponse(
                 call: Call<Data<String>>,
@@ -230,7 +230,7 @@ class ListImagePresenter(activity: ListImageActivity) {
 
                 if (response.body()!!.code == "code13") {
                     Toast.makeText(view, response.body()!!.msg, Toast.LENGTH_SHORT).show()
-                    var intent = Intent(view, HomeActivity::class.java)
+                    val intent = Intent(view, HomeActivity::class.java)
                     intent.putExtra("idalbum", "1")
                     view.startActivity(intent)
                     progressdialog.dismiss()
@@ -261,7 +261,7 @@ class ListImagePresenter(activity: ListImageActivity) {
     }
 
     fun getRealPathFromUri(contentUri: Uri): String {
-        var projection = arrayOf(
+        val projection = arrayOf(
             MediaStore.Images.ImageColumns.DATA,
         )
 

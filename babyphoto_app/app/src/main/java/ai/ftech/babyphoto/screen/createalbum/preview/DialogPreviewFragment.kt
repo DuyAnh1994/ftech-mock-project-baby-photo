@@ -5,7 +5,6 @@ package ai.ftech.babyphoto.screen.createalbum.preview
 import ai.ftech.babyphoto.R
 import android.app.Dialog
 import android.content.Context
-import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -67,7 +66,7 @@ class DialogPreviewFragment :  BottomSheetDialogFragment() {
         }
     }
 
-    lateinit var iPreviewUri: IPreviewUri
+    private lateinit var iPreviewUri: IPreviewUri
     interface IPreviewUri {
         fun getBitmap(Uri: String)
     }

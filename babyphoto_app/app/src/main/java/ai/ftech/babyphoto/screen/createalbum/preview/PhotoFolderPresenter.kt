@@ -34,9 +34,9 @@ class PhotoFolderPresenter(activity: PhotoFolderActivity) : IPhotoFolder {
         getImage()
     }
 
-    fun getImage(){
+    fun getImage() {
         val arrayImage: MutableList<String> = ArrayList()
-        var projection = arrayOf(
+        val projection = arrayOf(
             MediaStore.Images.ImageColumns._ID,
             MediaStore.Images.ImageColumns.DISPLAY_NAME,
             MediaStore.Images.ImageColumns.DATA,
@@ -50,9 +50,9 @@ class PhotoFolderPresenter(activity: PhotoFolderActivity) : IPhotoFolder {
             cursor.moveToFirst()
             while (!cursor.isAfterLast()) {
                 val data: String =
-                    cursor.getString(2);
-                arrayImage.add(data);
-                cursor.moveToNext();
+                    cursor.getString(2)
+                arrayImage.add(data)
+                cursor.moveToNext()
             }
             cursor.close()
         }
@@ -101,7 +101,7 @@ class PhotoFolderPresenter(activity: PhotoFolderActivity) : IPhotoFolder {
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
         dialog.setContentView(R.layout.dialog_back_create_album_layout)
         val window: Window = dialog.window ?: return
-        window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT));
+        window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         val windowAttributes = window.attributes
         windowAttributes.gravity = Gravity.CENTER
         window.attributes = windowAttributes
