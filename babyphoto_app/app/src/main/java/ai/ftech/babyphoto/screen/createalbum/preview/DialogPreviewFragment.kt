@@ -50,12 +50,12 @@ class DialogPreviewFragment :  BottomSheetDialogFragment() {
         return bottomSheetDialog
     }
 
-    private fun setOnClick(urlImage: String?) {
+    private fun setOnClick(pathImage: String?) {
         ivCancel.setOnClickListener {
             bottomSheetDialog.dismiss()
         }
         ivOk.setOnClickListener {
-            iPreviewUri.getBitmap(urlImage!!)
+            iPreviewUri.getBitmap(pathImage!!)
             bottomSheetDialog.dismiss()
         }
     }

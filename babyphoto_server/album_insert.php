@@ -11,13 +11,20 @@
     }
   }
 
- $idaccount =$_POST['idaccount'];
- $urlimage =$_POST['urlimage'];
- $name =$_POST['name'];
- $gender =$_POST['gender'];
- $birthday =$_POST['birthday'];
- $relation =$_POST['relation'];
- $amountimage = $_POST['amountimage'];
+ $file_path = "image/";
+ $file = $file_path . basename($_FILES['file']['name']);
+ 
+ $idaccount = $_REQUEST['idaccount'];
+ $name =$_REQUEST['name'];
+ $gender =$_REQUEST['gender'];
+ $birthday =$_REQUEST['birthday'];
+ $relation =$_REQUEST['relation'];
+ $amountimage = $_REQUEST['amountimage'];
+
+  if(move_uploaded_file($_FILES['file']['tmp_name'], $file)){
+ $fileName = $_FILES['file']['name'];
+
+ $urlimage = "https://vuquoccuong.000webhostapp.com/ServerHelloBaby/$file_path/$fileName";
 
  $query = "SELECT * FROM Album ORDER BY idalbum DESC Limit 1";
  $data = mysqli_query($con,$query);
@@ -28,16 +35,27 @@
     $queryinsert = "INSERT INTO Album VALUES ('$idalbum','$idaccount','$urlimage','$name','$gender','$birthday','$relation','$amountimage')";
     $datainsert = mysqli_query($con,$queryinsert);
 
-  if ($datainsert) {
-  $code = "code32";
+if($datainsert)
+{ 
+  $code = "code13";
   $msg = "insert successfully";
-  $array = array();
+  $array= array();
   $object = new Data($code,$msg,$array);
-  }else{
+}else{
   $code = "code22";
   $msg = "connect error";
   $arrayerror = array();
   $object = new Data($code,$msg,$arrayerror);
+}
+
+  } else{
+      $code = "code12";
+  $msg = "Please enter enough information";
+  $array = array();
+  $object =  Data($code,$msg,$array);
+  echo json_encode($object);
   }
- echo json_encode($object);
+
+
+ 
 ?>

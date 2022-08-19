@@ -16,8 +16,6 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
-import java.io.ByteArrayOutputStream
-import java.util.*
 
 class ListImageActivity : AppCompatActivity() {
     lateinit var rvImageView: RecyclerView
@@ -56,8 +54,8 @@ class ListImageActivity : AppCompatActivity() {
                 val intent = result.data
                 if (intent != null) {
                     val bitmap: Bitmap = intent.extras?.get("data") as Bitmap
-                    var uri : Uri = listImagePresent.convertUri(bitmap)
-                   // listImagePresent.sendImageToFirebase(uri)
+                    var uri: Uri = listImagePresent.convertUri(bitmap)
+                    listImagePresent.addImageSingleToServer(uri)
                 }
             }
         }

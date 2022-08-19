@@ -59,8 +59,8 @@ class PhotoFolderActivity : AppCompatActivity(), DialogPreviewFragment.IPreviewU
     }
 
 
-    override fun getBitmap(uri: String) {
-        uriImage = uri
+    override fun getBitmap(pathImage : String) {
+        uriImage = pathImage
         val intent = Intent()
         intent.putExtra("uri", uriImage)
         setResult(234, intent)

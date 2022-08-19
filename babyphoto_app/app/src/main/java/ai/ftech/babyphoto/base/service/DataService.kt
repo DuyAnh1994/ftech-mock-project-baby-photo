@@ -5,7 +5,7 @@ import ai.ftech.babyphoto.model.Album
 import ai.ftech.babyphoto.model.Data
 import ai.ftech.babyphoto.model.Image
 import okhttp3.MultipartBody
-import okhttp3.ResponseBody
+import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -40,33 +40,35 @@ interface DataService {
     @POST("album.php")
     fun album(@Field("idaccount") idaccount: Int): Call<Data<Album>>
 
-    @FormUrlEncoded
+    @Multipart
     @POST("album_insert.php")
     fun albumInsert(
-        @Field("idaccount") idaccount: Int,
-        @Field("urlimage") urlimage: String,
-        @Field("name") name: String,
-        @Field("gender") gender: Int,
-        @Field("birthday") birthday: String,
-        @Field("relation") relation: String,
-        @Field("amountimage") amountimage: Int
+        @Part file: MultipartBody.Part,
+        @Part("idaccount") idaccount: RequestBody,
+        @Part("name") name: RequestBody,
+        @Part("gender") gender: RequestBody,
+        @Part("birthday") birthday: RequestBody,
+        @Part("relation") relation: RequestBody,
     ): Call<Data<String>>
 
     @GET("image.php")
     fun image(): Call<Data<Image>>
 
-    @FormUrlEncoded
-    @POST("image_insert.php")
-    fun imageInsert(
-        @Field("idalbum") idalbum: Int,
-       // @Part urlimage : MultipartBody.Part,
-        @Field("description") description: String,
-        @Field("timeline") timeline: String,
+    @Multipart
+    @POST("image_insert_multi.php")
+    fun imageInsertMulti(
+        @Part files: MutableList<MultipartBody.Part>,
+        @Part("idalbum") idalbum: RequestBody,
+        @Part("description") description: RequestBody,
+        @Part("timeline") timeline: RequestBody,
     ): Call<Data<String>>
 
     @Multipart
-    @POST("image_test1.php")
-    fun imageInsert_muti(
-        @Part urlimage : MultipartBody.Part,
-    ): Call<ResponseBody>
+    @POST("image_insert_single.php")
+    fun imageInsertSingle(
+        @Part file: MultipartBody.Part,
+        @Part("idalbum") idalbum: RequestBody,
+        @Part("description") description: RequestBody,
+        @Part("timeline") timeline: RequestBody,
+    ): Call<Data<String>>
 }

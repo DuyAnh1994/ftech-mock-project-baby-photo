@@ -15,7 +15,6 @@ import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Build
 import android.provider.MediaStore
-import android.util.Log
 import android.view.Gravity
 import android.view.Window
 import android.widget.Button
@@ -24,12 +23,9 @@ import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.GridLayoutManager
-import com.google.firebase.storage.FirebaseStorage
-import com.google.firebase.storage.StorageReference
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
-import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -44,7 +40,11 @@ class ListImagePresenter(activity: ListImageActivity) {
     private var arrayImage: MutableList<String> = ArrayList()
     private var arrayCb: MutableList<Boolean> = ArrayList()
     private var count: Int = 0
-    var arrayUrl: MutableList<String> = ArrayList()
+    lateinit var idalbum: RequestBody
+    lateinit var description: RequestBody
+    lateinit var timeline: RequestBody
+    lateinit var multiFile: MultipartBody.Part
+    lateinit var path: String
     var progressdialog = ProgressDialog(view, R.style.AppCompatAlertDialogStyle)
 
     // xin quyền truy cập thư viện
@@ -133,150 +133,118 @@ class ListImagePresenter(activity: ListImageActivity) {
     @RequiresApi(Build.VERSION_CODES.O)
     fun addImage() {
         view.btnAdd.setOnClickListener {
-//            progressdialog.setMessage("Updating")
-//            progressdialog.setCancelable(false)
-//            progressdialog.show()
+            var files: MutableList<MultipartBody.Part> = ArrayList()
+            progressdialog.setMessage("Updating")
+            progressdialog.setCancelable(false)
+            progressdialog.show()
             for (position in 0 until arrayImage.size) {
                 if (arrayCb[position]) {
-                    var file = File(arrayImage[position])
-                    var file_path : String= file.absolutePath
-                    var requestBody :  RequestBody = RequestBody.create(MediaType.parse("multipart/form-data"),file)
-                    var urlimage : MultipartBody.Part = MultipartBody.Part.createFormData("uploaded_file",file_path,requestBody)
-                    var dataService = APIService.base()
-                    var callback = dataService.imageInsert_muti(urlimage)
-                    callback.enqueue(object  : Callback<ResponseBody>{
-                        override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
-
-                            if(response.body() != null){
-                                Log.d("AAA", "onResponse: ${response.body().toString()}")
-                            }else{
-                                Log.d("AAA", "onResponse: fail")
-                            }
-                        }
-
-                        override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                            Log.d("AAA", "onFailure: ${t.message}")
-                        }
-                    })
+                    convertToFile(arrayImage[position])
+                    files.add(multiFile)
                 }
             }
-        }
-    }
-
-    // gửi ảnh từ thư viện lên server
-    @RequiresApi(Build.VERSION_CODES.O)
-    fun sendImageToFirebase(dataImage: String) {
-        var storageReference: StorageReference =
-            FirebaseStorage.getInstance().getReferenceFromUrl("gs://baby-photo-fb591.appspot.com")
-
-        val fileReference: StorageReference = storageReference.child(
-            System.currentTimeMillis().toString() + ".png"
-        )
-        val FILE = Uri.fromFile(File(dataImage))
-        val uploadTask = fileReference.putFile(FILE)
-        uploadTask.continueWithTask { task ->
-            if (!task.isSuccessful) {
-                task.exception?.let {
-                    throw it
-                }
+            if (files.size > 0) {
+                addMultiImageToServer(files)
             }
-            fileReference.downloadUrl
-        }.addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                val downloadUri = task.result.toString()
-                arrayUrl.add(downloadUri)
-            } else {
-                Toast.makeText(view, "Fail, please retry", Toast.LENGTH_SHORT).show()
-                Log.d("AAA", "sendImageToFirebase: Fail, please retry")
-            }
-        }.addOnFailureListener { e ->
-            Toast.makeText(view, "Fail, please retry", Toast.LENGTH_SHORT).show()
-            Log.d("AAA", "sendImageToFirebase: Fail, please retry1")
-        }
-    }
 
-    // gửi ảnh từ camera lên server
-    @RequiresApi(Build.VERSION_CODES.O)
-    fun sendImageToFirebase(uri: Uri) {
-        progressdialog.setMessage("Updating")
-        progressdialog.setCancelable(false)
-        progressdialog.show()
-        var storageReference: StorageReference =
-            FirebaseStorage.getInstance().getReferenceFromUrl("gs://baby-photo-fb591.appspot.com")
-
-        val fileReference: StorageReference = storageReference.child(
-            System.currentTimeMillis().toString() + ".png"
-        )
-
-        val uploadTask = fileReference.putFile(uri)
-        uploadTask.continueWithTask { task ->
-            if (!task.isSuccessful) {
-                task.exception?.let {
-                    throw it
-                }
-            }
-            fileReference.downloadUrl
-        }.addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                val downloadUri = task.result.toString()
-                arrayUrl.add(downloadUri)
-            } else {
-                Toast.makeText(view, "Fail, please retry", Toast.LENGTH_SHORT).show()
-            }
-        }.addOnFailureListener { e ->
-            Toast.makeText(view, "Fail, please retry", Toast.LENGTH_SHORT).show()
         }
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    fun postServer(arrayUrl: MutableList<String>) {
-        //random id ảnh
-        //lấy thời gian hiện tại
+    fun addMultiImageToServer(files: MutableList<MultipartBody.Part>) {
+        if (files.size > 0) {
+
+            getInfoImage()
+
+            var dataService = APIService.base()
+            var callback = dataService.imageInsertMulti(files, idalbum, description, timeline)
+            callback.enqueue(object : Callback<Data<String>> {
+                override fun onResponse(
+                    call: Call<Data<String>>,
+                    response: Response<Data<String>>
+                ) {
+
+                    if (response.body()!!.code == "code13") {
+                        Toast.makeText(view, response.body()!!.msg, Toast.LENGTH_SHORT).show()
+                        var intent = Intent(view, HomeActivity::class.java)
+                        intent.putExtra("idalbum", "1")
+                        view.startActivity(intent)
+                        progressdialog.dismiss()
+                    } else {
+                        Toast.makeText(view, response.body()!!.msg, Toast.LENGTH_SHORT).show()
+                        progressdialog.dismiss()
+                    }
+                }
+
+                override fun onFailure(call: Call<Data<String>>, t: Throwable) {
+                    Toast.makeText(view, t.message, Toast.LENGTH_SHORT).show()
+                    progressdialog.dismiss()
+                }
+            })
+        }
+    }
+
+    fun convertToFile(linkImage: String) {
+        var file = File(linkImage)
+        var file_path: String = file.absolutePath + System.currentTimeMillis() + ".png"
+
+        var requestBody: RequestBody =
+            RequestBody.create(MediaType.parse("multipart/form-data"), file)
+        multiFile = MultipartBody.Part.createFormData("file[]", file_path, requestBody)
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun getInfoImage() {
         val current = LocalDateTime.now()
         val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
         val formatted: String = current.format(formatter)
 
-        //  val dataService = APIService.base()
-        // val callback =
-//            dataService.imageInsert(123, arrayUrl, "hello", formatted)
-//        callback.enqueue(object : Callback<Data<String>> {
-//            override fun onResponse(
-//                call: Call<Data<String>>,
-//                response: Response<Data<String>>
-//            ) {
-//                if (response.body()!!.code == "code13") {
-//                    Toast.makeText(
-//                        view,
-//                        "add image successfully",
-//                        Toast.LENGTH_SHORT
-//                    ).show()
-//                    val intent = Intent(view, HomeActivity::class.java)
-//                    view.startActivity(intent)
-//                    progressdialog.dismiss()
-//                } else {
-//                    Toast.makeText(
-//                        view,
-//                        response.body()!!.msg,
-//                        Toast.LENGTH_SHORT
-//                    ).show()
-//                    Log.d("AAA", "onResponse: ${response.body()!!.msg}")
-//                    progressdialog.dismiss()
-//                }
+        idalbum = RequestBody.create(MediaType.parse("multipart/form-data"), "1")
+        description = RequestBody.create(MediaType.parse("multipart/form-data"), "Hello")
+        timeline = RequestBody.create(MediaType.parse("multipart/form-data"), formatted)
+    }
 
-//            }
-//
-//            override fun onFailure(call: Call<Data<String>>, t: Throwable) {
-//                Toast.makeText(
-//                    view,
-//                    t.message,
-//                    Toast.LENGTH_SHORT
-//                ).show()
-//                Log.d("AAA", "onFailure: ${t.message}")
-//                progressdialog.dismiss()
-//            }
-//
-//        })
 
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun addImageSingleToServer(uri: Uri) {
+        progressdialog.setMessage("Updating")
+        progressdialog.setCancelable(false)
+        progressdialog.show()
+
+        var image_path = getRealPathFromUri(uri)
+        var file = File(image_path)
+        var file_path: String = file.absolutePath + System.currentTimeMillis() + ".png"
+
+        var requestBody: RequestBody =
+            RequestBody.create(MediaType.parse("multipart/form-data"), file)
+        var singFile = MultipartBody.Part.createFormData("file", file_path, requestBody)
+
+        getInfoImage()
+        var dataService = APIService.base()
+        var callback = dataService.imageInsertSingle(singFile, idalbum, description, timeline)
+        callback.enqueue(object : Callback<Data<String>> {
+            override fun onResponse(
+                call: Call<Data<String>>,
+                response: Response<Data<String>>
+            ) {
+
+                if (response.body()!!.code == "code13") {
+                    Toast.makeText(view, response.body()!!.msg, Toast.LENGTH_SHORT).show()
+                    var intent = Intent(view, HomeActivity::class.java)
+                    intent.putExtra("idalbum", "1")
+                    view.startActivity(intent)
+                    progressdialog.dismiss()
+                } else {
+                    Toast.makeText(view, response.body()!!.msg, Toast.LENGTH_SHORT).show()
+                    progressdialog.dismiss()
+                }
+            }
+
+            override fun onFailure(call: Call<Data<String>>, t: Throwable) {
+                Toast.makeText(view, t.message, Toast.LENGTH_SHORT).show()
+                progressdialog.dismiss()
+            }
+        })
     }
 
     fun convertUri(bitmap: Bitmap): Uri {
@@ -290,6 +258,21 @@ class ListImagePresenter(activity: ListImageActivity) {
             null
         )
         return Uri.parse(path)
+    }
+
+    fun getRealPathFromUri(contentUri: Uri): String {
+        var projection = arrayOf(
+            MediaStore.Images.ImageColumns.DATA,
+        )
+
+        val cursor = view.contentResolver.query(
+            contentUri, projection, null, null, null
+        )
+        if (cursor!!.moveToFirst()) {
+            path = cursor.getString(0)
+        }
+        cursor.close()
+        return path
     }
 
     fun cancelCreate() {
