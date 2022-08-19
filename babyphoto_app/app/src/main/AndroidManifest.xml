@@ -23,7 +23,6 @@
         android:theme="@style/Theme.BabyPhoto"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
-        tools:targetApi="31">
         <activity
             android:name=".screen.home.Home"
             android:exported="false" />
@@ -35,10 +34,9 @@
             android:exported="false" />
         <activity
             android:name=".screen.changepass.ChangePass"
-            android:name=".screen.listimage.ListImageActivity"
             android:exported="false" />
         <activity
-            android:name=".HomeTest"
+            android:name=".screen.listimage.ListImageActivity"
             android:exported="false" />
         <activity
             android:name=".screen.createalbum.preview.PhotoFolderActivity"
@@ -60,15 +58,11 @@
             android:exported="false" />
         <activity
             android:name=".MainActivity"
-            android:exported="false" />
-        <activity
-            android:name=".MainActivity"
             android:exported="true">
             android:name=".screen.home.HomeActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

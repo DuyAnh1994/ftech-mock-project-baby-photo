@@ -3,6 +3,7 @@ package ai.ftech.babyphoto.screen.home
 import ai.ftech.babyphoto.R
 import ai.ftech.babyphoto.model.Account
 import ai.ftech.babyphoto.model.AlbumBaby
+import ai.ftech.babyphoto.screen.createalbum.CreateAlbumActivity
 import ai.ftech.babyphoto.screen.register.ActivityEnterEmail
 import ai.ftech.babyphoto.screen.timeline.TimelineAdapter
 import android.content.Context
@@ -82,8 +83,9 @@ class BabyHomeAdapter(
         private val txtTitle1: TextView = itemView.findViewById(R.id.tvHomeAddBaby)
         fun bind(title: String) {
             txtTitle1.text = title
-            txtTitle1.setOnClickListener {
-                Toast.makeText(context, "this is title", Toast.LENGTH_LONG).show()
+            itemView.setOnClickListener {
+                val intent = Intent(context,CreateAlbumActivity::class.java)
+                context.startActivity(intent)
             }
         }
     }
@@ -111,6 +113,7 @@ class BabyHomeAdapter(
 //            ivHomeViewBaby.setImageBitmap(decodedByte)
 //            ivHomeViewBaby.setImageURI(null)
 //            ivHomeViewBaby.setImageURI(Uri.parse(dataViewBabyHome[position].urlimage))
+
             Picasso.get().load(dataViewBabyHome[position].urlimage).into(ivHomeViewBaby)
             tvHomeViewBabyName.text = dataViewBabyHome[position].name
             tvHomeViewBabyCountItem.text = dataViewBabyHome[position].amountimage

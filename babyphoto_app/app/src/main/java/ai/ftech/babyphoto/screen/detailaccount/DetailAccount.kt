@@ -49,7 +49,7 @@ class DetailAccount : AppCompatActivity() {
         ibAccountDetailBack.setOnClickListener {
             finish()
         }
-        APIService().base().account().enqueue(
+        APIService.base().account().enqueue(
             object : Callback<ResponseModel<List<Account>>> {
                 override fun onResponse(
                     call: Call<ResponseModel<List<Account>>>,
@@ -83,7 +83,7 @@ class DetailAccount : AppCompatActivity() {
         )
        llAccountDetailSaveChange.setOnClickListener {
 
-           APIService().base().updateAccount(
+          APIService.base().updateAccount(
                edtViewEmailAccountDetail.text.toString(), edtAccountDetailName.text.toString(), edtAccountDetailNameLast.text.toString(),
                idaccount as Int
            ).enqueue(

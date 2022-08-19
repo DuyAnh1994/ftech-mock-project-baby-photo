@@ -48,7 +48,7 @@
     </FrameLayout>
 
     <TextView
-        android:id="@+id/tvHomeAddBaby"
+        android:id="@+id/tvHomeAddBaby1"
         style="@style/BpStyleText15MediumNoColor"
         android:layout_marginTop="5dp"
         android:text="@string/add_baby"
@@ -65,7 +65,7 @@
         android:gravity="center"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvHomeAddBaby">
+        app:layout_constraintTop_toBottomOf="@id/tvHomeAddBaby1">
 
         <androidx.appcompat.widget.AppCompatImageView
             android:layout_width="23dp"

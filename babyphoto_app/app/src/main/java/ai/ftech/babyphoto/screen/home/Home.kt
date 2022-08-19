@@ -51,7 +51,7 @@ class Home : AppCompatActivity(), BabyHomeAdapter.onItemClickListenerr {
         recycleBaby.layoutManager = manager
 
 
-        APIService().base().getAlbumId(idaccount as Int).enqueue(
+       APIService.base().getAlbumId(idaccount as Int).enqueue(
             object : Callback<ResponseModel<List<AlbumBaby>>> {
                 override fun onResponse(
                     call: Call<ResponseModel<List<AlbumBaby>>>,
@@ -75,7 +75,7 @@ class Home : AppCompatActivity(), BabyHomeAdapter.onItemClickListenerr {
             }
         )
 
-        toggle = ActionBarDrawerToggle(this, drawerLayout, R.string.open, R.string.close)
+        toggle = ActionBarDrawerToggle(this, drawerLayout,R.string.open,R.string.close)
         drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
         supportActionBar?.setDisplayHomeAsUpEnabled(true)

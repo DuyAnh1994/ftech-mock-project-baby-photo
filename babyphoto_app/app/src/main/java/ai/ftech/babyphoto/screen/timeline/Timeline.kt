@@ -4,6 +4,8 @@ import ai.ftech.babyphoto.R
 import ai.ftech.babyphoto.base.service.APIService
 import ai.ftech.babyphoto.model.Image
 import ai.ftech.babyphoto.model.ResponseModel
+import ai.ftech.babyphoto.screen.listimage.ListImageActivity
+import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -13,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_timeline.*
 import kotlinx.android.synthetic.main.create_album_activity.*
@@ -29,6 +32,7 @@ class Timeline : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_timeline)
+        val fabAdd : FloatingActionButton = findViewById(R.id.fabTimeLineAdd)
         val bundle: Bundle? = intent.extras
         val idalbum = bundle?.get("idalbum")
         val nameAlbum = bundle?.get("nameAlbum")
@@ -43,7 +47,10 @@ class Timeline : AppCompatActivity() {
         // on below line we are initializing our adapter
         var timelineAdapter = TimelineAdapter(this, lImage)
 
-
+        fabAdd.setOnClickListener {
+            var intent = Intent(this,ListImageActivity::class.java)
+            startActivity(intent)
+        }
         // on below line we are setting layout manager for our recycler view
         val staggeredGridLayoutManager = StaggeredGridLayoutManager(2, LinearLayoutManager.VERTICAL)
         rvTimelineViewImage.layoutManager = staggeredGridLayoutManager
@@ -71,7 +78,7 @@ class Timeline : AppCompatActivity() {
         // that data has been updated.
         timelineAdapter.notifyDataSetChanged()
 
-        APIService().base().getImageId(1).enqueue(
+        APIService.base().getImageId(1).enqueue(
             object : Callback<ResponseModel<List<Image>>> {
                 @RequiresApi(Build.VERSION_CODES.O)
                 override fun onResponse(

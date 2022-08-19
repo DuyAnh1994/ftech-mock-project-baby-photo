@@ -1,44 +1,64 @@
 package ai.ftech.babyphoto.base.service
 
-import ai.ftech.babyphoto.model.Account
-import ai.ftech.babyphoto.model.Album
-import ai.ftech.babyphoto.model.Data
-import ai.ftech.babyphoto.model.Image
+import ai.ftech.babyphoto.model.*
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
+import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.*
 
 interface DataService {
     //4. khai báo link api, phương thức và kiểu dữ liệu trả về
 
-    //get hàm account
     @GET("account.php")
-    fun account(): Call<Data<Account>>
+    fun account(): Call<ResponseModel<List<Account>>>
 
     //thêm mới user
+    @POST("account_insert.php")
+    fun insertAccount(
+        @Body body: RequestBody
+    ): Call<ResponseBody>
+
     @FormUrlEncoded
     @POST("account_insert.php")
     fun insertAccount(
         @Field("email") email: String,
         @Field("password") password: String,
-        @Field("firstname") firstname: String,
-        @Field("lastname") lastname: String,
-    ): Call<Data<String>>
+        @Field("firstname") firstName: String,
+        @Field("lastname") lastName: String,
+    ): Call<String>
 
     //cập nhật người dùng
     @FormUrlEncoded
-    @POST("Account_update.php")
+    @POST("account_update.php")
     fun updateAccount(
-        @Field("password") password: String,
-        @Field("firstname") firstname: String,
-        @Field("lastname") lastname: String,
+        @Field("email") email: String,
+        @Field("firstname") firstName: String,
+        @Field("lastname") lastName: String,
         @Field("idaccount") idaccount: Int
-    ): Call<Data<String>>
+    ): Call<String>
+
+    //cập nhật password
+    @FormUrlEncoded
+    @POST("account_pw.php")
+    fun updatePass(
+        @Field("idaccount") idaccount: Int,
+        @Field("password") password: String
+    ): Call<String>
 
     @FormUrlEncoded
     @POST("album.php")
-    fun album(@Field("idaccount") idaccount: Int): Call<Data<Album>>
+    fun getAlbumId(@Field("idaccount") idaccount: Int): Call<ResponseModel<List<AlbumBaby>>>
+
+    //list image
+    @FormUrlEncoded
+    @POST("image.php")
+    fun getImageId(@Field("idalbum") idalbum: Any?): Call<ResponseModel<List<Image>>>
+
+    //get accountid
+    @FormUrlEncoded
+    @POST("account_id.php")
+    fun getAccountId(@Field("idaccount") idaccount: Int): Call<ResponseModel<List<Account>>>
 
     @Multipart
     @POST("album_insert.php")
@@ -51,8 +71,6 @@ interface DataService {
         @Part("relation") relation: RequestBody,
     ): Call<Data<String>>
 
-    @GET("image.php")
-    fun image(): Call<Data<Image>>
 
     @Multipart
     @POST("image_insert_multi.php")

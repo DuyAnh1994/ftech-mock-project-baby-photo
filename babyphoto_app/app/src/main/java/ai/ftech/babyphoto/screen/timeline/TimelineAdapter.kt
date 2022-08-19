@@ -3,8 +3,11 @@ package ai.ftech.babyphoto.screen.timeline
 import ai.ftech.babyphoto.R
 import ai.ftech.babyphoto.model.AlbumBaby
 import ai.ftech.babyphoto.model.Image
+import ai.ftech.babyphoto.screen.createalbum.CreateAlbumActivity
 import ai.ftech.babyphoto.screen.home.BabyHomeAdapter
+import ai.ftech.babyphoto.screen.listimage.ListImageActivity
 import android.content.Context
+import android.content.Intent
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.system.Os.bind
@@ -41,6 +44,10 @@ class TimelineAdapter(
         Picasso.get()
             .load(Uri.parse(item.urlimage))
             .into(holder.ivTimeLineViewImage)
+        holder.itemView.setOnClickListener {
+            val intent = Intent(context, ListImageActivity::class.java)
+            context.startActivity(intent)
+        }
     }
 
     // return the number of the items in the list

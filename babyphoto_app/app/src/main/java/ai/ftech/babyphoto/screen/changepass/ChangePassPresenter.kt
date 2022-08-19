@@ -31,7 +31,7 @@ class ChangePassPresenter(activity: ChangePass) {
     private val bundle: Bundle? = view.intent.extras
     private val idaccount = bundle?.get("idaccount")
     fun getAccountId() {
-        APIService().base().getAccountId(idaccount as Int).enqueue(
+        APIService.base().getAccountId(idaccount as Int).enqueue(
             object : Callback<ResponseModel<List<Account>>> {
                 override fun onResponse(
                     call: Call<ResponseModel<List<Account>>>,
@@ -125,7 +125,7 @@ class ChangePassPresenter(activity: ChangePass) {
 
         val dialog = openDialog()
 
-        APIService().base().updatePass(
+        APIService.base().updatePass(
             idaccount as Int, view.tieNewPass.text.toString()
         ).enqueue(
             object : Callback<String> {
