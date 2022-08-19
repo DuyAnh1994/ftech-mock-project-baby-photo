@@ -8,11 +8,11 @@ import android.view.MotionEvent
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.storage.StorageReference
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlin.math.sign
 
 class MainActivity : AppCompatActivity() {
     //khai báo presenter
     private var presenter: MainPresenter? = null
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)

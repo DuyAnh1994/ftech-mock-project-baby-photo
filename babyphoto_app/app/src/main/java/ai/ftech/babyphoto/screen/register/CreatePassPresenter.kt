@@ -5,7 +5,6 @@ import ai.ftech.babyphoto.R
 import ai.ftech.babyphoto.base.Utils
 import ai.ftech.babyphoto.base.service.APIService
 import ai.ftech.babyphoto.model.Account
-import ai.ftech.babyphoto.model.Data
 import android.app.Dialog
 import android.content.Intent
 import android.graphics.Color
@@ -76,30 +75,24 @@ class CreatePassPresenter(activity: ActivityCreatePass) {
 
         val dialog = openDialog()
 
-        APIService.base().insertAccount(
+        APIService().base().insertAccount(
             account!!.email,
             account!!.password,
             account!!.firstname,
-            account!!.lastname,
+            account!!.lastname
         ).enqueue(
-            object : Callback<Data<String>> {
-                override fun onResponse(
-                    call: Call<Data<String>>,
-                    response: Response<Data<String>>
-                ) {
-                    dialog.dismiss()
-                    Toast.makeText(
-                        view.applicationContext,
-                        response.body()!!.msg,
-                        Toast.LENGTH_SHORT
-                    ).show()
-                    val intent = Intent(view, MainActivity::class.java)
-                    view.startActivity(intent)
-                }
-
-                override fun onFailure(call: Call<Data<String>>, t: Throwable) {
+            object : Callback<String> {
+                override fun onResponse(call: Call<String>, response: Response<String>) {
                     dialog.dismiss()
                     Toast.makeText(view.applicationContext, "Insert failed", Toast.LENGTH_SHORT)
+                        .show()
+                }
+
+                override fun onFailure(call: Call<String>, t: Throwable) {
+                    dialog.dismiss()
+                    val intent = Intent(view, MainActivity::class.java)
+                    view.startActivity(intent)
+                    Toast.makeText(view.applicationContext, "Insert Success!", Toast.LENGTH_SHORT)
                         .show()
                 }
             }

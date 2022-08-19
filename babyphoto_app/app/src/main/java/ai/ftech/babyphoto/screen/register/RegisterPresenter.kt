@@ -31,10 +31,10 @@ class RegisterPresenter(activity: RegisterActivity) {
                 view.edtRegisterLastName.text.toString()
             )) return
         val account = Account(
+            "",
+            "",
             view.edtRegisterFirstName.text.toString(),
             view.edtRegisterLastName.text.toString(),
-            "",
-            "",
             Random.nextInt(10000)
         )
 
