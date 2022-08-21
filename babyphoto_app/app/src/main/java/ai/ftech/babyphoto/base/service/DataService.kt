@@ -1,19 +1,15 @@
 package ai.ftech.babyphoto.base.service
 
-import ai.ftech.babyphoto.model.Account
-import ai.ftech.babyphoto.model.AlbumBaby
-import ai.ftech.babyphoto.model.Image
-import ai.ftech.babyphoto.model.ResponseModel
+import ai.ftech.babyphoto.model.*
+import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import okhttp3.ResponseBody
 import retrofit2.Call
-import retrofit2.http.Path
-import retrofit2.http.Field
 import retrofit2.http.*
 
 interface DataService {
+    //4. khai báo link api, phương thức và kiểu dữ liệu trả về
 
-    //get hàm account
     @GET("account.php")
     fun account(): Call<ResponseModel<List<Account>>>
 
@@ -63,4 +59,34 @@ interface DataService {
     @FormUrlEncoded
     @POST("account_id.php")
     fun getAccountId(@Field("idaccount") idaccount: Int): Call<ResponseModel<List<Account>>>
+
+    @Multipart
+    @POST("album_insert.php")
+    fun albumInsert(
+        @Part file: MultipartBody.Part,
+        @Part("idaccount") idaccount: RequestBody,
+        @Part("name") name: RequestBody,
+        @Part("gender") gender: RequestBody,
+        @Part("birthday") birthday: RequestBody,
+        @Part("relation") relation: RequestBody,
+    ): Call<Data<String>>
+
+
+    @Multipart
+    @POST("image_insert_multi.php")
+    fun imageInsertMulti(
+        @Part files: MutableList<MultipartBody.Part>,
+        @Part("idalbum") idalbum: RequestBody,
+        @Part("description") description: RequestBody,
+        @Part("timeline") timeline: RequestBody,
+    ): Call<Data<String>>
+
+    @Multipart
+    @POST("image_insert_single.php")
+    fun imageInsertSingle(
+        @Part file: MultipartBody.Part,
+        @Part("idalbum") idalbum: RequestBody,
+        @Part("description") description: RequestBody,
+        @Part("timeline") timeline: RequestBody,
+    ): Call<Data<String>>
 }

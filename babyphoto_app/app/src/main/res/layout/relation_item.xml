@@ -7,8 +7,10 @@
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/ivRelationCheckBox"
-        style="@style/BpPadding20"
-        android:src="@drawable/ic_checkbox_24px"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_margin="20dp"
+        android:src="@drawable/ic_checkbox"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:visibility="gone"/>

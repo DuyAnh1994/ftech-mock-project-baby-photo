@@ -7,14 +7,15 @@
     android:clickable="true"
     android:focusableInTouchMode="true"
     android:background="@color/Transparent"
-    tools:context=".screen.activity.CreateAlbumActivity">
+    tools:context=".screen.createalbum.CreateAlbumActivity">
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/ivCreateAlbumBackHome"
-        style="@style/BabyPhotoStyleText"
+        android:layout_height="20dp"
+        android:layout_width="20dp"
         android:layout_marginStart="20dp"
         android:layout_marginTop="30dp"
-        android:background="@drawable/ic_back_home_24px"
+        android:background="@drawable/ic_back_home"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -32,7 +33,7 @@
         android:layout_width="wrap_content"
         android:layout_height="35dp"
         android:layout_marginEnd="10dp"
-        android:background="@drawable/select_gray_color_orange"
+        android:background="@drawable/shape_gray_bg_corner_20"
         android:text="@string/create"
         android:textAllCaps="false"
         android:textColor="@color/white"
@@ -40,16 +41,21 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/tvCreateAlbumTitle" />
 
-    <androidx.appcompat.widget.AppCompatImageView
+
+    <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/ivCreateAlbumAvatar"
-        style="@style/BabyPhotoStyleText"
+        android:layout_height="130dp"
+        android:layout_width="130dp"
         android:layout_marginTop="40dp"
+        android:scaleType="centerCrop"
         android:background="@drawable/ic_bt_avatar_24px"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tvCreateAlbumTitle" />
 
     <FrameLayout
+        android:id="@+id/flCreateAlbumCamera"
         style="@style/BabyPhotoStyleText"
         android:background="@drawable/ic_vector7_24px"
         app:layout_constraintBottom_toBottomOf="@id/ivCreateAlbumAvatar"
@@ -60,9 +66,10 @@
         app:layout_constraintVertical_bias="1.0">
 
         <androidx.appcompat.widget.AppCompatImageView
-            style="@style/BabyPhotoStyleText"
+            android:layout_height="25dp"
+            android:layout_width="25dp"
             android:layout_gravity="center"
-            android:background="@drawable/ic_camera_24px"
+            android:background="@drawable/ic_camera2_24px"
             tools:layout_editor_absoluteX="239dp"
             tools:layout_editor_absoluteY="185dp" />
     </FrameLayout>
@@ -88,10 +95,11 @@
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/ivCreateAlbumBoy"
-        style="@style/BabyPhotoStyleText"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
         android:layout_marginTop="45dp"
         android:background="@drawable/shape_cir_yellow_bg_corner_large"
-        android:src="@drawable/ic_boy_24px"
+        android:src="@drawable/ic_boy1_24px"
         app:layout_constraintBottom_toBottomOf="@+id/ivCreateAlbumGirl"
         app:layout_constraintEnd_toStartOf="@+id/ivCreateAlbumGirl"
         app:layout_constraintHorizontal_bias="0.5"
@@ -102,10 +110,11 @@
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/ivCreateAlbumGirl"
-        style="@style/BabyPhotoStyleText"
+        android:layout_height="80dp"
+        android:layout_width="80dp"
         android:layout_marginTop="45dp"
         android:background="@drawable/shape_cir_grey_bg_corner_90"
-        android:src="@drawable/ic_girl_24px"
+        android:src="@drawable/ic_girl1_24px"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/ivCreateAlbumBoy"
@@ -138,10 +147,11 @@
             android:textSize="15sp" />
 
         <androidx.appcompat.widget.AppCompatImageView
-            style="@style/BabyPhotoStyleText"
+            android:layout_height="16dp"
+            android:layout_width="16dp"
             android:layout_gravity="center_vertical|end"
             android:layout_marginEnd="10dp"
-            android:background="@drawable/ic_calendarbd_24px" />
+            android:background="@drawable/ic_calendarbd" />
     </FrameLayout>
 
     <TextView
@@ -172,9 +182,10 @@
             android:textSize="15sp" />
 
         <androidx.appcompat.widget.AppCompatImageView
-            style="@style/BabyPhotoStyleText"
+            android:layout_height="14dp"
+            android:layout_width="14dp"
             android:layout_gravity="center_vertical|end"
             android:layout_marginEnd="10dp"
-            android:background="@drawable/ic_relation_24px" />
+            android:background="@drawable/ic_relation" />
     </FrameLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

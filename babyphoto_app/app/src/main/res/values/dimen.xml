@@ -32,6 +32,7 @@
     <dimen name="bp_margin_4">4.00sp</dimen>
     <dimen name="bp_margin_6">6.00sp</dimen>
     <dimen name="bp_margin_8">8.00sp</dimen>
+    <dimen name="bp_margin_15">15.00sp</dimen>
     <dimen name="bp_margin_20">20.00sp</dimen>
     <dimen name="bp_margin_25">25.00sp</dimen>
 

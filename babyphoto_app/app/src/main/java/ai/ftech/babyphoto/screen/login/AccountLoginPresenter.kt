@@ -28,7 +28,7 @@ import kotlin.collections.indexOf as indexOf
 
 class AccountLoginPresenter(activity: AccountLogin) {
     private val view = activity
-    private val apiService = APIService().base()
+    private val apiService = APIService.base()
     private var lAccount = mutableListOf<Account>()
     private var index1: Int = 0
 

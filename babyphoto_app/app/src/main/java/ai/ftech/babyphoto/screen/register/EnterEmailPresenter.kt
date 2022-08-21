@@ -28,7 +28,7 @@ class EnterEmailPresenter(activity: ActivityEnterEmail) {
     }
 
     //khai báo service
-    private val apiService = APIService().base()
+    private val apiService = APIService.base()
     private var lAccount = listOf<Account>()
 
     //hàm gọi lấy danh sách tài khoản

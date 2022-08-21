@@ -75,7 +75,7 @@ class CreatePassPresenter(activity: ActivityCreatePass) {
 
         val dialog = openDialog()
 
-        APIService().base().insertAccount(
+        APIService.base().insertAccount(
             account!!.email,
             account!!.password,
             account!!.firstname,

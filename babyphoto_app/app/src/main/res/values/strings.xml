@@ -9,6 +9,10 @@
     <string name="relation">Relation</string>
     <string name="name">name</string>
     <string name="album">Album</string>
+    <string name="back">You really want to go back?</string>
+    <string name="cancel">Cancel</string>
+    <string name="Ok">Ok</string>
+    <string name="add_moment">Add Moment</string>
     <string name="open">Open</string>
     <string name="close">Close</string>
 </resources>
