@@ -25,7 +25,7 @@ class ListImageAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         if (viewType == viewTypeCamera) {
             val view =
-                LayoutInflater.from(parent.context).inflate(R.layout.camera_item, parent, false)
+                LayoutInflater.from(parent.context).inflate(R.layout.item_camera, parent, false)
             return ViewCamera(view)
         }
         val view =
@@ -61,10 +61,15 @@ class ListImageAdapter(
                 if (arrayCb[position]) {
                     arrayCb[position] = false
                     cbImage.setImageResource(R.drawable.ic_select_off)
+                    ivImage.layoutParams.height = 300
+                    ivImage.layoutParams.width = 300
                     iListImage.setImage(position, false)
+
                 } else {
                     arrayCb[position] = true
                     cbImage.setImageResource(R.drawable.ic_select_on)
+                    ivImage.layoutParams.height = 200
+                    ivImage.layoutParams.width = 200
                     iListImage.setImage(position, true)
                 }
             }

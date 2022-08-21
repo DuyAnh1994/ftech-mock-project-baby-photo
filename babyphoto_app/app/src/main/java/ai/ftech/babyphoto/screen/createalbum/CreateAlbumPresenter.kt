@@ -16,6 +16,7 @@ import android.net.Uri
 import android.os.Build
 import android.provider.MediaStore
 import android.view.Gravity
+import android.view.View
 import android.view.Window
 import android.widget.Button
 import android.widget.DatePicker
@@ -83,9 +84,18 @@ class CreateAlbumPresenter(activity: CreateAlbumActivity) : ICreateAlbum {
                         tvBirthday.text = "${dayOfMonth}/${month + 1}/${year}"
                     }
                 }, year, month, dayOfMonth)
+            datePickerDialog.setOnCancelListener {
+                if(tvBirthday.text != "") {
+                    view.setBackgroundButton()
+                }
+            }
+            datePickerDialog.setOnDismissListener {
+                if(tvBirthday.text != "") {
+                    view.setBackgroundButton()
+                }
+            }
             datePickerDialog.show()
         }
-
     }
 
     override fun getRelationAlbum(relation: String) {
