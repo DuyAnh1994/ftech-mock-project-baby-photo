@@ -51,11 +51,9 @@ dependencies {
     implementation 'com.squareup.retrofit2:retrofit:2.4.0'
     //2. import thư viện để bóc dữ liệu
     implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
-    implementation 'de.hdodenhof:circleimageview:2.2.0'
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.0-RC")
     implementation("pl.droidsonroids.gif:android-gif-drawable:1.2.19")
     implementation 'com.google.code.gson:gson:2.8.9'
-    implementation 'com.squareup.picasso:picasso:2.8'
     implementation 'de.hdodenhof:circleimageview:3.1.0'
     implementation 'com.squareup.picasso:picasso:2.8'
     implementation 'com.github.bumptech.glide:glide:3.7.0'
