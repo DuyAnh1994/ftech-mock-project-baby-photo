@@ -89,6 +89,7 @@ class DetailAccount : AppCompatActivity() {
            ).enqueue(
                object : Callback<String> {
                    override fun onResponse(call: Call<String>, response: Response<String>) {
+                       presenter!!.showSnackbar("Change Account Success!")
                        Log.d("TAG", "onResponse: Update Success")
 
                    }

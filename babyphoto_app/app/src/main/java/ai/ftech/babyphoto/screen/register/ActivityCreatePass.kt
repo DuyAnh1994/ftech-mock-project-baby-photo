@@ -16,12 +16,6 @@ class ActivityCreatePass() : AppCompatActivity() {
         setContentView(R.layout.activity_create_pass)
         presenter = CreatePassPresenter(this)
 
-//        intent.extras?.let {
-//            it.apply {
-//                account = Gson().fromJson(get("account") as String, AccountModel::class.java)
-//            }
-//        }
-
         ibRegisterBackCreatePass.setOnClickListener {
             finish()
         }
