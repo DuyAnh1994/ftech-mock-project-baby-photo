@@ -26,6 +26,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 import android.icu.number.NumberRangeFormatter
 import android.text.format.Time
+import android.widget.ImageButton
 import androidx.core.content.ContextCompat.startActivity
 import com.bumptech.glide.Glide
 import com.google.gson.Gson
@@ -34,7 +35,7 @@ import com.google.gson.Gson
 class BabyHomeAdapter(
     val context: Context,
     private val dataViewBabyHome: MutableList<AlbumBaby> = mutableListOf(),
-    private val dataTitle: String
+    private val dataImage: Int
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     companion object {
         private const val viewTypeAdd: Int = 0;
@@ -69,7 +70,7 @@ class BabyHomeAdapter(
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         holder.apply {
             when (holder) {
-                is ViewTitle -> holder.bind(dataTitle)
+                is ViewTitle -> holder.bind(dataImage)
                 is ViewHolder -> holder.bind(position - 1)
             }
         }
@@ -80,10 +81,10 @@ class BabyHomeAdapter(
     }
 
     inner class ViewTitle(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        private val txtTitle1: TextView = itemView.findViewById(R.id.tvHomeAddBaby)
-        fun bind(title: String) {
-            txtTitle1.text = title
-            itemView.setOnClickListener {
+        private val ibHomeAddBaby: ImageButton = itemView.findViewById(R.id.ibHomeAddBaby)
+        fun bind(image: Int) {
+            ibHomeAddBaby.setBackgroundResource(image)
+            ibHomeAddBaby.setOnClickListener {
                 val intent = Intent(context,CreateAlbumActivity::class.java)
                 context.startActivity(intent)
             }

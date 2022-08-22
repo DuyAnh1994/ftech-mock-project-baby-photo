@@ -45,7 +45,7 @@ class Home : AppCompatActivity(), BabyHomeAdapter.onItemClickListenerr {
         recycleBaby.layoutManager = LinearLayoutManager(this)
 
         var adapter =
-            BabyHomeAdapter(this@Home, mutableListBaby, "Add Baby")
+            BabyHomeAdapter(this@Home, mutableListBaby, R.drawable.ic_add_home_24px)
         recycleBaby.adapter = adapter
         val manager = GridLayoutManager(this@Home, 2, GridLayoutManager.VERTICAL, false)
         recycleBaby.layoutManager = manager
@@ -61,7 +61,7 @@ class Home : AppCompatActivity(), BabyHomeAdapter.onItemClickListenerr {
 //                    print(res.data)
                     mutableListBaby1.addAll(res.data)
                     var adapter =
-                        BabyHomeAdapter(this@Home, mutableListBaby1, "Add Baby")
+                        BabyHomeAdapter(this@Home, mutableListBaby1, R.drawable.ic_add_home_24px)
                     recycleBaby.adapter = adapter
                     adapter.setOnItemClickListener(this@Home)
 //                    val manager = GridLayoutManager(this@Home, 2, GridLayoutManager.VERTICAL, false)
