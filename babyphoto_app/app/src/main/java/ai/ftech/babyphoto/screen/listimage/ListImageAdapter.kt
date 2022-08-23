@@ -1,16 +1,17 @@
 package ai.ftech.babyphoto.screen.listimage
 
 import ai.ftech.babyphoto.R
+import android.app.ActionBar
 import android.content.Context
 import android.graphics.BitmapFactory
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.GridLayout
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 
 class ListImageAdapter(
-    private val context: Context,
     private var dataSet: MutableList<String>,
     private var arrayCb: MutableList<Boolean>,
     private var iListImage: IListImage
@@ -61,15 +62,15 @@ class ListImageAdapter(
                 if (arrayCb[position]) {
                     arrayCb[position] = false
                     cbImage.setImageResource(R.drawable.ic_select_off)
-                    ivImage.layoutParams.height = 300
-                    ivImage.layoutParams.width = 300
+                    ivImage.layoutParams.height = GridLayout.LayoutParams.MATCH_PARENT
+                    ivImage.layoutParams.width = GridLayout.LayoutParams.MATCH_PARENT
                     iListImage.setImage(position, false)
 
                 } else {
                     arrayCb[position] = true
                     cbImage.setImageResource(R.drawable.ic_select_on)
-                    ivImage.layoutParams.height = 200
-                    ivImage.layoutParams.width = 200
+//                    ivImage.layoutParams.height = 165
+//                    ivImage.layoutParams.width = 150
                     iListImage.setImage(position, true)
                 }
             }

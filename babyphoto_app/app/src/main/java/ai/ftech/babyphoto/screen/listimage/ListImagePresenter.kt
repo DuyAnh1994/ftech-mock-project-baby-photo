@@ -88,7 +88,7 @@ class ListImagePresenter(activity: ListImageActivity) {
         val gridLayoutManager = GridLayoutManager(view, 3)
         gridLayoutManager.orientation = GridLayoutManager.VERTICAL
         view.rvImageView.layoutManager = gridLayoutManager
-        val adapter = ListImageAdapter(view, arrayImage, arrayCb, object : IListImage {
+        val adapter = ListImageAdapter( arrayImage, arrayCb, object : IListImage {
             override fun setCamera() {
                 checkPermissionCamera()
             }
@@ -111,6 +111,7 @@ class ListImagePresenter(activity: ListImageActivity) {
                 }
             }
         })
+        view.rvImageView.setHasFixedSize(true)
         view.rvImageView.adapter = adapter
         addImage()
     }

@@ -1,6 +1,7 @@
 package ai.ftech.babyphoto.base.service
 
 import ai.ftech.babyphoto.model.*
+import com.google.gson.annotations.SerializedName
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import okhttp3.ResponseBody
@@ -89,4 +90,5 @@ interface DataService {
         @Part("description") description: RequestBody,
         @Part("timeline") timeline: RequestBody,
     ): Call<Data<String>>
+
 }

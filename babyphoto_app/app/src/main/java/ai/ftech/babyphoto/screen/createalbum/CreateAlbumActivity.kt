@@ -11,6 +11,7 @@ import android.os.Build
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
@@ -41,6 +42,11 @@ class CreateAlbumActivity : AppCompatActivity(), DialogRelationFragment.ICreateN
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.create_album_activity)
+
+        var intent = intent
+        val ID_ACCOUNT = intent.getStringExtra("idaccount")
+        val ID_ALBUM = intent.getStringExtra("idalbum")
+        Log.d("AAA", "onCreate: ${ID_ACCOUNT} + ${ID_ALBUM}")
         initView()
         getUriBaby()
         createAlbumPresenter.getGenderAlbum()
