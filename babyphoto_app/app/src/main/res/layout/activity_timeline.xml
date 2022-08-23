@@ -190,19 +190,27 @@
                 app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </LinearLayout>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvTimelineViewImage"
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/srlTimeLine"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginStart="4dp"
-        android:layout_marginTop="10dp"
-        android:scrollbars="vertical"
-        android:background="#12000000"
         app:layout_constraintBottom_toTopOf="@+id/bnTimeLineBottom"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/llItemTimeLineTitle"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintTop_toBottomOf="@+id/llItemTimeLineTitle">
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvTimelineViewImage"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="10dp"
+            android:scrollbars="vertical"
+            android:background="#12000000"
+            app:layout_constraintBottom_toTopOf="@+id/bnTimeLineBottom"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/llItemTimeLineTitle"
+            app:layout_constraintVertical_bias="1.0" />
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fabTimeLineAdd"

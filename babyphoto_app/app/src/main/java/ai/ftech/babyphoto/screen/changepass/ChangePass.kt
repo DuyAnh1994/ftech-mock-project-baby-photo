@@ -38,7 +38,7 @@ class ChangePass : AppCompatActivity() {
             presenter!!.submit()
         }
         ibChangePassBack.setOnClickListener {
-            presenter!!.backScreen()
+            finish()
         }
 
     }

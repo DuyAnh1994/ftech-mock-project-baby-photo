@@ -5,6 +5,7 @@ import ai.ftech.babyphoto.R
 import ai.ftech.babyphoto.base.Utils
 import ai.ftech.babyphoto.base.service.APIService
 import ai.ftech.babyphoto.model.Account
+import ai.ftech.babyphoto.screen.login.AccountLogin
 import android.app.Dialog
 import android.content.Intent
 import android.graphics.Color
@@ -90,7 +91,8 @@ class CreatePassPresenter(activity: ActivityCreatePass) {
 
                 override fun onFailure(call: Call<String>, t: Throwable) {
                     dialog.dismiss()
-                    val intent = Intent(view, MainActivity::class.java)
+                    val intent = Intent(view, AccountLogin::class.java)
+                    intent.putExtra("Email", account!!.email.toString())
                     view.startActivity(intent)
                     Toast.makeText(view.applicationContext, "Insert Success!", Toast.LENGTH_SHORT)
                         .show()

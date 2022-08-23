@@ -33,14 +33,14 @@ class DetailAccount : AppCompatActivity() {
     private var firstname: String = ""
     private var lastname: String = ""
     private var index1: Int = 0
-    private var idaccount: Int = 0
+    private var idaccount1: Int = 0
 
     //    private var mutableListAccount: MutableList<AccountUpdate> = mutableListOf()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(ai.ftech.babyphoto.R.layout.activity_detail_account)
         val bundle: Bundle? = intent.extras
-        val idaccount = bundle?.get("idaccount")
+        var idaccount = bundle?.get("idaccount")
         val showTop = bundle?.get("showTop")
         presenter = DetailAccountPresenter(this)
         tvCoppyIDAccount.setOnClickListener {
@@ -64,7 +64,8 @@ class DetailAccount : AppCompatActivity() {
                         email = lAccount[index1].email
                         firstname = lAccount[index1].firstname
                         lastname = lAccount[index1].lastname
-                        tvViewIDAccountDetail.text = idaccount.toString()
+                        idaccount1 = lAccount[index1].idaccount
+                        tvViewIDAccountDetail.text = idaccount1.toString()
                         edtAccountDetailName.setText(firstname)
                         edtAccountDetailNameLast.setText(lastname)
                         edtViewEmailAccountDetail.setText(email)

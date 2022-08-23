@@ -12,9 +12,11 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Gravity
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -34,6 +36,7 @@ class Home : AppCompatActivity(), BabyHomeAdapter.onItemClickListenerr {
 
     private var mutableListBaby: MutableList<AlbumBaby> = mutableListOf()
     private val mutableListBaby1: MutableList<AlbumBaby> = mutableListOf()
+    @SuppressLint("NotifyDataSetChanged")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
@@ -41,6 +44,7 @@ class Home : AppCompatActivity(), BabyHomeAdapter.onItemClickListenerr {
         navigationView = findViewById(R.id.nvHomeToDetailAccount)
         val bundle: Bundle? = intent.extras
         val idaccount = bundle?.get("idaccount")
+        var res: ResponseModel<List<AlbumBaby>>
         val recycleBaby: RecyclerView = findViewById(R.id.rcvHomeViewBaby)
         recycleBaby.layoutManager = LinearLayoutManager(this)
 
@@ -57,13 +61,19 @@ class Home : AppCompatActivity(), BabyHomeAdapter.onItemClickListenerr {
                     call: Call<ResponseModel<List<AlbumBaby>>>,
                     response: Response<ResponseModel<List<AlbumBaby>>>
                 ) {
-                    val res = response.body() as ResponseModel<List<AlbumBaby>>
-//                    print(res.data)
+                    res = response.body()!!
                     mutableListBaby1.addAll(res.data)
+                    srlHome.setOnRefreshListener {
+                        mutableListBaby1.clear()
+                        mutableListBaby1.addAll(res.data)
+                        recycleBaby.adapter!!.notifyDataSetChanged()
+                        srlHome.isRefreshing = false
+                    }
                     var adapter =
                         BabyHomeAdapter(this@Home, mutableListBaby1, R.drawable.ic_add_home_24px)
                     recycleBaby.adapter = adapter
                     adapter.setOnItemClickListener(this@Home)
+
 //                    val manager = GridLayoutManager(this@Home, 2, GridLayoutManager.VERTICAL, false)
 //                    recycleBaby.layoutManager = manager
                 }
@@ -75,10 +85,14 @@ class Home : AppCompatActivity(), BabyHomeAdapter.onItemClickListenerr {
             }
         )
 
+
         toggle = ActionBarDrawerToggle(this, drawerLayout,R.string.open,R.string.close)
         drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        ibHomeMenu.setOnClickListener {
+            drawerLayout.openDrawer(GravityCompat.START)
+        }
         navigationView.setNavigationItemSelectedListener {
             var intent = Intent(this, DetailAccount::class.java)
             intent.putExtra("idaccount", idaccount)

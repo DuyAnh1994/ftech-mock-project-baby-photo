@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.squareup.picasso.Picasso
+import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.activity_timeline.*
 import kotlinx.android.synthetic.main.create_album_activity.*
 import retrofit2.Call
@@ -90,7 +91,12 @@ class Timeline : AppCompatActivity() {
                     val res = response.body() as ResponseModel<List<Image>>
 //                    print(res.data)
                     lImage.addAll(res.data)
-
+                    srlTimeLine.setOnRefreshListener {
+                        lImage.clear()
+                        lImage.addAll(res.data)
+                        rvTimelineViewImage.adapter!!.notifyDataSetChanged()
+                        srlTimeLine.isRefreshing = false
+                    }
                     rvTimelineViewImage.adapter =
                         TimelineAdapter(this@Timeline, lImage)
                     lImage.forEachIndexed { index, timeline ->

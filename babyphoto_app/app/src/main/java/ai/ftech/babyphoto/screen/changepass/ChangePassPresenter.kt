@@ -102,10 +102,9 @@ class ChangePassPresenter(activity: ChangePass) {
         dialogLoadPass.show()
         return dialogLoadPass
     }
-    fun backScreen(){
-        view.finish()
-        showSnackbar()
-    }
+//    fun backScreen(){
+//        view.finish()
+//    }
     fun showSnackbar() {
         val mSnackBar = Snackbar.make(view.detailAcccountMain, "Your new password has updated", Snackbar.LENGTH_LONG)
 //        mSnackBar.setAction("close", View.OnClickListener {
