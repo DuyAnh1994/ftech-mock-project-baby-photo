@@ -12,9 +12,11 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -34,36 +36,44 @@ class Home : AppCompatActivity(), BabyHomeAdapter.onItemClickListenerr {
 
     private var mutableListBaby: MutableList<AlbumBaby> = mutableListOf()
     private val mutableListBaby1: MutableList<AlbumBaby> = mutableListOf()
+    @SuppressLint("NotifyDataSetChanged")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
         drawerLayout = findViewById(R.id.drawableLayout)
         navigationView = findViewById(R.id.nvHomeToDetailAccount)
-        val bundle: Bundle? = intent.extras
-        val idaccount = bundle?.get("idaccount")
+        val bundle  = intent
+        val ID_ACCOUNT = bundle.getIntExtra("idaccount",0)
+        var res: ResponseModel<List<AlbumBaby>>
         val recycleBaby: RecyclerView = findViewById(R.id.rcvHomeViewBaby)
         recycleBaby.layoutManager = LinearLayoutManager(this)
 
         var adapter =
-            BabyHomeAdapter(this@Home, mutableListBaby)
+            BabyHomeAdapter(this@Home, mutableListBaby,ID_ACCOUNT)
         recycleBaby.adapter = adapter
         val manager = GridLayoutManager(this@Home, 2, GridLayoutManager.VERTICAL, false)
         recycleBaby.layoutManager = manager
 
 
-       APIService.base().getAlbumId(idaccount as Int).enqueue(
+       APIService.base().getAlbum(ID_ACCOUNT).enqueue(
             object : Callback<ResponseModel<List<AlbumBaby>>> {
                 override fun onResponse(
                     call: Call<ResponseModel<List<AlbumBaby>>>,
                     response: Response<ResponseModel<List<AlbumBaby>>>
                 ) {
-                    val res = response.body() as ResponseModel<List<AlbumBaby>>
-//                    print(res.data)
+                    res = response.body()!!
                     mutableListBaby1.addAll(res.data)
+                    srlHome.setOnRefreshListener {
+                        mutableListBaby1.clear()
+                        mutableListBaby1.addAll(res.data)
+                        recycleBaby.adapter!!.notifyDataSetChanged()
+                        srlHome.isRefreshing = false
+                    }
                     var adapter =
-                        BabyHomeAdapter(this@Home, mutableListBaby1)
+                        BabyHomeAdapter(this@Home, mutableListBaby1,ID_ACCOUNT)
                     recycleBaby.adapter = adapter
                     adapter.setOnItemClickListener(this@Home)
+
 //                    val manager = GridLayoutManager(this@Home, 2, GridLayoutManager.VERTICAL, false)
 //                    recycleBaby.layoutManager = manager
                 }
@@ -75,13 +85,17 @@ class Home : AppCompatActivity(), BabyHomeAdapter.onItemClickListenerr {
             }
         )
 
+
         toggle = ActionBarDrawerToggle(this, drawerLayout,R.string.open,R.string.close)
         drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        ibHomeMenu.setOnClickListener {
+            drawerLayout.openDrawer(GravityCompat.START)
+        }
         navigationView.setNavigationItemSelectedListener {
             var intent = Intent(this, DetailAccount::class.java)
-            intent.putExtra("idaccount", idaccount)
+            intent.putExtra("idaccount", ID_ACCOUNT)
             when (it.itemId) {
                 R.id.itemAcc -> startActivity(intent)
                 R.id.itemNoti -> Toast.makeText(

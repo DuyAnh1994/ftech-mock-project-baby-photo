@@ -99,13 +99,22 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tvHomeYourBaby" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rcvHomeViewBaby"
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/srlHome"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="@+id/tvHomeYourBaby"
             app:layout_constraintStart_toEndOf="@+id/rcvHomeAddBaby"
-            app:layout_constraintTop_toBottomOf="@id/tvHomeYourBaby" />
+            app:layout_constraintTop_toBottomOf="@id/tvHomeYourBaby">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rcvHomeViewBaby"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="@+id/tvHomeYourBaby"
+                app:layout_constraintStart_toEndOf="@+id/rcvHomeAddBaby"
+                app:layout_constraintTop_toBottomOf="@id/tvHomeYourBaby" />
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <com.google.android.material.navigation.NavigationView

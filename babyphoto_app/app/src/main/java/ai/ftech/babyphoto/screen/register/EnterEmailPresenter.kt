@@ -19,7 +19,6 @@ import retrofit2.Response
 
 class EnterEmailPresenter(activity: ActivityEnterEmail) {
     private  val view = activity
-
     private var account: Account?= null
     private val bundle = view.intent.extras.let {
         it?.apply {

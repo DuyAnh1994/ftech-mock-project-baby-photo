@@ -2,6 +2,8 @@ package ai.ftech.babyphoto.screen.timeline
 
 import ai.ftech.babyphoto.R
 import ai.ftech.babyphoto.base.service.APIService
+import ai.ftech.babyphoto.model.Album
+import ai.ftech.babyphoto.model.AlbumBaby
 import ai.ftech.babyphoto.model.Image
 import ai.ftech.babyphoto.model.ResponseModel
 import ai.ftech.babyphoto.screen.listimage.ListImageActivity
@@ -17,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.squareup.picasso.Picasso
+import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.activity_timeline.*
 import kotlinx.android.synthetic.main.create_album_activity.*
 import retrofit2.Call
@@ -34,7 +37,7 @@ class Timeline : AppCompatActivity() {
         setContentView(R.layout.activity_timeline)
         val fabAdd : FloatingActionButton = findViewById(R.id.fabTimeLineAdd)
         val bundle: Bundle? = intent.extras
-        val idalbum = bundle?.get("idalbum")
+
         val nameAlbum = bundle?.get("nameAlbum")
         val idAlbum = bundle?.get("idAlbum")
         val urlimage = bundle?.get("urlimage")
@@ -78,7 +81,7 @@ class Timeline : AppCompatActivity() {
         // that data has been updated.
         timelineAdapter.notifyDataSetChanged()
 
-        APIService.base().getImageId(1).enqueue(
+        APIService.base().getImageId(idAlbum).enqueue(
             object : Callback<ResponseModel<List<Image>>> {
                 @RequiresApi(Build.VERSION_CODES.O)
                 override fun onResponse(
@@ -90,7 +93,12 @@ class Timeline : AppCompatActivity() {
                     val res = response.body() as ResponseModel<List<Image>>
 //                    print(res.data)
                     lImage.addAll(res.data)
-
+                    srlTimeLine.setOnRefreshListener {
+                        lImage.clear()
+                        lImage.addAll(res.data)
+                        rvTimelineViewImage.adapter!!.notifyDataSetChanged()
+                        srlTimeLine.isRefreshing = false
+                    }
                     rvTimelineViewImage.adapter =
                         TimelineAdapter(this@Timeline, lImage)
                     lImage.forEachIndexed { index, timeline ->

@@ -49,7 +49,12 @@ interface DataService {
 
     @FormUrlEncoded
     @POST("album.php")
-    fun getAlbumId(@Field("idaccount") idaccount: Int): Call<ResponseModel<List<AlbumBaby>>>
+    fun getAlbum(@Field("idaccount") idaccount: Int): Call<ResponseModel<List<AlbumBaby>>>
+
+    @FormUrlEncoded
+    @POST("album_id.php")
+    fun getAlbumId(@Field("idalbum") idalbum: Int): Call<ResponseModel<List<AlbumBaby>>>
+
 
     //list image
     @FormUrlEncoded

@@ -1,6 +1,8 @@
 package ai.ftech.babyphoto
 
 import ai.ftech.babyphoto.base.service.APIService
+import ai.ftech.babyphoto.screen.register.RegisterActivity
+import android.content.Intent
 import android.util.Log
 import kotlinx.android.synthetic.main.activity_main.*
 import retrofit2.Call
@@ -13,7 +15,10 @@ class MainPresenter(mainActivity: MainActivity) {
     //khai báo service
     private val apiService = APIService.base()
     private val view = mainActivity
-
+//    fun intentScreen() {
+//        val intent = Intent(view, RegisterActivity::class.java)
+//        view.startActivity(intent)
+//    }
     //hàm gọi lấy danh sách tài khoản
 //    fun getAccount() {
 //

@@ -38,16 +38,10 @@ class TimelineAdapter(
 
         // sets the image to the imageview from our itemHolder class
         val item = dataImage[position]
-
-        Log.d("TAG", "onBindViewHolder: ${item.urlimage}")
 //        holder.ivItemGallery.setImageURI(Uri.parse(item.urlImage))
         Picasso.get()
             .load(Uri.parse(item.urlimage))
             .into(holder.ivTimeLineViewImage)
-        holder.itemView.setOnClickListener {
-            val intent = Intent(context, ListImageActivity::class.java)
-            context.startActivity(intent)
-        }
     }
 
     // return the number of the items in the list

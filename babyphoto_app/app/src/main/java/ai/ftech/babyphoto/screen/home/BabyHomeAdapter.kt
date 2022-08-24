@@ -10,32 +10,20 @@ import ai.ftech.babyphoto.screen.timeline.TimelineAdapter
 import ai.ftech.babyphoto.screen.timeline.TimelineViewModel
 import android.content.Context
 import android.content.Intent
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.icu.number.NumberFormatter.with
-import android.icu.number.NumberRangeFormatter.with
-import android.net.Uri
-import android.util.Base64
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
-import androidx.core.graphics.scale
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
-import android.icu.number.NumberRangeFormatter
-import android.text.format.Time
-import androidx.core.content.ContextCompat.startActivity
-import com.bumptech.glide.Glide
-import com.google.gson.Gson
 
 
 class BabyHomeAdapter(
     val context: Context,
     private val dataViewBabyHome: MutableList<AlbumBaby> = mutableListOf(),
+    private val idaccount: Int
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     companion object {
         private const val viewTypeAdd: Int = 0;
@@ -47,7 +35,8 @@ class BabyHomeAdapter(
     interface onItemClickListenerr {
         fun onItemClick(position: Int)
     }
-    fun setOnItemClickListener(listener: onItemClickListenerr){
+
+    fun setOnItemClickListener(listener: onItemClickListenerr) {
         mListener = listener
     }
 
@@ -70,7 +59,7 @@ class BabyHomeAdapter(
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         holder.apply {
             when (holder) {
-                is ViewTitle -> holder.bind()
+                is ViewTitle -> holder.bind(idaccount)
                 is ViewHolder -> holder.bind(position - 1)
             }
         }
@@ -81,9 +70,12 @@ class BabyHomeAdapter(
     }
 
     inner class ViewTitle(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun bind() {
-            itemView.setOnClickListener {
-                val intent = Intent(context,CreateAlbumActivity::class.java)
+        private val ibHomeAddBaby: ImageButton = itemView.findViewById(R.id.ibHomeAddBaby)
+        fun bind(idaccount: Int) {
+            //  ibHomeAddBaby.setBackgroundResource(image)
+            ibHomeAddBaby.setOnClickListener {
+                val intent = Intent(context, CreateAlbumActivity::class.java)
+                intent.putExtra("idaccount", idaccount)
                 context.startActivity(intent)
             }
         }
@@ -96,20 +88,38 @@ class BabyHomeAdapter(
             view.findViewById(R.id.tvHomeViewBabyCountItem)
         private val tvHomeViewBabyItem: TextView = view.findViewById(R.id.tvHomeViewBabyItem)
         fun bind(position: Int) {
+//            val decodedString: ByteArray =
+//                Base64.decode(dataViewBabyHome[position].urlimage, Base64.DEFAULT)
+//            var decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.size)
+//            val height = 150
+//            val factor: Float = (height * 1.0 / decodedByte.height).toFloat()
+//            decodedByte = Bitmap.createScaledBitmap(
+//                decodedByte,
+//                (decodedByte.width * factor * 1.0).toInt(), height, true
+//            )
+//            Glide.with(context).load(dataViewBabyHome[position].urlimage).into(ivHomeViewBaby)
+//            Picasso.get()
+//                .load(Uri.parse(dataViewBabyHome[position].urlimage))
+//                .into(ivHomeViewBaby)
+//            ivHomeViewBaby.setImageBitmap(decodedByte)
+//            ivHomeViewBaby.setImageURI(null)
+//            ivHomeViewBaby.setImageURI(Uri.parse(dataViewBabyHome[position].urlimage))
 
             Picasso.get().load(dataViewBabyHome[position].urlimage).into(ivHomeViewBaby)
             tvHomeViewBabyName.text = dataViewBabyHome[position].name
             tvHomeViewBabyCountItem.text = dataViewBabyHome[position].amountimage
             tvHomeViewBabyItem.text = "images"
             itemView.setOnClickListener {
-//                POSITION0 = position as Int
-//                POSITION = dataViewBabyHome[position].idalbum as Int
-                val intent = Intent(context, Timeline::class.java)
+                var intent = Intent(context,Timeline :: class.java)
                 intent.putExtra("idaccount",dataViewBabyHome[position].idaccount)
-                intent.putExtra("idalbum",dataViewBabyHome[position].idalbum)
+                intent.putExtra("idAlbum",dataViewBabyHome[position].idalbum)
+                intent.putExtra("nameAlbum",dataViewBabyHome[position].name)
+                intent.putExtra("urlimage",dataViewBabyHome[position].urlimage)
+
                 context.startActivity(intent)
-                if (this@BabyHomeAdapter.mListener !=null){
-                    if (position!=RecyclerView.NO_POSITION)
+
+                if (this@BabyHomeAdapter.mListener != null) {
+                    if (position != RecyclerView.NO_POSITION)
                         this@BabyHomeAdapter.mListener.onItemClick(position)
                 }
             }
