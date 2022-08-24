@@ -51,10 +51,6 @@ class CreateAlbumActivity : AppCompatActivity(), DialogRelationFragment.ICreateN
     lateinit var flCamera: FrameLayout
     lateinit var createAlbumPresenter: CreateAlbumPresenter
     lateinit var activityResultLauncher: ActivityResultLauncher<Intent>
-    var bitmapAvatar: Boolean = false
-    var ID_ACCOUNT: Int = 1
-    private var select: Int = 1
-    lateinit var file: File
     private lateinit var file_path: String
     private lateinit var strGender: String
     private lateinit var requestBody: RequestBody
@@ -64,7 +60,14 @@ class CreateAlbumActivity : AppCompatActivity(), DialogRelationFragment.ICreateN
     private lateinit var rqGender: RequestBody
     private lateinit var rqBirthday: RequestBody
     private lateinit var rqRelation: RequestBody
+    var bitmapAvatar: Boolean = false
+    var ID_ACCOUNT: Int = 1
+    private var select: Int = 1
+    lateinit var file: File
     lateinit var path: String
+    val RESULT_CODE_CAMERA = 123
+    val RESULT_CODE_IMAGE = 234
+
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -103,7 +106,7 @@ class CreateAlbumActivity : AppCompatActivity(), DialogRelationFragment.ICreateN
         activityResultLauncher = registerForActivityResult(
             ActivityResultContracts.StartActivityForResult()
         ) { result ->
-            if (result?.resultCode == 123) {
+            if (result?.resultCode == RESULT_CODE_CAMERA) {
                 val intent = result.data
                 if (intent != null) {
                     val bitmap: Bitmap = intent.extras?.get("uriImage") as Bitmap
@@ -124,7 +127,7 @@ class CreateAlbumActivity : AppCompatActivity(), DialogRelationFragment.ICreateN
                 }
             }
 
-            if (result?.resultCode == 234) {
+            if (result?.resultCode == RESULT_CODE_IMAGE) {
                 val intent = result.data
                 if (intent != null) {
                     val dataImage: String = intent.extras?.get("uri") as String
@@ -185,22 +188,6 @@ class CreateAlbumActivity : AppCompatActivity(), DialogRelationFragment.ICreateN
         }
     }
 
-
-    private fun hideKeybroad(view: View) {
-        val inputMethodManager =
-            getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
-        inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
-    }
-
-    override fun getName(name: String) {
-        tvRelation.text = name
-        setBackgroundButton()
-    }
-
-    fun setBackgroundButton() {
-        if (bitmapAvatar && edtName.text.toString() != "" && tvBirthday.text != "" && tvRelation.text != "")
-            btnCreate.setBackgroundResource(R.drawable.shape_orange_bg_corner_20)
-    }
 
     fun getGenderAlbum(): Int {
         ivBoy.setOnClickListener {
@@ -346,5 +333,21 @@ class CreateAlbumActivity : AppCompatActivity(), DialogRelationFragment.ICreateN
             null
         )
         return Uri.parse(path)
+    }
+
+    private fun hideKeybroad(view: View) {
+        val inputMethodManager =
+            getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
+    }
+
+    override fun getName(name: String) {
+        tvRelation.text = name
+        setBackgroundButton()
+    }
+
+    fun setBackgroundButton() {
+        if (bitmapAvatar && edtName.text.toString() != "" && tvBirthday.text != "" && tvRelation.text != "")
+            btnCreate.setBackgroundResource(R.drawable.shape_orange_bg_corner_20)
     }
 }

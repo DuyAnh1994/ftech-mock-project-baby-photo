@@ -1,6 +1,7 @@
 package ai.ftech.babyphoto.screen.listimage
 
 import ai.ftech.babyphoto.R
+import ai.ftech.babyphoto.model.DataResult
 import ai.ftech.babyphoto.screen.timeline.Timeline
 import android.Manifest
 import android.app.Dialog
@@ -35,7 +36,7 @@ import java.io.File
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
-class ListImageActivity : AppCompatActivity(), IListContract.IListImageView {
+class ListImageActivity : AppCompatActivity(), IListContract.IView {
     private lateinit var rvImageView: RecyclerView
     private lateinit var ivCancel: ImageView
     private lateinit var btnAdd: Button
@@ -62,8 +63,8 @@ class ListImageActivity : AppCompatActivity(), IListContract.IListImageView {
         setContentView(R.layout.list_image_activity)
 
         var intent = intent
-         ID_ALBUM = intent.getIntExtra("idalbum",0)
-         ID_ALBUM = 1
+        ID_ALBUM = intent.getIntExtra("idalbum", 0)
+        ID_ALBUM = 1
         initView()
         default(ID_ALBUM)
         checkPermission(ID_ALBUM)
@@ -200,7 +201,7 @@ class ListImageActivity : AppCompatActivity(), IListContract.IListImageView {
         ) {
             ActivityCompat.requestPermissions(
                 this,
-                arrayOf(Manifest.permission.CAMERA), 999
+                arrayOf(Manifest.permission.CAMERA), REQUEST_CODE_CAMERA
             )
         }
         val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
@@ -322,6 +323,17 @@ class ListImageActivity : AppCompatActivity(), IListContract.IListImageView {
             dialog.cancel()
         }
         dialog.show()
+    }
+
+    override fun onList(data: DataResult<List<String>>) {
+        when (data.state) {
+
+            DataResult.State.INITIAL -> {}
+            DataResult.State.SUCCESS -> {}
+            DataResult.State.FAIL -> {}
+            DataResult.State.ERROR -> {}
+
+        }
     }
 
     override fun onSuccess(msg: String) {

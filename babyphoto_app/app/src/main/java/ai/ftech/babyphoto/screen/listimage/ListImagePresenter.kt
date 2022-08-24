@@ -3,6 +3,7 @@ package ai.ftech.babyphoto.screen.listimage
 import ai.ftech.babyphoto.R
 import ai.ftech.babyphoto.base.service.APIService
 import ai.ftech.babyphoto.model.Data
+import ai.ftech.babyphoto.model.DataResult
 import android.app.ProgressDialog
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -11,12 +12,12 @@ import retrofit2.Callback
 import retrofit2.Response
 
 
-class ListImagePresenter() : IListContract.IListImagePresenter {
+class ListImagePresenter() : IListContract.IPresenter {
 
-    private var mView: IListContract.IListImageView? = null
+    private var mView: IListContract.IView? = null
 
 
-    fun setView(v: IListContract.IListImageView) {
+    fun setView(v: IListContract.IView) {
         this.mView = v
     }
 
@@ -78,7 +79,11 @@ class ListImagePresenter() : IListContract.IListImagePresenter {
             ) {
 
                 if (response.body()!!.code == "code13") {
-                    mView?.onSuccess(response.body()!!.msg)
+//                    mView?.onSuccess(response.body()!!.msg)
+                    val data = DataResult<List<String>>()
+                    data.state = DataResult.State.SUCCESS
+                    data.data = response.body()!!.data
+                    mView?.onList(data)
                     progressdialog.dismiss()
                 } else {
                     mView?.onError(response.body()!!.msg)
@@ -92,5 +97,6 @@ class ListImagePresenter() : IListContract.IListImagePresenter {
             }
         })
     }
+
 
 }
