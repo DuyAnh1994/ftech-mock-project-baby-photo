@@ -26,7 +26,7 @@ class ChangePassPresenter(private var view: IChangePassContract.View) {
         if (!Utils().isValidPassCharacter(newPass) || !Utils().isValidPassCount(newPass)){
             return view.onCheckNewPass(ChangePassState.PASS_NOT_VALID, "new pass is not valid")
         }
-        if (!Utils().isValidPassCharacter(newPass) || !Utils().isValidPassCount(newPass) || !Utils().isMatchPass
+        if (!Utils().isValidPassCharacter(reNewPass) || !Utils().isValidPassCount(reNewPass) || !Utils().isMatchPass
                 (newPass, reNewPass)){
             return view.onCheckReNewPass(ChangePassState.PASS_NOT_MATCH, "re new pass is not match")
         }
