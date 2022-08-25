@@ -1,23 +1,31 @@
 package ai.ftech.babyphoto.screen.register
 
 import ai.ftech.babyphoto.R
-import ai.ftech.babyphoto.screen.register.RegisterActivity
+import ai.ftech.babyphoto.model.Account
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.addTextChangedListener
-import kotlinx.android.synthetic.main.activity_create_pass.*
+import com.google.android.material.textfield.TextInputEditText
+import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_enter_email.*
 import kotlinx.android.synthetic.main.activity_enter_email.btnRegisterNext2
-import kotlinx.android.synthetic.main.activity_enter_email.tieRegisterEmail
 
-class ActivityEnterEmail : AppCompatActivity() {
+class ActivityEnterEmail : AppCompatActivity(), IEnterEmailContract.View{
     private var presenter: EnterEmailPresenter? = null
-
+    private var account: Account?= null
+    private lateinit var stateCheckMail: RegisterState
+    private var textEmail = ""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_enter_email)
-
+        val bundle = intent.extras.let {
+            it?.apply {
+                account = Gson().fromJson(get("account") as String, Account::class.java)
+            }
+        }
+        var tieRegisterEmail:TextInputEditText = findViewById(R.id.tieRegisterEmail)
         presenter = EnterEmailPresenter(this)
 
         presenter!!.getAccount()
@@ -26,11 +34,43 @@ class ActivityEnterEmail : AppCompatActivity() {
             finish()
         }
         btnRegisterNext2.setOnClickListener {
-            presenter!!.nextScreen()
+            presenter!!.nextScreen(stateCheckMail, tieRegisterEmail.text.toString(), account)
         }
 
         tieRegisterEmail.addTextChangedListener {
             presenter!!.checkEmail(tieRegisterEmail.text.toString())
+        }
+    }
+
+    override fun onCheckMail(state: RegisterState, message: String) {
+        stateCheckMail = state
+        when(state){
+            RegisterState.SUCCESS ->{
+                tvRegisterWarningEmail.visibility = View.INVISIBLE
+                btnRegisterNext2.setBackgroundResource(R.drawable.selector_rec_orange_color)
+            }
+            RegisterState.EMAIL_EXIST ->{
+                tvRegisterWarningEmail.text = "This email is wrong or already exists, please enter a new email"
+            }
+            RegisterState.IS_NOT_EMAIL ->{
+                tvRegisterWarningEmail.text = "This is not email"
+            }
+            RegisterState.EMAIL_EXIST_OR_NOT_EMAIL ->{
+                tvRegisterWarningEmail.visibility = View.VISIBLE
+                btnRegisterNext2.setBackgroundResource(R.drawable.selector_rec_gray_color_orange_selected)
+            }
+            else -> {}
+        }
+    }
+
+    override fun onNextScreen(state: RegisterState, message: String, account: String) {
+        when(state){
+            RegisterState.SUCCESS->{
+                val intent = Intent(this, ActivityCreatePass::class.java)
+                intent.putExtra("account", account)
+                startActivity(intent)
+            }
+            else -> {}
         }
     }
 }

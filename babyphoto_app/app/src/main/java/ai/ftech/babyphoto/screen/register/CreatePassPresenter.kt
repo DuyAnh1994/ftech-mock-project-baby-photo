@@ -18,86 +18,54 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class CreatePassPresenter(activity: ActivityCreatePass) {
-    private val view = activity
+class CreatePassPresenter(private var view: ICreatePassContract.View) {
+//    private val view = activity
     private var account: Account? = null
-    private val bundle = view.intent.extras?.let {
-        it.apply {
-            account = Gson().fromJson(get("account") as String, Account::class.java)
-        }
-    }
 
-    fun checkPass(pass: String): Boolean {
+
+    fun checkPass(pass: String){
         val isValidPassCharacter = Utils().isValidPassCharacter(pass)
         val isValidPassCount = Utils().isValidPassCount(pass)
         if (!isValidPassCharacter || !isValidPassCount
         )
-            view.tvRegisterWarningPass.setTextColor(Color.parseColor("#DC143C"))
+            view.onCheckPass(RegisterState.SUCCESS, "pass is valid")
         else
-            view.tvRegisterWarningPass.setTextColor(Color.parseColor("#FFFFFF"))
-        return !isValidPassCount || !isValidPassCharacter
+            view.onCheckPass(RegisterState.PASS_NOT_VALID, "pass is not valid")
     }
 
-    fun checkRePass(pass: String, rePass: String): Boolean {
+    fun checkRePass(pass: String, rePass: String){
         val isMatchPass = Utils().isMatchPass(pass, rePass)
         if (!isMatchPass) {
-            view.tvRegisterWarningPass.text = "Confirm password doesn't match"
-            view.tvRegisterWarningPass.setTextColor(Color.parseColor("#DC143C"))
-            view.btnRegisterNext3.setBackgroundResource(R.drawable.selector_rec_gray_color_orange_selected)
+            view.onCheckRePass(RegisterState.PASS_NOT_MATCH, "repass is not match")
+
         } else {
-            view.tvRegisterWarningPass.setTextColor(Color.parseColor("#FFFFFF"))
-            view.btnRegisterNext3.setBackgroundResource(R.drawable.selector_rec_orange_color)
+            view.onCheckRePass(RegisterState.SUCCESS, "repass is match")
         }
-        return !isMatchPass
     }
 
-    fun openDialog(): Dialog {
-        var dialogLoadPass = Dialog(view)
-        dialogLoadPass.setContentView(R.layout.dialog_loading_register_layout)
-        dialogLoadPass.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        view.btnRegisterNext3.setOnClickListener {
-            dialogLoadPass.dismiss()
-        }
-        dialogLoadPass.show()
-        return dialogLoadPass
-    }
+    fun submit(state: RegisterState, pass: String, rePass: String, accountP: Account?) {
+        account = accountP
+        when(state){
+            RegisterState.SUCCESS->{
+                account?.password = rePass
+                APIService.base().insertAccount(
+                    account!!.email,
+                    account!!.password,
+                    account!!.firstname,
+                    account!!.lastname
+                ).enqueue(
+                    object : Callback<String> {
+                        override fun onResponse(call: Call<String>, response: Response<String>) {
+                            view.onInsertAccount(RegisterState.PASS_NOT_MATCH, "pass is not match", "")
+                        }
+                        override fun onFailure(call: Call<String>, t: Throwable) {
+                            view.onInsertAccount(RegisterState.SUCCESS, "pass is match",  account!!.email)
 
-    fun submit() {
-        Log.d("TAG", "submit: ${Gson().toJson(account)} ")
-        if (checkRePass(
-                view.tieRegisterPass.text.toString(),
-                view.tieRegisterRePass.text.toString()
-            )
-        ) return
-
-        account?.password = view.tieRegisterPass.text.toString()
-
-        print(Gson().toJson(account))
-
-        val dialog = openDialog()
-
-        APIService.base().insertAccount(
-            account!!.email,
-            account!!.password,
-            account!!.firstname,
-            account!!.lastname
-        ).enqueue(
-            object : Callback<String> {
-                override fun onResponse(call: Call<String>, response: Response<String>) {
-                    dialog.dismiss()
-                    Toast.makeText(view.applicationContext, "Insert failed", Toast.LENGTH_SHORT)
-                        .show()
-                }
-
-                override fun onFailure(call: Call<String>, t: Throwable) {
-                    dialog.dismiss()
-                    val intent = Intent(view, AccountLogin::class.java)
-                    intent.putExtra("Email", account!!.email.toString())
-                    view.startActivity(intent)
-                    Toast.makeText(view.applicationContext, "Insert Success!", Toast.LENGTH_SHORT)
-                        .show()
-                }
+                        }
+                    }
+                )
             }
-        )
+            else -> {}
+        }
     }
 }

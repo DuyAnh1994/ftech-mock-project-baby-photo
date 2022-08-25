@@ -37,7 +37,7 @@ interface DataService {
         @Field("firstname") firstName: String,
         @Field("lastname") lastName: String,
         @Field("idaccount") idaccount: Int
-    ): Call<String>
+    ): Call<ResponseModel<Any>>
 
     //cập nhật password
     @FormUrlEncoded
@@ -45,7 +45,7 @@ interface DataService {
     fun updatePass(
         @Field("idaccount") idaccount: Int,
         @Field("password") password: String
-    ): Call<String>
+    ): Call<ResponseModel<Any>>
 
     @FormUrlEncoded
     @POST("album.php")

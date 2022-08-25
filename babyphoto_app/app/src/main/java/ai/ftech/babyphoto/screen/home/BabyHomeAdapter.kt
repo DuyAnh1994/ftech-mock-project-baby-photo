@@ -1,29 +1,24 @@
 package ai.ftech.babyphoto.screen.home
 
 import ai.ftech.babyphoto.R
-import ai.ftech.babyphoto.model.Account
 import ai.ftech.babyphoto.model.AlbumBaby
 import ai.ftech.babyphoto.screen.createalbum.CreateAlbumActivity
-import ai.ftech.babyphoto.screen.register.ActivityEnterEmail
-import ai.ftech.babyphoto.screen.timeline.Timeline
-import ai.ftech.babyphoto.screen.timeline.TimelineAdapter
-import ai.ftech.babyphoto.screen.timeline.TimelineViewModel
 import android.content.Context
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
+import android.widget.ImageButton
 
 
 class BabyHomeAdapter(
     val context: Context,
-    private val dataViewBabyHome: MutableList<AlbumBaby> = mutableListOf(),
-    private val idaccount: Int
+    private val dataViewBabyHome: List<AlbumBaby> = mutableListOf(),
+    private val dataImage: Int
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     companion object {
         private const val viewTypeAdd: Int = 0;
@@ -35,8 +30,7 @@ class BabyHomeAdapter(
     interface onItemClickListenerr {
         fun onItemClick(position: Int)
     }
-
-    fun setOnItemClickListener(listener: onItemClickListenerr) {
+    fun setOnItemClickListener(listener: onItemClickListenerr){
         mListener = listener
     }
 
@@ -59,7 +53,7 @@ class BabyHomeAdapter(
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         holder.apply {
             when (holder) {
-                is ViewTitle -> holder.bind(idaccount)
+                is ViewTitle -> holder.bind(dataImage)
                 is ViewHolder -> holder.bind(position - 1)
             }
         }
@@ -71,11 +65,10 @@ class BabyHomeAdapter(
 
     inner class ViewTitle(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val ibHomeAddBaby: ImageButton = itemView.findViewById(R.id.ibHomeAddBaby)
-        fun bind(idaccount: Int) {
-            //  ibHomeAddBaby.setBackgroundResource(image)
+        fun bind(image: Int) {
+            ibHomeAddBaby.setBackgroundResource(image)
             ibHomeAddBaby.setOnClickListener {
-                val intent = Intent(context, CreateAlbumActivity::class.java)
-                intent.putExtra("idaccount", idaccount)
+                val intent = Intent(context,CreateAlbumActivity::class.java)
                 context.startActivity(intent)
             }
         }
@@ -110,16 +103,13 @@ class BabyHomeAdapter(
             tvHomeViewBabyCountItem.text = dataViewBabyHome[position].amountimage
             tvHomeViewBabyItem.text = "images"
             itemView.setOnClickListener {
-                var intent = Intent(context,Timeline :: class.java)
-                intent.putExtra("idaccount",dataViewBabyHome[position].idaccount)
-                intent.putExtra("idAlbum",dataViewBabyHome[position].idalbum)
-                intent.putExtra("nameAlbum",dataViewBabyHome[position].name)
-                intent.putExtra("urlimage",dataViewBabyHome[position].urlimage)
-
-                context.startActivity(intent)
-
-                if (this@BabyHomeAdapter.mListener != null) {
-                    if (position != RecyclerView.NO_POSITION)
+//                POSITION0 = position as Int
+//                POSITION = dataViewBabyHome[position].idalbum as Int
+//                val intent = Intent(this, TimelineAdapter::class.java)
+//                intent.putExtra("account", )
+//                startActivity(intent)
+                if (this@BabyHomeAdapter.mListener !=null){
+                    if (position!=RecyclerView.NO_POSITION)
                         this@BabyHomeAdapter.mListener.onItemClick(position)
                 }
             }

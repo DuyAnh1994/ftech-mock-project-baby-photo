@@ -92,30 +92,36 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/ctlHomeTopMenu" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rcvHomeAddBaby"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tvHomeYourBaby" />
+<!--        <androidx.recyclerview.widget.RecyclerView-->
+<!--            android:id="@+id/rcvHomeAddBaby"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toBottomOf="@id/tvHomeYourBaby" />-->
 
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:id="@+id/srlHome"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="@+id/tvHomeYourBaby"
-            app:layout_constraintStart_toEndOf="@+id/rcvHomeAddBaby"
-            app:layout_constraintTop_toBottomOf="@id/tvHomeYourBaby">
+            android:layout_height="0dp"
+            app:layout_constraintTop_toBottomOf="@id/tvHomeYourBaby"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/tvEndHome">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rcvHomeViewBaby"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_constraintEnd_toEndOf="@+id/tvHomeYourBaby"
-                app:layout_constraintStart_toEndOf="@+id/rcvHomeAddBaby"
-                app:layout_constraintTop_toBottomOf="@id/tvHomeYourBaby" />
+                />
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+      <TextView
+          android:layout_width="match_parent"
+          android:layout_height="0dp"
+          android:id="@+id/tvEndHome"
+          app:layout_constraintBottom_toBottomOf="parent"
+          app:layout_constraintStart_toStartOf="parent"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/nvHomeToDetailAccount"

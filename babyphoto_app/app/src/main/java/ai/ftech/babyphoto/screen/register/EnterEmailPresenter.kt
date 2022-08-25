@@ -17,14 +17,8 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class EnterEmailPresenter(activity: ActivityEnterEmail) {
-    private  val view = activity
+class EnterEmailPresenter(private var view: IEnterEmailContract.View) {
     private var account: Account?= null
-    private val bundle = view.intent.extras.let {
-        it?.apply {
-            account = Gson().fromJson(get("account") as String, Account::class.java)
-        }
-    }
 
     //khai báo service
     private val apiService = APIService.base()
@@ -40,14 +34,11 @@ class EnterEmailPresenter(activity: ActivityEnterEmail) {
                 ) {
                     if (response.body() != null){
                         lAccount = response.body()!!.data
-                        Toast.makeText(view, "Get data success", Toast.LENGTH_SHORT).show()
                         return
                     }
-                    Toast.makeText(view, "Data is empty", Toast.LENGTH_SHORT).show()
                 }
 
                 override fun onFailure(call: Call<ResponseModel<List<Account>>>, t: Throwable) {
-                    Toast.makeText(view, "Get data failed", Toast.LENGTH_SHORT).show()
                     Log.e("ERROR",t.toString())
                 }
 
@@ -55,36 +46,34 @@ class EnterEmailPresenter(activity: ActivityEnterEmail) {
         )
     }
 
-    fun checkEmail(email: String): Boolean{
+    fun checkEmail(email: String){
         val hasEmail = lAccount.any { accountModel: Account ->  accountModel.email == email}
         val isEmail = Utils().isEmail(email)
 
         if (hasEmail){
-            view.tvRegisterWarningEmail.text = "This email is wrong or already exists, please enter a new email"
+            view.onCheckMail(RegisterState.EMAIL_EXIST, "email is exist")
         }
 
         if (!isEmail){
-            view.tvRegisterWarningEmail.text = "This is not email"
+            view.onCheckMail(RegisterState.IS_NOT_EMAIL, "this is not a email")
         }
 
         if(hasEmail || !isEmail){
-            view.tvRegisterWarningEmail.visibility = View.VISIBLE
-            view.btnRegisterNext2.setBackgroundResource(R.drawable.selector_rec_gray_color_orange_selected)
+           view.onCheckMail(RegisterState.EMAIL_EXIST_OR_NOT_EMAIL, "emai not exist or not email")
         }else{
-            view.tvRegisterWarningEmail.visibility = View.INVISIBLE
-            view.btnRegisterNext2.setBackgroundResource(R.drawable.selector_rec_orange_color)
+            view.onCheckMail(RegisterState.SUCCESS, "email is ok")
         }
 
-        return hasEmail || !isEmail
     }
 
-    fun nextScreen(){
-        if (checkEmail(view.tieRegisterEmail.text.toString())) return
-
-        account?.email = view.tieRegisterEmail.text.toString()
-
-        val intent = Intent(view, ActivityCreatePass::class.java)
-        intent.putExtra("account", Gson().toJson(account))
-        view.startActivity(intent)
+    fun nextScreen(state: RegisterState, email: String, accountN: Account?){
+        account = accountN
+        when(state){
+            RegisterState.SUCCESS->{
+                account?.email = email
+                view.onNextScreen(RegisterState.SUCCESS, "screen is next", Gson().toJson(account))
+            }
+            else -> {}
+        }
     }
 }
