@@ -24,7 +24,7 @@ import com.squareup.picasso.Picasso
 
 class TimelineAdapter(
     val context: Context,
-    private val dataImage: MutableList<Image>,
+    private val dataImage: List<Image>,
 ) : RecyclerView.Adapter<TimelineAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -33,14 +33,8 @@ class TimelineAdapter(
         return ViewHolder(view)
     }
 
-    // binds the list items to a view
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-
-        // sets the image to the imageview from our itemHolder class
         val item = dataImage[position]
-
-        Log.d("TAG", "onBindViewHolder: ${item.urlimage}")
-//        holder.ivItemGallery.setImageURI(Uri.parse(item.urlImage))
         Picasso.get()
             .load(Uri.parse(item.urlimage))
             .into(holder.ivTimeLineViewImage)
@@ -50,12 +44,10 @@ class TimelineAdapter(
         }
     }
 
-    // return the number of the items in the list
     override fun getItemCount(): Int {
         return dataImage.size
     }
 
-    // Holds the views for adding it to image and text
     class ViewHolder(ItemView: View) : RecyclerView.ViewHolder(ItemView) {
         val ivTimeLineViewImage: ImageView = itemView.findViewById(R.id.ivTimeLineViewImage)
     }

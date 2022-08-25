@@ -1,45 +1,39 @@
 package ai.ftech.babyphoto.screen.register
 
-import ai.ftech.babyphoto.R
-import ai.ftech.babyphoto.screen.register.RegisterActivity
 import ai.ftech.babyphoto.base.Utils
 import ai.ftech.babyphoto.model.Account
 import android.content.Intent
-import android.graphics.Color
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_register.*
 import kotlin.random.Random
 
-class RegisterPresenter(activity: RegisterActivity) {
-    private val view = activity
-    fun checkName(name: String?, name2: String?): Boolean {
+class RegisterPresenter(private var view: IRegisterContract.View) {
+    fun checkName(name: String?, name2: String?){
         val isName = Utils().isValidName(name, name2)
         val isNull = Utils().checkNull(name, name2)
         if (isName && !isNull) {
-            view.btnRegisterNext1.setBackgroundResource(R.drawable.selector_rec_orange_color)
-            view.tvRegisterWarning.setTextColor(Color.parseColor("#66000000"))
+            view.onCheckName(RegisterState.SUCCESS, "name is valid")
         }else {
-            view.btnRegisterNext1.setBackgroundResource(R.drawable.selector_rec_gray_color_orange_selected)
-            view.tvRegisterWarning.setTextColor(Color.parseColor("#FF4B4B"))
+            view.onCheckName(RegisterState.NAME_NOT_VALID, "name is not valid")
         }
-        return isName && !isNull
     }
 
-    fun nextScreen(){
-        if (!checkName(
-                view.edtRegisterFirstName.text.toString(),
-                view.edtRegisterLastName.text.toString()
-            )) return
-        val account = Account(
-            "",
-            "",
-            view.edtRegisterFirstName.text.toString(),
-            view.edtRegisterLastName.text.toString(),
-            Random.nextInt(10000)
-        )
-
-        val intent = Intent(view, ActivityEnterEmail::class.java)
-        intent.putExtra("account", Gson().toJson(account))
-        view.startActivity(intent)
+    fun nextScreen(state: RegisterState, firstName: String, lastName: String){
+       when(state){
+           RegisterState.SUCCESS ->{
+               val account = Account(
+                   "",
+                   "",
+                   firstName,
+                   lastName,
+                   Random.nextInt(10000)
+               )
+               view.onNextScreen(RegisterState.SUCCESS, "name is valid", Gson().toJson(account))
+           }
+           RegisterState.NAME_NOT_VALID->{
+               view.onNextScreen(RegisterState.NAME_NOT_VALID, "name is not valid", "")
+           }
+           else -> {}
+       }
     }
 }

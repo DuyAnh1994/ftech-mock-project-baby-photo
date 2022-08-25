@@ -1,14 +1,16 @@
 package ai.ftech.babyphoto.screen.timeline
 
 import ai.ftech.babyphoto.R
-import ai.ftech.babyphoto.base.service.APIService
 import ai.ftech.babyphoto.model.Image
-import ai.ftech.babyphoto.model.ResponseModel
 import ai.ftech.babyphoto.screen.listimage.ListImageActivity
+import ai.ftech.babyphoto.screen.test.TestActivity
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.util.AttributeSet
+import android.view.View
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
@@ -17,122 +19,92 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.activity_timeline.*
-import kotlinx.android.synthetic.main.create_album_activity.*
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
 
-class Timeline : AppCompatActivity() {
-    @RequiresApi(Build.VERSION_CODES.O)
-    private var index1: Int = 0
+class Timeline : AppCompatActivity(), ITimelineContract.View {
+    private lateinit var presenter: TimelinePresenter
+    private var idAlbum: String? = "-1"
+    private var nameAlbum: String? = ""
+    private val lImage: MutableList<Image> = ArrayList()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContentView(R.layout.activity_timeline)
-        val fabAdd : FloatingActionButton = findViewById(R.id.fabTimeLineAdd)
+        val fabAdd: FloatingActionButton = findViewById(R.id.fabTimeLineAdd)
+        presenter = TimelinePresenter(this)
+
         val bundle: Bundle? = intent.extras
-        val idalbum = bundle?.get("idalbum")
-        val nameAlbum = bundle?.get("nameAlbum")
-        val idAlbum = bundle?.get("idAlbum")
+        idAlbum = bundle?.getString("idalbum")
+        nameAlbum = bundle?.getString("nameAlbum")
         val urlimage = bundle?.get("urlimage")
-        var rvTimelineViewImage: RecyclerView = findViewById(R.id.rvTimelineViewImage)
 
-        // on below line we are
-        // initializing our list
-        var lImage: MutableList<Image> = ArrayList()
-
-        // on below line we are initializing our adapter
-        var timelineAdapter = TimelineAdapter(this, lImage)
-
-        fabAdd.setOnClickListener {
-            var intent = Intent(this,ListImageActivity::class.java)
-            startActivity(intent)
-        }
-        // on below line we are setting layout manager for our recycler view
+        val rvTimelineViewImage: RecyclerView = findViewById(R.id.rvTimelineViewImage)
+        val timelineAdapter = TimelineAdapter(this, lImage)
         val staggeredGridLayoutManager = StaggeredGridLayoutManager(2, LinearLayoutManager.VERTICAL)
+
         rvTimelineViewImage.layoutManager = staggeredGridLayoutManager
-
-
-        // on below line we are setting
-        // adapter to our recycler view.
         rvTimelineViewImage.adapter = timelineAdapter
 
-        // on below line we are adding data to our list
-//        lImage.add(TimelineViewModel("https://videocdn.geeksforgeeks.org/geeksforgeeks/2DTranslationinComputerGraphics/2DTranslationinComputerGraphics20220628122713-small.png"))
-//        lImage.add(TimelineViewModel("https://videocdn.geeksforgeeks.org/geeksforgeeks/PythonProgramforFibonacciSeries/FibonacciseriesinPython20220627183541-small.png"))
-//        lImage.add(TimelineViewModel("https://pbs.twimg.com/media/FV6-TWhUsAY92R_.jpg"))
-//        lImage.add(TimelineViewModel("https://videocdn.geeksforgeeks.org/geeksforgeeks/PerformCRUDOperationusingFirebaseinFlutter/PerformCRUDOperationusingFirebaseinFlutter20220627152121-small.png"))
-//        lImage.add(TimelineViewModel("https://videocdn.geeksforgeeks.org/geeksforgeeks/CProgramtoConvertLowercasetoUppercaseviceversa/CProgramtoConvertLowercasetoUppercase20220627145001-small.png"))
-//        lImage.add(TimelineViewModel("https://videocdn.geeksforgeeks.org/geeksforgeeks/OptimalPageReplacementAlgorithminOS/OptimalPageReplacement20220627124822-small.png"))
-//        lImage.add(TimelineViewModel("https://videocdn.geeksforgeeks.org/geeksforgeeks/JavaProgramtoFindQuotientRemainder/JavaProgramtoFindQuotientandRemainder20220626125601-small.png"))
-//        lImage.add(TimelineViewModel("https://videocdn.geeksforgeeks.org/geeksforgeeks/FirstandFollowinCompilerDesign/FirstFollowinCompilerDesign20220624172015-small.png"))
-//        lImage.add(TimelineViewModel("https://media.geeksforgeeks.org/wp-content/uploads/geeksforgeeks-25.png"))
-//        lImage.add(TimelineViewModel("https://media.geeksforgeeks.org/wp-content/uploads/20220531202857/photo6102488593462309569.jpg"))
-//        lImage.add(TimelineViewModel("https://practice.geeksforgeeks.org/_next/image?url=https%3A%2F%2Fmedia.geeksforgeeks.org%2Fimg-practice%2Fbanner%2Fdsa-self-paced-thumbnail.png%3Fv%3D19171&w=1920&q=75"))
-//        lImage.add(TimelineViewModel("https://practice.geeksforgeeks.org/_next/image?url=https%3A%2F%2Fmedia.geeksforgeeks.org%2Fimg-practice%2Fbanner%2Fcompetitive-programming-live-thumbnail.png%3Fv%3D19171&w=1920&q=75"))
+        srlTimeLine.isRefreshing = true
+        presenter.getImage(idAlbum)
 
-        // on below line we are notifying adapter
-        // that data has been updated.
-        timelineAdapter.notifyDataSetChanged()
+        srlTimeLine.setOnRefreshListener {
+            lImage.clear()
+            rvTimelineViewImage.adapter!!.notifyDataSetChanged()
+            srlTimeLine.isRefreshing = true
+            presenter.getImage(idAlbum)
+        }
 
-        APIService.base().getImageId(1).enqueue(
-            object : Callback<ResponseModel<List<Image>>> {
-                @RequiresApi(Build.VERSION_CODES.O)
-                override fun onResponse(
-                    call: Call<ResponseModel<List<Image>>>,
-                    response: Response<ResponseModel<List<Image>>>
-                ) {
-                    val lImage: MutableList<Image> = ArrayList()
-//                    val lImage: MutableList<AlbumBaby> = ArrayList()
-                    val res = response.body() as ResponseModel<List<Image>>
-//                    print(res.data)
-                    lImage.addAll(res.data)
-                    srlTimeLine.setOnRefreshListener {
-                        lImage.clear()
-                        lImage.addAll(res.data)
-                        rvTimelineViewImage.adapter!!.notifyDataSetChanged()
-                        srlTimeLine.isRefreshing = false
-                    }
-                    rvTimelineViewImage.adapter =
-                        TimelineAdapter(this@Timeline, lImage)
-                    lImage.forEachIndexed { index, timeline ->
-                        if (timeline.idalbum == idAlbum)
-                            index1 = index
-                    }
-                    val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
-                    var timeline  = lImage[index1].timeline
-                    val dt = LocalDate.parse(timeline, formatter)
-                    tvTimeLineCountYear.text = (dt.until(LocalDate.now()).years).toString()
-                    tvTimeLineCountMonth.text = (dt.until(LocalDate.now()).months).toString()
-                    tvTimeLineCountDay.text = (dt.until(LocalDate.now()).days).toString()
-                    val format = DateTimeFormatter.ofPattern("MMMM dd, yyyy")
-                    tvTimeLineItemDateStart.text = (dt.format(format)).toString()
-                    tvTimeLineItemDateEnd.text = (LocalDate.now().format(format)).toString()
-                    tvTimelineItemTitle.text = nameAlbum.toString()
-                    Picasso.get()
-                        .load(Uri.parse(urlimage.toString()))
-                        .into(civTimeLineAvatarCirCle)
-//                    val manager = GridLayoutManager(this@Home, 2, GridLayoutManager.VERTICAL, false)
-//                    recycleBaby.layoutManager = manager
-                }
+        fabTimeLineAdd.setOnClickListener {
+            var intent = Intent(this, TestActivity::class.java)
+            startActivity(intent)
+        }
 
-                override fun onFailure(call: Call<ResponseModel<List<Image>>>, t: Throwable) {
-                    Toast.makeText(this@Timeline, "Get image failed", Toast.LENGTH_SHORT).show()
-                }
+        fabAdd.setOnClickListener {
+            var intent = Intent(this, ListImageActivity::class.java)
+            startActivity(intent)
+        }
 
-            }
-        )
         ibTimeLineBack.setOnClickListener {
             finish()
         }
-//        println(dt.format(format))
-//        println(DateFormat.getDateInstance(DateFormat.LONG).format(dt))
+    }
 
-        
+    @RequiresApi(Build.VERSION_CODES.O)
+    override fun onGetImage(state: TimelineState, message: String, lImage: List<Image>) {
+        when (state) {
+            TimelineState.SUCCESS -> {
+                srlTimeLine.isRefreshing = false
+                this.lImage.addAll(lImage)
 
+                rvTimelineViewImage.adapter!!.notifyDataSetChanged()
+
+                if (lImage.isEmpty()) return
+
+                val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
+                val timeline = lImage.first().timeline
+                val dt = LocalDate.parse(timeline, formatter)
+
+                tvTimeLineCountYear.text = (dt.until(LocalDate.now()).years).toString()
+                tvTimeLineCountMonth.text = (dt.until(LocalDate.now()).months).toString()
+                tvTimeLineCountDay.text = (dt.until(LocalDate.now()).days).toString()
+
+                val format = DateTimeFormatter.ofPattern("MMMM dd, yyyy")
+                tvTimeLineItemDateStart.text = (dt.format(format)).toString()
+                tvTimeLineItemDateEnd.text = (LocalDate.now().format(format)).toString()
+                tvTimelineItemTitle.text = nameAlbum.toString()
+
+                Picasso.get()
+                    .load(Uri.parse(lImage.first().urlimage))
+                    .into(civTimeLineAvatarCirCle)
+            }
+            TimelineState.GET_IMAGE_FAILED -> {
+                Toast.makeText(this, "Get image failed", Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 }

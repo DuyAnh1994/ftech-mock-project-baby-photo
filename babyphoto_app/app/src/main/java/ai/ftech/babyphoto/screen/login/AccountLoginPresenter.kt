@@ -1,36 +1,34 @@
 package ai.ftech.babyphoto.screen.login
 
 import ai.ftech.babyphoto.R
+import ai.ftech.babyphoto.base.Constant
 import ai.ftech.babyphoto.base.Utils
 import ai.ftech.babyphoto.base.service.APIService
 import ai.ftech.babyphoto.model.Account
 import ai.ftech.babyphoto.model.ResponseModel
-import ai.ftech.babyphoto.screen.home.Home
 import android.app.Dialog
-import android.content.Context.INPUT_METHOD_SERVICE
-import android.content.Intent
+import android.content.Context
+import android.content.SharedPreferences
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat.getSystemService
 import kotlinx.android.synthetic.main.activity_account_login.*
 import kotlinx.android.synthetic.main.activity_enter_email.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import kotlin.collections.indexOf as indexOf
 
-class AccountLoginPresenter(activity: AccountLogin) {
-    private val view = activity
+class AccountLoginPresenter(private var view: ILoginContract.View) {
+
     private val apiService = APIService.base()
     private var lAccount = mutableListOf<Account>()
     private var index1: Int = 0
+    private var sharedPreferences: SharedPreferences? = null
+    private var editor: SharedPreferences.Editor? = null
 
     fun getAccount() {
         apiService.account().enqueue(
@@ -41,14 +39,11 @@ class AccountLoginPresenter(activity: AccountLogin) {
                 ) {
                     if (response.body() != null) {
                         response.body()!!.data.also { lAccount = it as MutableList<Account> }
-                        Toast.makeText(view, "Get data success", Toast.LENGTH_SHORT).show()
                         return
                     }
-                    Toast.makeText(view, "Data is empty", Toast.LENGTH_SHORT).show()
                 }
 
                 override fun onFailure(call: Call<ResponseModel<List<Account>>>, t: Throwable) {
-                    Toast.makeText(view, "Get data failed", Toast.LENGTH_SHORT).show()
                     Log.e("ERROR", t.toString())
                 }
 
@@ -56,57 +51,48 @@ class AccountLoginPresenter(activity: AccountLogin) {
         )
     }
 
+    fun login(email: String, password: String) {
 
-    fun login() {
-        val email = view.tieAccountLoginEmail.text.toString()
-        val password = view.tieAccountLoginPass.text.toString()
-
-        if (email.trim().isEmpty() || password.trim().isEmpty()) return
-        if (lAccount.any { account: Account -> account.email == email && account.password == password }) {
-            val intent = Intent(view, Home::class.java)
-
-            lAccount.forEachIndexed { index, account ->
-                if (account.email == email)
-                    index1 = index
-            }
-            intent.putExtra("idaccount", lAccount[index1].idaccount)
-            view.startActivity(intent)
-            view.finish()
+        if (email.trim().isEmpty() || password.trim().isEmpty()) {
+            view.onLogin(LoginState.EMAIL_OR_PASS_EMPTY, "email, pass is empty", -1)
         } else {
-            showBottomSheet()
+            val account: Account? = lAccount.find { password == it.password && email == it.email }
+
+            if (account != null) {
+                Constant.account = account
+                view.onLogin(LoginState.SUCCESS, "email, pass is valid", lAccount[index1].idaccount)
+            } else {
+                view.onLogin(LoginState.EMAIL_NOT_FOUND, "email, pass is not found", -1)
+            }
         }
     }
 
-    fun checkValidAccount(email: String, pass: String): Boolean {
+    fun checkMailNull(email: String?) {
+        if (email == null) {
+            view.onCheckMailNull(LoginState.MAIL_NULL, "emai is null")
+
+        } else {
+            view.onCheckMailNull(LoginState.MAIL_NOT_NULL, "email is not null")
+        }
+    }
+
+    fun checkValidAccount(email: String, pass: String) {
         val isValid =
             lAccount.any { account: Account -> account.email == email && account.password == pass }//mk correct
         val isValid2 = Utils().checkNull(email, pass)// true->null
         if (!isValid2 && isValid) {
-            view.tvAccountLoginWarning.visibility = View.INVISIBLE
-            view.acbAccountLogin.setBackgroundResource(R.drawable.selector_rec_orange_color_correct_login)
+            view.onValidAccount(LoginState.SUCCESS, "email, pass is valid")
         } else if (!isValid2 && !isValid) {
-            view.tvAccountLoginWarning.visibility = View.VISIBLE
-            view.acbAccountLogin.setBackgroundResource(R.drawable.selector_rec_orange_color_correct_login)
+            view.onValidAccount(LoginState.EMAIL_NOT_FOUND, "email, pass is not found")
         } else {
-            view.tvAccountLoginWarning.visibility = View.VISIBLE
-            view.acbAccountLogin.setBackgroundResource(R.drawable.selector_rec_gray_incorrect_login)
+            view.onValidAccount(
+                LoginState.EMAIL_NOT_FOUND_OR_EMPTY,
+                "email, pass is not found or empty"
+            )
         }
-        return !isValid2 && isValid
-
     }
 
-    fun showBottomSheet(): Dialog {
-        var dialog = Dialog(view)
-        dialog.setContentView(R.layout.password_recovery_bottomsheet_layout)
-        dialog.window?.setLayout(
-            ViewGroup.LayoutParams.MATCH_PARENT,
-            ViewGroup.LayoutParams.WRAP_CONTENT
-        )
-        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        dialog.show()
-        dialog.window?.setGravity(Gravity.BOTTOM)
-        return dialog
-    }
+
 //    fun hideKeyboard(view: View) {
 //        val inputMethodManager = getSystemService(view.context.applicationContext.INPUT_METHOD_SERVICE) as InputMethodManager
 //        inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)

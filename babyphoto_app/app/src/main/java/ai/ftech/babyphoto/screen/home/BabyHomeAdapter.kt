@@ -1,35 +1,18 @@
 package ai.ftech.babyphoto.screen.home
 
 import ai.ftech.babyphoto.R
-import ai.ftech.babyphoto.model.Account
 import ai.ftech.babyphoto.model.AlbumBaby
 import ai.ftech.babyphoto.screen.createalbum.CreateAlbumActivity
-import ai.ftech.babyphoto.screen.register.ActivityEnterEmail
-import ai.ftech.babyphoto.screen.timeline.TimelineAdapter
 import android.content.Context
 import android.content.Intent
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.icu.number.NumberFormatter.with
-import android.icu.number.NumberRangeFormatter.with
-import android.net.Uri
-import android.util.Base64
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
-import androidx.core.graphics.scale
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
-import android.icu.number.NumberRangeFormatter
-import android.text.format.Time
 import android.widget.ImageButton
-import androidx.core.content.ContextCompat.startActivity
-import com.bumptech.glide.Glide
-import com.google.gson.Gson
 
 
 class BabyHomeAdapter(

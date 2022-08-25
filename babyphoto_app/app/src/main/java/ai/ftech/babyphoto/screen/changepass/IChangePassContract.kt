@@ -1,0 +1,16 @@
+package ai.ftech.babyphoto.screen.changepass
+
+import ai.ftech.babyphoto.model.Account
+import android.app.Dialog
+
+interface IChangePassContract {
+    interface View{
+        fun onGetAccountId(state: ChangePassState, message: String)
+        fun onCheckPass(state: ChangePassState, message: String)
+        fun onCheckNewPass(state: ChangePassState, message: String)
+        fun onCheckReNewPass(state: ChangePassState, message: String)
+        fun onCheckNull(state: ChangePassState, message: String)
+        fun onSubmit(state: ChangePassState, message: String, dialog: Dialog)
+
+    }
+}
