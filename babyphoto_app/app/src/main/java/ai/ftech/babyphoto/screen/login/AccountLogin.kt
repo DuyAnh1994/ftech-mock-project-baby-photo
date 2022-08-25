@@ -58,11 +58,6 @@ class AccountLogin : AppCompatActivity(), CompoundButton.OnCheckedChangeListener
             val password = tieAccountLoginPass.text.toString()
             presenter?.login(email, password)
         }
-//        tieAccountLoginPass.inputType = InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
-        presenter?.checkValidAccount(
-            tieAccountLoginEmail.text.toString().trim(),
-            tieAccountLoginPass.text.toString().trim()
-        )
         ai.ftech.babyphoto.screen.register.MultiTextWatcher()
             .registerEditText(tieAccountLoginEmail)
             .registerEditText(tieAccountLoginPass)
