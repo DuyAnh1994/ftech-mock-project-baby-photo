@@ -136,6 +136,7 @@ class Home : AppCompatActivity(), BabyHomeAdapter.onItemClickListenerr, IHomeCon
         intent.putExtra("idalbum", mutableListBaby1[position].idalbum)
         intent.putExtra("nameAlbum", mutableListBaby1[position].name)
         intent.putExtra("urlimage", mutableListBaby1[position].urlimage)
+        intent.putExtra("birthday", mutableListBaby1[position].birthday)
         startActivity(intent)
     }
 

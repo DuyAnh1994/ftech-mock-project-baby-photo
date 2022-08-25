@@ -10,6 +10,7 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.util.AttributeSet
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.annotation.RequiresApi
@@ -22,14 +23,19 @@ import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_timeline.*
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 class Timeline : AppCompatActivity(), ITimelineContract.View {
     private lateinit var presenter: TimelinePresenter
     private var idAlbum: String? = "-1"
     private var nameAlbum: String? = ""
+    private var urlimage: String? = ""
+    private var birthday: String? = ""
     private val lImage: MutableList<Image> = ArrayList()
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -40,7 +46,25 @@ class Timeline : AppCompatActivity(), ITimelineContract.View {
         val bundle: Bundle? = intent.extras
         idAlbum = bundle?.getString("idalbum")
         nameAlbum = bundle?.getString("nameAlbum")
-        val urlimage = bundle?.get("urlimage")
+        birthday = bundle?.get("birthday").toString()
+        urlimage = bundle?.getString("urlimage")
+
+
+        Picasso.get()
+            .load(Uri.parse(urlimage))
+            .into(civTimeLineAvatarCirCle)
+        val formatter = DateTimeFormatter.ofPattern("dd/M/yyyy")
+        birthday.hashCode()
+        var dt = LocalDate.parse("$birthday", formatter)
+
+        tvTimeLineCountYear.text = (dt.until(LocalDate.now()).years).toString()
+        tvTimeLineCountMonth.text = (dt.until(LocalDate.now()).months).toString()
+        tvTimeLineCountDay.text = (dt.until(LocalDate.now()).days).toString()
+
+        val format = DateTimeFormatter.ofPattern("MMMM dd, yyyy")
+        tvTimeLineItemDateStart.text = (dt.format(format)).toString()
+        tvTimeLineItemDateEnd.text = (LocalDate.now().format(format)).toString()
+        tvTimelineItemTitle.text = nameAlbum.toString()
 
         val rvTimelineViewImage: RecyclerView = findViewById(R.id.rvTimelineViewImage)
         val timelineAdapter = TimelineAdapter(this, lImage)
@@ -85,22 +109,6 @@ class Timeline : AppCompatActivity(), ITimelineContract.View {
 
                 if (lImage.isEmpty()) return
 
-                val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
-                val timeline = lImage.first().timeline
-                val dt = LocalDate.parse(timeline, formatter)
-
-                tvTimeLineCountYear.text = (dt.until(LocalDate.now()).years).toString()
-                tvTimeLineCountMonth.text = (dt.until(LocalDate.now()).months).toString()
-                tvTimeLineCountDay.text = (dt.until(LocalDate.now()).days).toString()
-
-                val format = DateTimeFormatter.ofPattern("MMMM dd, yyyy")
-                tvTimeLineItemDateStart.text = (dt.format(format)).toString()
-                tvTimeLineItemDateEnd.text = (LocalDate.now().format(format)).toString()
-                tvTimelineItemTitle.text = nameAlbum.toString()
-
-                Picasso.get()
-                    .load(Uri.parse(lImage.first().urlimage))
-                    .into(civTimeLineAvatarCirCle)
             }
             TimelineState.GET_IMAGE_FAILED -> {
                 Toast.makeText(this, "Get image failed", Toast.LENGTH_SHORT).show()
