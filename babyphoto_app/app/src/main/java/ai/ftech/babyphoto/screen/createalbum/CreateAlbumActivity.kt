@@ -4,7 +4,7 @@ import ai.ftech.babyphoto.R
 import ai.ftech.babyphoto.model.DataResult
 import ai.ftech.babyphoto.screen.createalbum.preview.PhotoFolderActivity
 import ai.ftech.babyphoto.screen.createalbum.relation.DialogRelationFragment
-import ai.ftech.babyphoto.screen.home.HomeActivity
+import ai.ftech.babyphoto.screen.home.Home
 import android.app.Activity
 import android.app.ProgressDialog
 import android.content.Intent
@@ -57,7 +57,7 @@ class CreateAlbumActivity : AppCompatActivity(), DialogRelationFragment.ICreateN
     private lateinit var rqRelation: RequestBody
     var progressdialog: ProgressDialog? = null
     var bitmapAvatar: Boolean = false
-    var ID_ACCOUNT: Int = 1
+    var ID_ACCOUNT: Int = 0
     private var select: Int = 1
     lateinit var file: File
     lateinit var path: String
@@ -70,15 +70,15 @@ class CreateAlbumActivity : AppCompatActivity(), DialogRelationFragment.ICreateN
         super.onCreate(savedInstanceState)
         setContentView(R.layout.create_album_activity)
 
-//        var intent = intent
-//        ID_ACCOUNT = intent.getIntExtra("idaccount", 0)
+        var intent = intent
+        ID_ACCOUNT = intent.getIntExtra("idaccount", 0)
         initView()
         getUriBaby()
         getGenderAlbum()
         getRelationAlbum()
         changeButton()
         onClick()
-        getAvatar(ID_ACCOUNT)
+        getAvatar()
     }
 
     private fun onClick() {
@@ -104,7 +104,7 @@ class CreateAlbumActivity : AppCompatActivity(), DialogRelationFragment.ICreateN
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    private fun getAvatar(ID_ACCOUNT: Int?) {
+    private fun getAvatar() {
         activityResultLauncher = registerForActivityResult(
             ActivityResultContracts.StartActivityForResult()
         ) { result ->
@@ -230,7 +230,7 @@ class CreateAlbumActivity : AppCompatActivity(), DialogRelationFragment.ICreateN
         val birthday: String = tvBirthday.text.toString()
         val relation: String = tvRelation.text.toString()
 
-        rqIdaccount = RequestBody.create(MediaType.parse("multipart/form-data"), "1")
+        rqIdaccount = RequestBody.create(MediaType.parse("multipart/form-data"), ID_ACCOUNT.toString())
         rqName = RequestBody.create(MediaType.parse("multipart/form-data"), name)
         rqGender = RequestBody.create(MediaType.parse("multipart/form-data"), strGender)
         rqBirthday = RequestBody.create(MediaType.parse("multipart/form-data"), birthday)
@@ -286,8 +286,8 @@ class CreateAlbumActivity : AppCompatActivity(), DialogRelationFragment.ICreateN
         when (data.state) {
             DataResult.State.SUCCESS -> {
                 Toast.makeText(applicationContext, data.data, Toast.LENGTH_SHORT).show()
-                val intent = Intent(applicationContext, HomeActivity::class.java)
-                intent.putExtra("idalbum", "1")
+                val intent = Intent(applicationContext, Home::class.java)
+                intent.putExtra("idaccount", ID_ACCOUNT)
                 startActivity(intent)
             }
             DataResult.State.FAIL -> {

@@ -26,7 +26,6 @@ class ListImagePresenter(var mView: IListContract.IView) : IListContract.IPresen
         idalbum: RequestBody,
         description: RequestBody,
         timeline: RequestBody,
-        ID_ALBUM: Int
     ) {
         mView.showLoading()
         val dataService = APIService.base()
@@ -103,7 +102,7 @@ class ListImagePresenter(var mView: IListContract.IView) : IListContract.IPresen
         })
     }
 
-    override fun getImage(ID_ALBUM: Int, mThis: ListImageActivity) {
+    override fun getImage(mThis: ListImageActivity) {
         var arrayImage: MutableList<String> = ArrayList()
         var arrayCb: MutableList<Boolean> = ArrayList()
         val projection = arrayOf(

@@ -49,8 +49,11 @@ class ListImageActivity : AppCompatActivity(), IListContract.IView {
     private val REQUEST_CODE_CAMERA = 998
     private val REQUEST_CODE_IMAGE = 999
     var progressdialog: ProgressDialog? = null
+    private var nameAlbum: String? = ""
+    private var urlimage: String? = ""
+    private var birthday: String? = ""
 
-    var ID_ALBUM: Int = 0
+    var ID_ALBUM: String? = "1"
     private lateinit var listImagePresent: ListImagePresenter
     lateinit var activityResultLauncher: ActivityResultLauncher<Intent>
 
@@ -59,12 +62,14 @@ class ListImageActivity : AppCompatActivity(), IListContract.IView {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.list_image_activity)
 
-        var intent = intent
-        ID_ALBUM = intent.getIntExtra("idalbum", 0)
-        ID_ALBUM = 1
+        val bundle: Bundle? = intent.extras
+        ID_ALBUM = bundle?.getString("idalbum")
+        nameAlbum = bundle?.getString("nameAlbum")
+        birthday = bundle?.get("birthday").toString()
+        urlimage = bundle?.getString("urlimage")
         initView()
-        default(ID_ALBUM)
-        checkPermission(ID_ALBUM)
+        default()
+        checkPermission()
         cancelCreate()
     }
 
@@ -79,7 +84,7 @@ class ListImageActivity : AppCompatActivity(), IListContract.IView {
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    private fun default(ID_ALBUM: Int) {
+    private fun default() {
         // nhận kết quả trả về từ máy ảnh
         activityResultLauncher = registerForActivityResult(
             ActivityResultContracts.StartActivityForResult()
@@ -89,7 +94,7 @@ class ListImageActivity : AppCompatActivity(), IListContract.IView {
                 if (intent != null) {
                     val bitmap: Bitmap = intent.extras?.get("data") as Bitmap
                     val uri: Uri = convertUri(bitmap)
-                    readFileSingle(uri, ID_ALBUM)
+                    readFileSingle(uri)
                 }
             }
         }
@@ -104,7 +109,7 @@ class ListImageActivity : AppCompatActivity(), IListContract.IView {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         when (requestCode) {
             REQUEST_CODE_IMAGE -> {
-                listImagePresent.getImage(ID_ALBUM, this)
+                listImagePresent.getImage( this)
             }
             REQUEST_CODE_CAMERA -> {
                 if ((grantResults.isNotEmpty() &&
@@ -124,7 +129,7 @@ class ListImageActivity : AppCompatActivity(), IListContract.IView {
 
     // xin quyền truy cập thư viện
     @RequiresApi(Build.VERSION_CODES.O)
-    fun checkPermission(ID_ALBUM: Int) {
+    fun checkPermission() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
             != PackageManager.PERMISSION_GRANTED
         ) {
@@ -133,7 +138,7 @@ class ListImageActivity : AppCompatActivity(), IListContract.IView {
                 arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), 998
             )
         }
-        listImagePresent.getImage(ID_ALBUM, this)
+        listImagePresent.getImage( this)
     }
 
     //lấy ảnh từ thư viện để hiển thị ra 1 danh sách
@@ -172,7 +177,7 @@ class ListImageActivity : AppCompatActivity(), IListContract.IView {
         })
         rvImageView.setHasFixedSize(true)
         rvImageView.adapter = adapter
-        addImage(ID_ALBUM)
+        addImage()
     }
 
     //check quyền camera
@@ -191,7 +196,7 @@ class ListImageActivity : AppCompatActivity(), IListContract.IView {
 
     //Đẩy dữ liệu ảnh lên server
     @RequiresApi(Build.VERSION_CODES.O)
-    fun addImage(ID_ALBUM: Int) {
+    fun addImage() {
         btnAdd.setOnClickListener {
             val files: MutableList<MultipartBody.Part> = ArrayList()
             for (position in 0 until arrayImage.size) {
@@ -201,13 +206,12 @@ class ListImageActivity : AppCompatActivity(), IListContract.IView {
                 }
             }
             if (files.size > 0) {
-                getInfoImage(ID_ALBUM)
+                getInfoImage()
                 listImagePresent.addMultiImageToServer(
                     files,
                     idalbum,
                     description,
-                    timeline,
-                    ID_ALBUM
+                    timeline
                 )
             }
 
@@ -225,7 +229,7 @@ class ListImageActivity : AppCompatActivity(), IListContract.IView {
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    fun readFileSingle(uri: Uri, ID_ALBUM: Int) {
+    fun readFileSingle(uri: Uri) {
         val image_path = getRealPathFromUri(uri)
         val file = File(image_path)
         val file_path: String = file.absolutePath + System.currentTimeMillis() + ".png"
@@ -233,18 +237,18 @@ class ListImageActivity : AppCompatActivity(), IListContract.IView {
         val requestBody: RequestBody =
             RequestBody.create(MediaType.parse("multipart/form-data"), file)
         singFile = MultipartBody.Part.createFormData("file", file_path, requestBody)
-        getInfoImage(ID_ALBUM)
+        getInfoImage()
         listImagePresent.addImageSingleToServer(singFile, idalbum, description, timeline)
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    fun getInfoImage(ID_ALBUM: Int) {
+    fun getInfoImage() {
 
         val current = LocalDateTime.now()
         val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
         val formatted: String = current.format(formatter)
 
-        idalbum = RequestBody.create(MediaType.parse("multipart/form-data"), ID_ALBUM.toString())
+        idalbum = RequestBody.create(MediaType.parse("multipart/form-data"), ID_ALBUM)
         description = RequestBody.create(MediaType.parse("multipart/form-data"), "Hello")
         timeline = RequestBody.create(MediaType.parse("multipart/form-data"), formatted)
     }
@@ -291,7 +295,10 @@ class ListImageActivity : AppCompatActivity(), IListContract.IView {
                 Toast.makeText(applicationContext, data.data, Toast.LENGTH_SHORT)
                     .show()
                 val intent = Intent(applicationContext, Timeline::class.java)
-                intent.putExtra("idalbum", ID_ALBUM)
+                intent.putExtra("idalbum",ID_ALBUM)
+                intent.putExtra("nameAlbum",nameAlbum)
+                intent.putExtra("birthday",birthday)
+                intent.putExtra("urlimage",urlimage)
                 startActivity(intent)
             }
             DataResult.State.FAIL -> {

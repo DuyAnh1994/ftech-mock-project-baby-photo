@@ -17,7 +17,6 @@ interface IListContract {
             idalbum: RequestBody,
             description: RequestBody,
             timeline: RequestBody,
-            ID_ALBUM: Int,
         )
 
         fun addImageSingleToServer(
@@ -27,7 +26,7 @@ interface IListContract {
             timeline: RequestBody,
         )
 
-        fun getImage(ID_ALBUM: Int, mThis: ListImageActivity)
+        fun getImage(mThis: ListImageActivity)
         fun openBackDialog(mThis: ListImageActivity)
     }
 }

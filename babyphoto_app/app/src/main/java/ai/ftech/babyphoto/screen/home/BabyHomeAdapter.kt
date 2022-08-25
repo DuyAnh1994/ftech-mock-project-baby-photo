@@ -8,17 +8,18 @@ import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
-import android.widget.ImageButton
 
 
 class BabyHomeAdapter(
     val context: Context,
-    private val dataViewBabyHome: List<AlbumBaby> = mutableListOf(),
-    private val dataImage: Int
+    private val dataViewBabyHome: MutableList<AlbumBaby>,
+    private val dataImage: Int,
+    private val ID_ACCOUNT: Int
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     companion object {
         private const val viewTypeAdd: Int = 0;
@@ -30,7 +31,8 @@ class BabyHomeAdapter(
     interface onItemClickListenerr {
         fun onItemClick(position: Int)
     }
-    fun setOnItemClickListener(listener: onItemClickListenerr){
+
+    fun setOnItemClickListener(listener: onItemClickListenerr) {
         mListener = listener
     }
 
@@ -68,7 +70,8 @@ class BabyHomeAdapter(
         fun bind(image: Int) {
             ibHomeAddBaby.setBackgroundResource(image)
             ibHomeAddBaby.setOnClickListener {
-                val intent = Intent(context,CreateAlbumActivity::class.java)
+                val intent = Intent(context, CreateAlbumActivity::class.java)
+                intent.putExtra("idaccount", ID_ACCOUNT)
                 context.startActivity(intent)
             }
         }
@@ -108,8 +111,8 @@ class BabyHomeAdapter(
 //                val intent = Intent(this, TimelineAdapter::class.java)
 //                intent.putExtra("account", )
 //                startActivity(intent)
-                if (this@BabyHomeAdapter.mListener !=null){
-                    if (position!=RecyclerView.NO_POSITION)
+                if (this@BabyHomeAdapter.mListener != null) {
+                    if (position != RecyclerView.NO_POSITION)
                         this@BabyHomeAdapter.mListener.onItemClick(position)
                 }
             }

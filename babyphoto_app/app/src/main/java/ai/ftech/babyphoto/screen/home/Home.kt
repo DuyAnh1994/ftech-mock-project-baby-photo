@@ -1,22 +1,16 @@
 package ai.ftech.babyphoto.screen.home
 
 import ai.ftech.babyphoto.R
-import ai.ftech.babyphoto.base.service.APIService
-import ai.ftech.babyphoto.model.Account
 import ai.ftech.babyphoto.model.AlbumBaby
-import ai.ftech.babyphoto.model.Image
-import ai.ftech.babyphoto.model.ResponseModel
 import ai.ftech.babyphoto.screen.detailaccount.DetailAccount
 import ai.ftech.babyphoto.screen.timeline.Timeline
-import ai.ftech.babyphoto.screen.timeline.TimelinePresenter
 import android.annotation.SuppressLint
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.Gravity
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.recyclerview.widget.GridLayoutManager
@@ -24,11 +18,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.navigation.NavigationView
 import kotlinx.android.synthetic.main.activity_home.*
-import kotlinx.android.synthetic.main.activity_timeline.*
-import kotlinx.android.synthetic.main.home_view_baby_layout.*
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class Home : AppCompatActivity(), BabyHomeAdapter.onItemClickListenerr, IHomeContract.View {
     @SuppressLint("WrongViewCast", "NotifyDataSetChanged")
@@ -54,7 +43,7 @@ class Home : AppCompatActivity(), BabyHomeAdapter.onItemClickListenerr, IHomeCon
         recycleBaby.layoutManager = LinearLayoutManager(this)
 
         var adapter =
-            BabyHomeAdapter(this@Home, mutableListBaby, R.drawable.ic_add_home_24px)
+            BabyHomeAdapter(this@Home, mutableListBaby, R.drawable.ic_add_home_24px, idaccount!!)
         recycleBaby.adapter = adapter
         val manager = GridLayoutManager(this@Home, 2, GridLayoutManager.VERTICAL, false)
         recycleBaby.layoutManager = manager
@@ -149,22 +138,25 @@ class Home : AppCompatActivity(), BabyHomeAdapter.onItemClickListenerr, IHomeCon
 
     override fun onGetAlbum(state: HomeState, message: String, lAbum: List<AlbumBaby>) {
         mutableListBaby1.addAll(lAbum)
-        when(state){
-            HomeState.SUCCESS ->{
+        when (state) {
+            HomeState.SUCCESS -> {
                 srlHome.isRefreshing = false
                 this.mutableListBaby.addAll(lAbum)
                 rcvHomeViewBaby.adapter!!.notifyDataSetChanged()
                 var adapter =
-                    BabyHomeAdapter(this@Home, lAbum, R.drawable.ic_add_home_24px)
+                    BabyHomeAdapter(
+                        this@Home,
+                        mutableListBaby1,
+                        R.drawable.ic_add_home_24px,
+                        idaccount!!
+                    )
                 rcvHomeViewBaby.adapter = adapter
                 adapter.setOnItemClickListener(this@Home)
             }
-            HomeState.GET_ALBUM_FAIL ->{
+            HomeState.GET_ALBUM_FAIL -> {
                 Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
             }
-            else ->{}
+            else -> {}
         }
     }
-
-
 }
