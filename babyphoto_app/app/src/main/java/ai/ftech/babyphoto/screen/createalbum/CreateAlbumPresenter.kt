@@ -3,36 +3,36 @@ package ai.ftech.babyphoto.screen.createalbum
 import ai.ftech.babyphoto.R
 import ai.ftech.babyphoto.base.service.APIService
 import ai.ftech.babyphoto.model.Data
-import android.app.ProgressDialog
+import ai.ftech.babyphoto.model.DataResult
+import android.app.DatePickerDialog
+import android.app.Dialog
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Build
+import android.view.Gravity
+import android.view.Window
+import android.widget.Button
+import android.widget.DatePicker
 import androidx.annotation.RequiresApi
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.util.*
 
 
-class CreateAlbumPresenter() : ICreateContract.ICreatePresenter {
+class CreateAlbumPresenter(var mView: ICreateContract.IView) : ICreateContract.IPresenter {
 
-    private var mView: ICreateContract.ICreateView? = null
-
-    fun setView(view: ICreateContract.ICreateView) {
-        this.mView = view
-    }
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun createAlbum(
         singleFile: MultipartBody.Part,
         rqIdaccount: RequestBody, rqName: RequestBody,
         rqGender: RequestBody, rqBirthday: RequestBody,
-        rqRelation: RequestBody, mThis: CreateAlbumActivity
+        rqRelation: RequestBody
     ) {
-        val progressdialog = ProgressDialog(mThis, R.style.AppCompatAlertDialogStyle)
-        progressdialog.setMessage("Updating")
-        progressdialog.setCancelable(false)
-        progressdialog.show()
-
+        mView.showLoading()
         val dataService = APIService.base()
         val callback = dataService.albumInsert(
             singleFile,
@@ -49,20 +49,83 @@ class CreateAlbumPresenter() : ICreateContract.ICreatePresenter {
                 response: Response<Data<String>>
             ) {
                 if (response.body()!!.code == "code13") {
-                    mView?.onSuccess(response.body()!!.msg)
-                    progressdialog.dismiss()
+                    val data = DataResult<String>()
+                    data.state = DataResult.State.SUCCESS
+                    data.data = response.body()!!.msg
+                    mView.onResult(data)
+                    mView.hideLoading()
                 } else {
-                    mView?.onError(response.body()!!.msg)
-                    progressdialog.dismiss()
+                    val data = DataResult<String>()
+                    data.state = DataResult.State.ERROR
+                    data.data = response.body()!!.msg
+                    mView.onResult(data)
+                    mView.hideLoading()
                 }
             }
 
             override fun onFailure(call: Call<Data<String>>, t: Throwable) {
-                mView?.onFail(t.message!!)
-                progressdialog.dismiss()
+                val data = DataResult<String>()
+                data.state = DataResult.State.FAIL
+                data.data = t.message
+                mView.onResult(data)
+                mView.hideLoading()
             }
 
         })
+    }
+
+    override fun openBackDialog(mThis: CreateAlbumActivity) {
+        val dialog = Dialog(mThis)
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.setContentView(R.layout.dialog_back_create_album_layout)
+        val window: Window = dialog.window ?: return
+        window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        val windowAttributes = window.attributes
+        windowAttributes.gravity = Gravity.CENTER
+        window.attributes = windowAttributes
+        val btnCancel: Button = dialog.findViewById(R.id.btnDialogBacKCancel)
+        val btnOK: Button = dialog.findViewById(R.id.btnDialogBacKOk)
+        btnOK.setOnClickListener {
+            mThis.finish()
+            dialog.dismiss()
+        }
+        btnCancel.setOnClickListener {
+            dialog.cancel()
+        }
+        dialog.show()
+    }
+
+    override fun getBirthdayAlbum(mThis: CreateAlbumActivity) {
+        val calendar = Calendar.getInstance()
+        var time: String? = ""
+        calendar.timeInMillis = System.currentTimeMillis()
+        val year = calendar[Calendar.YEAR]
+        val month = calendar[Calendar.MONTH]
+        val dayOfMonth = calendar[Calendar.DAY_OF_MONTH]
+
+        val datePickerDialog =
+            DatePickerDialog(mThis, object : DatePickerDialog.OnDateSetListener {
+                override fun onDateSet(
+                    view: DatePicker?,
+                    year: Int,
+                    month: Int,
+                    dayOfMonth: Int
+                ) {
+                    time = "${dayOfMonth}/${month + 1}/${year}"
+                    mView.getData(time!!)
+                }
+            }, year, month, dayOfMonth)
+        datePickerDialog.setOnCancelListener {
+            if (time != "") {
+                mView.getData(time!!)
+            }
+        }
+        datePickerDialog.setOnDismissListener {
+            if (time != "") {
+                mView.getData(time!!)
+            }
+        }
+        datePickerDialog.show()
     }
 
 

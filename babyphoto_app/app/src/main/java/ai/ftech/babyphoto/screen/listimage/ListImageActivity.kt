@@ -4,18 +4,14 @@ import ai.ftech.babyphoto.R
 import ai.ftech.babyphoto.model.DataResult
 import ai.ftech.babyphoto.screen.timeline.Timeline
 import android.Manifest
-import android.app.Dialog
+import android.app.ProgressDialog
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
-import android.view.Gravity
-import android.view.Window
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
@@ -52,6 +48,7 @@ class ListImageActivity : AppCompatActivity(), IListContract.IView {
     lateinit var path: String
     private val REQUEST_CODE_CAMERA = 998
     private val REQUEST_CODE_IMAGE = 999
+    var progressdialog: ProgressDialog? = null
 
     var ID_ALBUM: Int = 0
     private lateinit var listImagePresent: ListImagePresenter
@@ -77,8 +74,8 @@ class ListImageActivity : AppCompatActivity(), IListContract.IView {
         ivCancel = findViewById(R.id.ivListImageCancel)
         btnAdd = findViewById(R.id.btnListImageAdd)
         tvTitle = findViewById(R.id.tvListImageTitle)
-        listImagePresent = ListImagePresenter()
-        listImagePresent.setView(this)
+        listImagePresent = ListImagePresenter(this)
+        progressdialog = ProgressDialog(this, R.style.AppCompatAlertDialogStyle)
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -107,7 +104,7 @@ class ListImageActivity : AppCompatActivity(), IListContract.IView {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         when (requestCode) {
             REQUEST_CODE_IMAGE -> {
-                getImage(ID_ALBUM)
+                listImagePresent.getImage(ID_ALBUM, this)
             }
             REQUEST_CODE_CAMERA -> {
                 if ((grantResults.isNotEmpty() &&
@@ -136,33 +133,17 @@ class ListImageActivity : AppCompatActivity(), IListContract.IView {
                 arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), 998
             )
         }
-        getImage(ID_ALBUM)
+        listImagePresent.getImage(ID_ALBUM, this)
     }
 
     //lấy ảnh từ thư viện để hiển thị ra 1 danh sách
-    @RequiresApi(Build.VERSION_CODES.O)
-    fun getImage(ID_ALBUM: Int) {
-        val projection = arrayOf(
-            MediaStore.Images.ImageColumns._ID,
-            MediaStore.Images.ImageColumns.DISPLAY_NAME,
-            MediaStore.Images.ImageColumns.DATA,
-        )
 
-        val cursor = this.contentResolver.query(
-            MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-            projection, null, null, null
-        )
-        if (cursor!!.count > 0) {
-            cursor.moveToFirst()
-            while (!cursor.isAfterLast) {
-                val data: String =
-                    cursor.getString(2)
-                arrayImage.add(data)
-                arrayCb.add(false)
-                cursor.moveToNext()
-            }
-            cursor.close()
-        }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    override fun getData(listImage: MutableList<String>, listCb: MutableList<Boolean>) {
+
+        arrayImage = listImage
+        arrayCb = listCb
         val gridLayoutManager = GridLayoutManager(this, 3)
         gridLayoutManager.orientation = GridLayoutManager.VERTICAL
         rvImageView.layoutManager = gridLayoutManager
@@ -226,8 +207,7 @@ class ListImageActivity : AppCompatActivity(), IListContract.IView {
                     idalbum,
                     description,
                     timeline,
-                    ID_ALBUM,
-                    this
+                    ID_ALBUM
                 )
             }
 
@@ -254,7 +234,7 @@ class ListImageActivity : AppCompatActivity(), IListContract.IView {
             RequestBody.create(MediaType.parse("multipart/form-data"), file)
         singFile = MultipartBody.Part.createFormData("file", file_path, requestBody)
         getInfoImage(ID_ALBUM)
-        listImagePresent.addImageSingleToServer(singFile, idalbum, description, timeline, this)
+        listImagePresent.addImageSingleToServer(singFile, idalbum, description, timeline)
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -300,57 +280,39 @@ class ListImageActivity : AppCompatActivity(), IListContract.IView {
 
     private fun cancelCreate() {
         ivCancel.setOnClickListener {
-            openBackDialog()
+            listImagePresent.openBackDialog(this)
         }
     }
 
-    private fun openBackDialog() {
-        val dialog = Dialog(this)
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
-        dialog.setContentView(R.layout.dialog_back_create_album_layout)
-        val window: Window = dialog.window ?: return
-        window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        val windowAttributes = window.attributes
-        windowAttributes.gravity = Gravity.CENTER
-        window.attributes = windowAttributes
-        val btnCancel: Button = dialog.findViewById(R.id.btnDialogBacKCancel)
-        val btnOK: Button = dialog.findViewById(R.id.btnDialogBacKOk)
-        btnOK.setOnClickListener {
-            finish()
-            dialog.dismiss()
-        }
-        btnCancel.setOnClickListener {
-            dialog.cancel()
-        }
-        dialog.show()
-    }
 
-    override fun onList(data: DataResult<List<String>>) {
+    override fun onResult(data: DataResult<String>) {
         when (data.state) {
-
-            DataResult.State.INITIAL -> {}
-            DataResult.State.SUCCESS -> {}
-            DataResult.State.FAIL -> {}
-            DataResult.State.ERROR -> {}
-
+            DataResult.State.SUCCESS -> {
+                Toast.makeText(applicationContext, data.data, Toast.LENGTH_SHORT)
+                    .show()
+                val intent = Intent(applicationContext, Timeline::class.java)
+                intent.putExtra("idalbum", ID_ALBUM)
+                startActivity(intent)
+            }
+            DataResult.State.FAIL -> {
+                Toast.makeText(applicationContext, data.data, Toast.LENGTH_SHORT).show()
+            }
+            DataResult.State.ERROR -> {
+                Toast.makeText(applicationContext, data.data, Toast.LENGTH_SHORT)
+                    .show()
+            }
         }
     }
 
-    override fun onSuccess(msg: String) {
-        Toast.makeText(applicationContext, msg, Toast.LENGTH_SHORT)
-            .show()
-        val intent = Intent(applicationContext, Timeline::class.java)
-        intent.putExtra("idalbum", ID_ALBUM)
-        startActivity(intent)
+
+    override fun showLoading() {
+        progressdialog?.setMessage("Updating")
+        progressdialog?.setCancelable(false)
+        progressdialog?.show()
     }
 
-    override fun onFail(msg: String) {
-        Toast.makeText(applicationContext, msg, Toast.LENGTH_SHORT).show()
-    }
-
-    override fun onError(msg: String) {
-        Toast.makeText(applicationContext, msg, Toast.LENGTH_SHORT)
-            .show()
+    override fun hideLoading() {
+        progressdialog?.dismiss()
     }
 
 

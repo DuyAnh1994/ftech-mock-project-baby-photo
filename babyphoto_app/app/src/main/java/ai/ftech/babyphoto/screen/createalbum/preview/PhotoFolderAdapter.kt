@@ -34,7 +34,7 @@ class PhotoFolderAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.ivItem.setImageBitmap(BitmapFactory.decodeFile(dataSet[position]))
         holder.itemView.setOnClickListener {
-         iPreview.setInsert(dataSet[position])
+            iPreview.setInsert(dataSet[position])
         }
     }
 

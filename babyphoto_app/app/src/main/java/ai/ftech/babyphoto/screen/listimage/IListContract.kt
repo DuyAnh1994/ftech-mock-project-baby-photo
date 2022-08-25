@@ -2,14 +2,13 @@ package ai.ftech.babyphoto.screen.listimage
 
 import ai.ftech.babyphoto.model.DataResult
 import ai.ftech.babyphoto.model.IBaseView
-import ai.ftech.babyphoto.model.Image
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 
 interface IListContract {
     interface IView : IBaseView {
-        fun onList(data : DataResult<List<String>>)
-
+        fun onResult(data: DataResult<String>)
+        fun getData(arrayImage: MutableList<String>, arrayCb: MutableList<Boolean>)
     }
 
     interface IPresenter {
@@ -19,7 +18,6 @@ interface IListContract {
             description: RequestBody,
             timeline: RequestBody,
             ID_ALBUM: Int,
-            mThis: ListImageActivity
         )
 
         fun addImageSingleToServer(
@@ -27,7 +25,9 @@ interface IListContract {
             idalbum: RequestBody,
             description: RequestBody,
             timeline: RequestBody,
-            mThis: ListImageActivity
         )
+
+        fun getImage(ID_ALBUM: Int, mThis: ListImageActivity)
+        fun openBackDialog(mThis: ListImageActivity)
     }
 }

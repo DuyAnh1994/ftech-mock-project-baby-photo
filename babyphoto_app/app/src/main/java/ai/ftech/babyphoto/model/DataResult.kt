@@ -3,9 +3,10 @@ package ai.ftech.babyphoto.model
 class DataResult<T> {
 
     var state: State = State.SUCCESS
+    var data: T? = null
 
     enum class State {
-        INITIAL, SUCCESS, FAIL, ERROR
+        SUCCESS, FAIL, ERROR
     }
 
 }

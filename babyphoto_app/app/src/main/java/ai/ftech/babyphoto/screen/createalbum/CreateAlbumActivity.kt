@@ -1,26 +1,22 @@
 package ai.ftech.babyphoto.screen.createalbum
 
 import ai.ftech.babyphoto.R
+import ai.ftech.babyphoto.model.DataResult
 import ai.ftech.babyphoto.screen.createalbum.preview.PhotoFolderActivity
 import ai.ftech.babyphoto.screen.createalbum.relation.DialogRelationFragment
 import ai.ftech.babyphoto.screen.home.HomeActivity
 import android.app.Activity
-import android.app.DatePickerDialog
-import android.app.Dialog
+import android.app.ProgressDialog
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 import android.text.Editable
 import android.text.TextWatcher
-import android.view.Gravity
 import android.view.View
-import android.view.Window
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.activity.result.ActivityResultLauncher
@@ -33,11 +29,10 @@ import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import java.io.ByteArrayOutputStream
 import java.io.File
-import java.util.*
 
 
 class CreateAlbumActivity : AppCompatActivity(), DialogRelationFragment.ICreateName,
-    ICreateContract.ICreateView {
+    ICreateContract.IView {
     lateinit var ivBackHome: ImageView
     lateinit var btnCreate: Button
     lateinit var ivAvatar: CircleImageView
@@ -60,6 +55,7 @@ class CreateAlbumActivity : AppCompatActivity(), DialogRelationFragment.ICreateN
     private lateinit var rqGender: RequestBody
     private lateinit var rqBirthday: RequestBody
     private lateinit var rqRelation: RequestBody
+    var progressdialog: ProgressDialog? = null
     var bitmapAvatar: Boolean = false
     var ID_ACCOUNT: Int = 1
     private var select: Int = 1
@@ -79,10 +75,16 @@ class CreateAlbumActivity : AppCompatActivity(), DialogRelationFragment.ICreateN
         initView()
         getUriBaby()
         getGenderAlbum()
-        getBirthdayAlbum()
         getRelationAlbum()
         changeButton()
+        onClick()
         getAvatar(ID_ACCOUNT)
+    }
+
+    private fun onClick() {
+        flBirthday.setOnClickListener {
+            createAlbumPresenter.getBirthdayAlbum(this)
+        }
     }
 
     private fun initView() {
@@ -97,8 +99,8 @@ class CreateAlbumActivity : AppCompatActivity(), DialogRelationFragment.ICreateN
         tvRelation = findViewById(R.id.tvCreateAlbumRelation)
         flRelation = findViewById(R.id.flCreateAlbumRelation)
         flCamera = findViewById(R.id.flCreateAlbumCamera)
-        createAlbumPresenter = CreateAlbumPresenter()
-        createAlbumPresenter.setView(this)
+        progressdialog = ProgressDialog(this, R.style.AppCompatAlertDialogStyle)
+        createAlbumPresenter = CreateAlbumPresenter(this)
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -120,7 +122,7 @@ class CreateAlbumActivity : AppCompatActivity(), DialogRelationFragment.ICreateN
                         sendSingleImage(path_image)
                         createAlbumPresenter.createAlbum(
                             singleFile,
-                            rqIdaccount, rqName, rqGender, rqBirthday, rqRelation, this
+                            rqIdaccount, rqName, rqGender, rqBirthday, rqRelation
                         )
                     }
                     flCamera.visibility = View.GONE
@@ -138,7 +140,7 @@ class CreateAlbumActivity : AppCompatActivity(), DialogRelationFragment.ICreateN
                         sendSingleImage(dataImage)
                         createAlbumPresenter.createAlbum(
                             singleFile,
-                            rqIdaccount, rqName, rqGender, rqBirthday, rqRelation, this
+                            rqIdaccount, rqName, rqGender, rqBirthday, rqRelation
                         )
                     }
                     flCamera.visibility = View.GONE
@@ -184,7 +186,7 @@ class CreateAlbumActivity : AppCompatActivity(), DialogRelationFragment.ICreateN
             activityResultLauncher.launch(intent)
         }
         ivBackHome.setOnClickListener {
-            openBackDialog()
+            createAlbumPresenter.openBackDialog(this)
         }
     }
 
@@ -203,61 +205,11 @@ class CreateAlbumActivity : AppCompatActivity(), DialogRelationFragment.ICreateN
         return select
     }
 
-
-    fun getBirthdayAlbum() {
-
-        flBirthday.setOnClickListener {
-            val calendar = Calendar.getInstance()
-            calendar.timeInMillis = System.currentTimeMillis()
-            val year = calendar[Calendar.YEAR]
-            val month = calendar[Calendar.MONTH]
-            val dayOfMonth = calendar[Calendar.DAY_OF_MONTH]
-
-            val datePickerDialog =
-                DatePickerDialog(this, object : DatePickerDialog.OnDateSetListener {
-                    override fun onDateSet(
-                        view: DatePicker?,
-                        year: Int,
-                        month: Int,
-                        dayOfMonth: Int
-                    ) {
-                        tvBirthday.text = "${dayOfMonth}/${month + 1}/${year}"
-                    }
-                }, year, month, dayOfMonth)
-            datePickerDialog.setOnCancelListener {
-                if (tvBirthday.text != "") {
-                    setBackgroundButton()
-                }
-            }
-            datePickerDialog.setOnDismissListener {
-                if (tvBirthday.text != "") {
-                    setBackgroundButton()
-                }
-            }
-            datePickerDialog.show()
-        }
-    }
-
     fun getRelationAlbum() {
         flRelation.setOnClickListener {
             val dialogRelationFragment = DialogRelationFragment()
             dialogRelationFragment.show(this.supportFragmentManager, dialogRelationFragment.tag)
         }
-    }
-
-    override fun onSuccess(msg: String) {
-        Toast.makeText(applicationContext, msg, Toast.LENGTH_SHORT).show()
-        val intent = Intent(applicationContext, HomeActivity::class.java)
-        intent.putExtra("idalbum", "1")
-        startActivity(intent)
-    }
-
-    override fun onFail(msg: String) {
-        Toast.makeText(applicationContext, msg, Toast.LENGTH_SHORT).show()
-    }
-
-    override fun onError(msg: String) {
-        Toast.makeText(applicationContext, msg, Toast.LENGTH_SHORT).show()
     }
 
 
@@ -286,28 +238,7 @@ class CreateAlbumActivity : AppCompatActivity(), DialogRelationFragment.ICreateN
     }
 
 
-    fun openBackDialog() {
-        val dialog = Dialog(this)
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
-        dialog.setContentView(R.layout.dialog_back_create_album_layout)
-        val window: Window = dialog.window ?: return
-        window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        val windowAttributes = window.attributes
-        windowAttributes.gravity = Gravity.CENTER
-        window.attributes = windowAttributes
-        val btnCancel: Button = dialog.findViewById(R.id.btnDialogBacKCancel)
-        val btnOK: Button = dialog.findViewById(R.id.btnDialogBacKOk)
-        btnOK.setOnClickListener {
-            finish()
-            dialog.dismiss()
-        }
-        btnCancel.setOnClickListener {
-            dialog.cancel()
-        }
-        dialog.show()
-    }
-
-    fun getRealPathFromUri(contentUri: Uri): String {
+    private fun getRealPathFromUri(contentUri: Uri): String {
         var projection = arrayOf(
             MediaStore.Images.ImageColumns.DATA,
         )
@@ -322,7 +253,7 @@ class CreateAlbumActivity : AppCompatActivity(), DialogRelationFragment.ICreateN
         return path
     }
 
-    fun convertUri(bitmap: Bitmap): Uri {
+    private fun convertUri(bitmap: Bitmap): Uri {
         //convert bitmap to uri
         val bytes = ByteArrayOutputStream()
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, bytes)
@@ -349,5 +280,39 @@ class CreateAlbumActivity : AppCompatActivity(), DialogRelationFragment.ICreateN
     fun setBackgroundButton() {
         if (bitmapAvatar && edtName.text.toString() != "" && tvBirthday.text != "" && tvRelation.text != "")
             btnCreate.setBackgroundResource(R.drawable.shape_orange_bg_corner_20)
+    }
+
+    override fun onResult(data: DataResult<String>) {
+        when (data.state) {
+            DataResult.State.SUCCESS -> {
+                Toast.makeText(applicationContext, data.data, Toast.LENGTH_SHORT).show()
+                val intent = Intent(applicationContext, HomeActivity::class.java)
+                intent.putExtra("idalbum", "1")
+                startActivity(intent)
+            }
+            DataResult.State.FAIL -> {
+                Toast.makeText(applicationContext, data.data, Toast.LENGTH_SHORT).show()
+            }
+            DataResult.State.ERROR -> {
+                Toast.makeText(applicationContext, data.data, Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    override fun getData(time: String) {
+        tvBirthday.text = time
+        if (tvBirthday.text != "") {
+            setBackgroundButton()
+        }
+    }
+
+    override fun showLoading() {
+        progressdialog?.setMessage("Updating")
+        progressdialog?.setCancelable(false)
+        progressdialog?.show()
+    }
+
+    override fun hideLoading() {
+        progressdialog?.dismiss()
     }
 }
