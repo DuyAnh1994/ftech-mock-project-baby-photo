@@ -10,7 +10,6 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.text.Editable
-import android.text.InputType
 import android.text.TextWatcher
 import android.view.Gravity
 import android.view.View
@@ -58,6 +57,11 @@ class AccountLogin : AppCompatActivity(), CompoundButton.OnCheckedChangeListener
             val password = tieAccountLoginPass.text.toString()
             presenter?.login(email, password)
         }
+//        tieAccountLoginPass.inputType = InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
+        presenter?.checkValidAccount(
+            tieAccountLoginEmail.text.toString().trim(),
+            tieAccountLoginPass.text.toString().trim()
+        )
         ai.ftech.babyphoto.screen.register.MultiTextWatcher()
             .registerEditText(tieAccountLoginEmail)
             .registerEditText(tieAccountLoginPass)
@@ -140,18 +144,18 @@ class AccountLogin : AppCompatActivity(), CompoundButton.OnCheckedChangeListener
         }
     }
 
-    override fun onValidAccount(state: LoginState, message: String) {
+    override fun onValidAccount(state: LoginState, message: String, showWarring: Boolean) {
         when (state) {
             LoginState.SUCCESS -> {
-                tvAccountLoginWarning.visibility = View.INVISIBLE
+                if (showWarring) tvAccountLoginWarning.visibility = View.INVISIBLE
                 acbAccountLogin.setBackgroundResource(R.drawable.selector_rec_orange_color_correct_login)
             }
             LoginState.EMAIL_NOT_FOUND -> {
-                tvAccountLoginWarning.visibility = View.VISIBLE
+                if (showWarring) tvAccountLoginWarning.visibility = View.VISIBLE
                 acbAccountLogin.setBackgroundResource(R.drawable.selector_rec_orange_color_correct_login)
             }
             LoginState.EMAIL_NOT_FOUND_OR_EMPTY -> {
-                tvAccountLoginWarning.visibility = View.VISIBLE
+                if (showWarring) tvAccountLoginWarning.visibility = View.VISIBLE
                 acbAccountLogin.setBackgroundResource(R.drawable.selector_rec_gray_incorrect_login)
             }
             else -> {}

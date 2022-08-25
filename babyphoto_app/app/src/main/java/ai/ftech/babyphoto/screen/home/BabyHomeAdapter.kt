@@ -108,7 +108,7 @@ class BabyHomeAdapter(
 //                val intent = Intent(this, TimelineAdapter::class.java)
 //                intent.putExtra("account", )
 //                startActivity(intent)
-                if (this@BabyHomeAdapter.mListener !=null){
+                if (dataViewBabyHome.isNotEmpty()){
                     if (position!=RecyclerView.NO_POSITION)
                         this@BabyHomeAdapter.mListener.onItemClick(position)
                 }

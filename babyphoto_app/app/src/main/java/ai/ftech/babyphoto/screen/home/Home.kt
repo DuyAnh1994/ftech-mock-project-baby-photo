@@ -38,26 +38,25 @@ class Home : AppCompatActivity(), BabyHomeAdapter.onItemClickListenerr, IHomeCon
     lateinit var navigationView: NavigationView
     private var idaccount: Int? = -1
     private var mutableListBaby: MutableList<AlbumBaby> = mutableListOf()
-    private val mutableListBaby1: MutableList<AlbumBaby> = mutableListOf()
 
     @SuppressLint("NotifyDataSetChanged")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
         val bundle: Bundle? = intent.extras
-        val recycleBaby: RecyclerView = findViewById(R.id.rcvHomeViewBaby)
         presenter = HomePresenter(this)
         idaccount = bundle?.getInt("idaccount")
         drawerLayout = findViewById(R.id.drawableLayout)
         navigationView = findViewById(R.id.nvHomeToDetailAccount)
 
-        recycleBaby.layoutManager = LinearLayoutManager(this)
+        rcvHomeViewBaby.layoutManager = LinearLayoutManager(this)
 
-        var adapter =
+        val adapter =
             BabyHomeAdapter(this@Home, mutableListBaby, R.drawable.ic_add_home_24px)
-        recycleBaby.adapter = adapter
+        adapter.setOnItemClickListener(this)
+        rcvHomeViewBaby.adapter = adapter
         val manager = GridLayoutManager(this@Home, 2, GridLayoutManager.VERTICAL, false)
-        recycleBaby.layoutManager = manager
+        rcvHomeViewBaby.layoutManager = manager
 
 
         srlHome.isRefreshing = true
@@ -65,7 +64,6 @@ class Home : AppCompatActivity(), BabyHomeAdapter.onItemClickListenerr, IHomeCon
 
         srlHome.setOnRefreshListener {
             mutableListBaby.clear()
-            rcvHomeViewBaby.adapter!!.notifyDataSetChanged()
             srlHome.isRefreshing = true
             presenter.getAlbum(idaccount)
         }
@@ -133,10 +131,10 @@ class Home : AppCompatActivity(), BabyHomeAdapter.onItemClickListenerr, IHomeCon
 
     override fun onItemClick(position: Int) {
         var intent = Intent(this, Timeline::class.java)
-        intent.putExtra("idalbum", mutableListBaby1[position].idalbum)
-        intent.putExtra("nameAlbum", mutableListBaby1[position].name)
-        intent.putExtra("urlimage", mutableListBaby1[position].urlimage)
-        intent.putExtra("birthday", mutableListBaby1[position].birthday)
+        intent.putExtra("idalbum", mutableListBaby[position].idalbum)
+        intent.putExtra("nameAlbum", mutableListBaby[position].name)
+        intent.putExtra("urlimage", mutableListBaby[position].urlimage)
+        intent.putExtra("birthday", mutableListBaby[position].birthday)
         startActivity(intent)
     }
 
@@ -148,16 +146,11 @@ class Home : AppCompatActivity(), BabyHomeAdapter.onItemClickListenerr, IHomeCon
     }
 
     override fun onGetAlbum(state: HomeState, message: String, lAbum: List<AlbumBaby>) {
-        mutableListBaby1.addAll(lAbum)
+        srlHome.isRefreshing = false
         when(state){
             HomeState.SUCCESS ->{
-                srlHome.isRefreshing = false
                 this.mutableListBaby.addAll(lAbum)
                 rcvHomeViewBaby.adapter!!.notifyDataSetChanged()
-                var adapter =
-                        BabyHomeAdapter(this@Home, mutableListBaby1, R.drawable.ic_add_home_24px)
-                    rcvHomeViewBaby.adapter = adapter
-                    adapter.setOnItemClickListener(this@Home)
             }
             HomeState.GET_ALBUM_FAIL ->{
                 Toast.makeText(this, message, Toast.LENGTH_SHORT).show()

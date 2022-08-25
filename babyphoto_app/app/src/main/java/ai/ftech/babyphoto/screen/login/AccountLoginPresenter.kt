@@ -1,23 +1,12 @@
 package ai.ftech.babyphoto.screen.login
 
-import ai.ftech.babyphoto.R
 import ai.ftech.babyphoto.base.Constant
 import ai.ftech.babyphoto.base.Utils
 import ai.ftech.babyphoto.base.service.APIService
 import ai.ftech.babyphoto.model.Account
 import ai.ftech.babyphoto.model.ResponseModel
-import android.app.Dialog
-import android.content.Context
 import android.content.SharedPreferences
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.util.Log
-import android.view.Gravity
-import android.view.View
-import android.view.ViewGroup
-import android.widget.Toast
-import kotlinx.android.synthetic.main.activity_account_login.*
-import kotlinx.android.synthetic.main.activity_enter_email.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -81,13 +70,14 @@ class AccountLoginPresenter(private var view: ILoginContract.View) {
             lAccount.any { account: Account -> account.email == email && account.password == pass }//mk correct
         val isValid2 = Utils().checkNull(email, pass)// true->null
         if (!isValid2 && isValid) {
-            view.onValidAccount(LoginState.SUCCESS, "email, pass is valid")
+            view.onValidAccount(LoginState.SUCCESS, "email, pass is valid", lAccount.isNotEmpty())
         } else if (!isValid2 && !isValid) {
-            view.onValidAccount(LoginState.EMAIL_NOT_FOUND, "email, pass is not found")
+            view.onValidAccount(LoginState.EMAIL_NOT_FOUND, "email, pass is not found", lAccount.isNotEmpty())
         } else {
             view.onValidAccount(
                 LoginState.EMAIL_NOT_FOUND_OR_EMPTY,
-                "email, pass is not found or empty"
+                "email, pass is not found or empty",
+                lAccount.isNotEmpty()
             )
         }
     }
