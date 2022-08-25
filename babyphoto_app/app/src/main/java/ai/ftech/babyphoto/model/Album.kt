@@ -1,5 +1,7 @@
 package ai.ftech.babyphoto.model
 
+import com.google.gson.annotations.SerializedName
+
 
 data class Album(
     var idalbum: Int,
@@ -10,6 +12,4 @@ data class Album(
     var birthday: String,
     var relation: String,
     var amountimage: Int
-){
-
-}
+)

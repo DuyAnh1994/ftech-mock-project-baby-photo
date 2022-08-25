@@ -30,6 +30,12 @@ class ActivityCreatePass() : AppCompatActivity(), ICreatePassContract.View {
         }
         presenter = CreatePassPresenter(this)
 
+//        intent.extras?.let {
+//            it.apply {
+//                account = Gson().fromJson(get("account") as String, AccountModel::class.java)
+//            }
+//        }
+
         ibRegisterBackCreatePass.setOnClickListener {
             finish()
         }

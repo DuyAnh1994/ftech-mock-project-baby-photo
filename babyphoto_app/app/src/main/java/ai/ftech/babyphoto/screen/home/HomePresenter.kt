@@ -22,7 +22,7 @@ class HomePresenter(private val view: IHomeContract.View) {
                     call: Call<ResponseModel<List<AlbumBaby>>>,
                     response: Response<ResponseModel<List<AlbumBaby>>>
                 ) {
-                    val res = response.body() as ResponseModel<List<AlbumBaby>>
+                    val res = response.body() as ResponseModel<MutableList<AlbumBaby>>
                     view.onGetAlbum(HomeState.SUCCESS, "Get album success", res.data)
                 }
 

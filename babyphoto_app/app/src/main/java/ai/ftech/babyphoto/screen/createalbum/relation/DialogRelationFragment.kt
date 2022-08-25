@@ -22,14 +22,14 @@ class DialogRelationFragment : BottomSheetDialogFragment() {
             BottomSheetDialog(requireContext(), R.style.BottomSheetDialogTheme)
         val view: View =
             LayoutInflater.from(context).inflate(R.layout.dialog_relation_fragment, null)
-        bottomSheetDialog?.setContentView(view)
+        bottomSheetDialog.setContentView(view)
         rvRelation = view.findViewById(R.id.rvDialogRelationRelation)
         setRecyclerviewRelation()
-        return bottomSheetDialog!!
+        return bottomSheetDialog
     }
 
     private fun setRecyclerviewRelation() {
-        rvRelation!!.layoutManager = LinearLayoutManager(context)
+        rvRelation.layoutManager = LinearLayoutManager(context)
         var arrayRelation: MutableList<Relation> = arrayListOf(
             Relation("Father"),
             Relation("Mother"),

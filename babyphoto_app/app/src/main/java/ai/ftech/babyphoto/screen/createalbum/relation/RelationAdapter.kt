@@ -35,7 +35,6 @@ class RelationAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val arrayRelation = dataSet[position]
         holder.tvName.text = arrayRelation.name
-
         holder.itemView.setOnClickListener {
             count++
             if (count == 1) {

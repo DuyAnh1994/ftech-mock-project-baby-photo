@@ -29,7 +29,7 @@ import kotlin.collections.ArrayList
 
 class Timeline : AppCompatActivity(), ITimelineContract.View {
     private lateinit var presenter: TimelinePresenter
-    private var idAlbum: String? = "-1"
+    private var idAlbum: String? = "0"
     private var nameAlbum: String? = ""
     private var urlimage: String? = ""
     private var birthday: String? = ""
@@ -90,6 +90,10 @@ class Timeline : AppCompatActivity(), ITimelineContract.View {
 
         fabAdd.setOnClickListener {
             var intent = Intent(this, ListImageActivity::class.java)
+            intent.putExtra("idalbum",idAlbum)
+            intent.putExtra("nameAlbum",nameAlbum)
+            intent.putExtra("birthday",birthday)
+            intent.putExtra("urlimage",urlimage)
             startActivity(intent)
         }
 

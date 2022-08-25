@@ -24,6 +24,9 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".screen.test.TestActivity"
+            android:exported="false" />
+        <activity
             android:name=".screen.home.Home"
             android:exported="false" />
         <activity
@@ -36,13 +39,13 @@
             android:name=".screen.changepass.ChangePass"
             android:exported="false" />
         <activity
+            android:name=".screen.createalbum.CreateAlbumActivity"
+            android:exported="false" />
+        <activity
             android:name=".screen.listimage.ListImageActivity"
             android:exported="false" />
         <activity
             android:name=".screen.createalbum.preview.PhotoFolderActivity"
-            android:exported="false" />
-        <activity
-            android:name=".screen.createalbum.CreateAlbumActivity"
             android:exported="false" />
         <activity
             android:name=".screen.login.AccountLogin"
@@ -55,6 +58,9 @@
             android:exported="false" />
         <activity
             android:name=".screen.register.RegisterActivity"
+            android:exported="false" />
+        <activity
+            android:name=".screen.home.HomeActivity"
             android:exported="false" />
         <activity
             android:name=".MainActivity"

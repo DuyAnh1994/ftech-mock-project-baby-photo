@@ -1,6 +1,7 @@
 package ai.ftech.babyphoto.base.service
 
 import ai.ftech.babyphoto.model.*
+import com.google.gson.annotations.SerializedName
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import okhttp3.ResponseBody
@@ -48,7 +49,12 @@ interface DataService {
 
     @FormUrlEncoded
     @POST("album.php")
-    fun getAlbumId(@Field("idaccount") idaccount: Int): Call<ResponseModel<List<AlbumBaby>>>
+    fun getAlbum(@Field("idaccount") idaccount: Int): Call<ResponseModel<List<AlbumBaby>>>
+
+    @FormUrlEncoded
+    @POST("album_id.php")
+    fun getAlbumId(@Field("idalbum") idalbum: Int): Call<ResponseModel<List<AlbumBaby>>>
+
 
     //list image
     @FormUrlEncoded
@@ -89,4 +95,5 @@ interface DataService {
         @Part("description") description: RequestBody,
         @Part("timeline") timeline: RequestBody,
     ): Call<Data<String>>
+
 }
