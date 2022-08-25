@@ -1,5 +1,10 @@
 package ai.ftech.babyphoto.base
 
+import ai.ftech.babyphoto.R
+import android.app.Dialog
+import android.content.Context
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import java.util.regex.Pattern
 
 class Utils {
@@ -36,5 +41,13 @@ class Utils {
     }
     fun isMatchEmail(email: String, email1: String): Boolean{
         return Pattern.matches(email, email1)
+    }
+
+    fun loading(context: Context): Dialog {
+        var dialogLoadPass = Dialog(context)
+        dialogLoadPass.setContentView(R.layout.dialog_loading_register_layout)
+        dialogLoadPass.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        dialogLoadPass.show()
+        return dialogLoadPass
     }
 }

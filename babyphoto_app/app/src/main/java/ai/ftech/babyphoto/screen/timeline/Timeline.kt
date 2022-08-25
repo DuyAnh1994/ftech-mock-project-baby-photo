@@ -102,6 +102,26 @@ class Timeline : AppCompatActivity(), ITimelineContract.View {
         }
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        when (resultCode){
+            //code 200 là thành công, 400 là lỗi, không có code là back lại bình thường
+            //nếu code == 400 thì truyền thêm msg lỗi là gì
+            200 -> {
+                lImage.clear()
+                rvTimelineViewImage.adapter!!.notifyDataSetChanged()
+                srlTimeLine.isRefreshing = true
+                presenter.getImage(idAlbum)
+            }
+            400 -> {
+                val msg = data?.getStringExtra("msg")
+                //show lỗi gì đó
+                Toast.makeText(this, msg.toString(), Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onGetImage(state: TimelineState, message: String, lImage: List<Image>) {
         when (state) {

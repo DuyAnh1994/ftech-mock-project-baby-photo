@@ -19,10 +19,8 @@ import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_change_pass.*
 
 class ChangePass : AppCompatActivity(), IChangePassContract.View {
-    private var presenter: ChangePassPresenter? = null
-    private var stateCheckPass: ChangePassState? = null
-    private var stateCheckNewPass: ChangePassState? = null
-    private var stateCheckReNewPass: ChangePassState? = null
+    private lateinit var presenter: ChangePassPresenter
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_change_pass)
@@ -30,42 +28,26 @@ class ChangePass : AppCompatActivity(), IChangePassContract.View {
         presenter = ChangePassPresenter(this)
 
         tieCurrentPass.addTextChangedListener {
-            presenter!!.checkPass(tieCurrentPass.text.toString())
-            presenter!!.checkNull(
+            presenter.validPassword(
                 tieCurrentPass.text.toString(),
                 tieNewPass.text.toString(),
-                tieReNewPass.text.toString(),
-                stateCheckPass,
-                stateCheckNewPass,
-                stateCheckReNewPass
-            )
+                tieReNewPass.text.toString(),)
         }
         tieNewPass!!.addTextChangedListener {
-            presenter!!.checkNewPass(tieNewPass.text.toString())
-            presenter!!.checkNull(
+            presenter.validPassword(
                 tieCurrentPass.text.toString(),
                 tieNewPass.text.toString(),
-                tieReNewPass.text.toString(),
-                stateCheckPass,
-                stateCheckNewPass,
-                stateCheckReNewPass
-            )
+                tieReNewPass.text.toString(),)
         }
         tieReNewPass!!.addTextChangedListener {
-            presenter!!.checkReNewPass(tieNewPass.text.toString(), tieReNewPass.text.toString())
-            presenter!!.checkNull(
+            presenter.validPassword(
                 tieCurrentPass.text.toString(),
                 tieNewPass.text.toString(),
-                tieReNewPass.text.toString(),
-                stateCheckPass,
-                stateCheckNewPass,
-                stateCheckReNewPass
-
-            )
+                tieReNewPass.text.toString(),)
         }
         tvSaveChange.setOnClickListener {
             val dialog = openDialog()
-            presenter!!.submit(dialog, Constant.account.idaccount, tieNewPass.text.toString())
+            presenter.submit(dialog, Constant.account.idaccount, tieNewPass.text.toString())
         }
         ibChangePassBack.setOnClickListener {
             finish()
@@ -86,7 +68,6 @@ class ChangePass : AppCompatActivity(), IChangePassContract.View {
     }
 
     override fun onCheckPass(state: ChangePassState, message: String) {
-        stateCheckPass = state
         when (state) {
             ChangePassState.PASS_NOT_FOUND -> {
                 tvChangePassWarning.text = "You password was incorrect."
@@ -100,7 +81,6 @@ class ChangePass : AppCompatActivity(), IChangePassContract.View {
     }
 
     override fun onCheckNewPass(state: ChangePassState, message: String) {
-        stateCheckNewPass = state
         when (state) {
             ChangePassState.PASS_NOT_VALID -> {
                 tvChangePassWarning.text =
@@ -115,7 +95,6 @@ class ChangePass : AppCompatActivity(), IChangePassContract.View {
     }
 
     override fun onCheckReNewPass(state: ChangePassState, message: String) {
-        stateCheckReNewPass = state
         when (state) {
             ChangePassState.PASS_NOT_MATCH -> {
                 tvChangePassWarning.text = "Confirm password doesn't match"
@@ -146,11 +125,10 @@ class ChangePass : AppCompatActivity(), IChangePassContract.View {
         dialog.dismiss()
         when (state) {
             ChangePassState.UPDATE_PASS_SUCCESS -> {
-                val intent = Intent(this, DetailAccount::class.java)
-                intent.putExtra("showTop", "showTop")
-                startActivity(intent)
+                finish()
             }
             ChangePassState.UPDATE_PASS_FAILED -> {
+                Toast.makeText(this, "Có lỗi xảy ra", Toast.LENGTH_SHORT).show()
             }
             else -> {}
         }

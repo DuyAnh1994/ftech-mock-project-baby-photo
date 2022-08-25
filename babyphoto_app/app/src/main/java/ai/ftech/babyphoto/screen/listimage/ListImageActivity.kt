@@ -299,7 +299,8 @@ class ListImageActivity : AppCompatActivity(), IListContract.IView {
                 intent.putExtra("nameAlbum",nameAlbum)
                 intent.putExtra("birthday",birthday)
                 intent.putExtra("urlimage",urlimage)
-                startActivity(intent)
+                setResult(200, intent)
+                finish()
             }
             DataResult.State.FAIL -> {
                 Toast.makeText(applicationContext, data.data, Toast.LENGTH_SHORT).show()

@@ -1,6 +1,7 @@
 package ai.ftech.babyphoto.screen.home
 
 import ai.ftech.babyphoto.R
+import ai.ftech.babyphoto.base.Constant
 import ai.ftech.babyphoto.base.service.APIService
 import ai.ftech.babyphoto.model.Account
 import ai.ftech.babyphoto.model.AlbumBaby
@@ -36,16 +37,13 @@ class Home : AppCompatActivity(), BabyHomeAdapter.onItemClickListenerr, IHomeCon
     lateinit var toggle: ActionBarDrawerToggle
     lateinit var drawerLayout: DrawerLayout
     lateinit var navigationView: NavigationView
-    private var idaccount: Int? = -1
     private var mutableListBaby: MutableList<AlbumBaby> = mutableListOf()
 
     @SuppressLint("NotifyDataSetChanged")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
-        val bundle: Bundle? = intent.extras
         presenter = HomePresenter(this)
-        idaccount = bundle?.getInt("idaccount")
         drawerLayout = findViewById(R.id.drawableLayout)
         navigationView = findViewById(R.id.nvHomeToDetailAccount)
 
@@ -60,12 +58,12 @@ class Home : AppCompatActivity(), BabyHomeAdapter.onItemClickListenerr, IHomeCon
 
 
         srlHome.isRefreshing = true
-        presenter.getAlbum(idaccount)
+        presenter.getAlbum(Constant.account.idaccount)
 
         srlHome.setOnRefreshListener {
             mutableListBaby.clear()
             srlHome.isRefreshing = true
-            presenter.getAlbum(idaccount)
+            presenter.getAlbum(Constant.account.idaccount)
         }
 
 //        APIService.base().getAlbumId(idaccount as Int).enqueue(
@@ -110,7 +108,6 @@ class Home : AppCompatActivity(), BabyHomeAdapter.onItemClickListenerr, IHomeCon
 
         navigationView.setNavigationItemSelectedListener {
             var intent = Intent(this, DetailAccount::class.java)
-            intent.putExtra("idaccount", idaccount)
             when (it.itemId) {
                 R.id.itemAcc -> startActivity(intent)
                 R.id.itemNoti -> Toast.makeText(

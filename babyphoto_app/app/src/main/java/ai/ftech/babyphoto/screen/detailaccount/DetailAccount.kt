@@ -33,24 +33,14 @@ import retrofit2.Response
 
 
 class DetailAccount : AppCompatActivity(), IDetailAccountContract.View {
-    private var presenter: DetailAccountPresenter? = null
-    private var email: String = ""
-    private var firstname: String = ""
-    private var lastname: String = ""
-    private var index1: Int = 0
-    private var idaccount1: Int = 0
+    private lateinit var presenter: DetailAccountPresenter
     private var account: AccountUpdate = AccountUpdate("", "", "", 0)
 
     //    private var mutableListAccount: MutableList<AccountUpdate> = mutableListOf()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(ai.ftech.babyphoto.R.layout.activity_detail_account)
-        //val bundle: Bundle? = intent.extras
-        //var idaccount = bundle?.getInt("idaccount")
-        //val showTop = bundle?.get("showTop")
         presenter = DetailAccountPresenter(this)
-
-        //presenter!!.getAccount(idaccount)
 
         onGetAccount()
 
@@ -66,14 +56,13 @@ class DetailAccount : AppCompatActivity(), IDetailAccountContract.View {
             account.lastname = edtAccountDetailNameLast.text.toString()
             account.idaccount = Constant.account.idaccount
 
-            presenter!!.updateAccount(account)
+            presenter.updateAccount(account)
         }
         llAccountDetailLogout.setOnClickListener {
             openDialog()
         }
         clProfileChangePass.setOnClickListener {
             var intent = Intent(this, ChangePass::class.java)
-            //intent.putExtra("idaccount", idaccount as Int)
             startActivity(intent)
         }
         Snackbar.make(
@@ -85,10 +74,6 @@ class DetailAccount : AppCompatActivity(), IDetailAccountContract.View {
     }
 
     fun onGetAccount() {
-        email = Constant.account.email
-        firstname = Constant.account.firstname
-        lastname = Constant.account.lastname
-        idaccount1 = Constant.account.idaccount
         tvViewIDAccountDetail.text = Constant.account.idaccount.toString()
         edtAccountDetailName.setText(Constant.account.firstname)
         edtAccountDetailNameLast.setText(Constant.account.lastname)
