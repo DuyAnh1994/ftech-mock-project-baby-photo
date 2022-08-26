@@ -64,9 +64,6 @@ class ListImageActivity : AppCompatActivity(), IListContract.IView {
 
         val bundle: Bundle? = intent.extras
         ID_ALBUM = bundle?.getString("idalbum")
-        nameAlbum = bundle?.getString("nameAlbum")
-        birthday = bundle?.get("birthday").toString()
-        urlimage = bundle?.getString("urlimage")
         initView()
         default()
         checkPermission()
@@ -109,7 +106,7 @@ class ListImageActivity : AppCompatActivity(), IListContract.IView {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         when (requestCode) {
             REQUEST_CODE_IMAGE -> {
-                listImagePresent.getImage( this)
+                listImagePresent.getImage(this)
             }
             REQUEST_CODE_CAMERA -> {
                 if ((grantResults.isNotEmpty() &&
@@ -138,7 +135,7 @@ class ListImageActivity : AppCompatActivity(), IListContract.IView {
                 arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), 998
             )
         }
-        listImagePresent.getImage( this)
+        listImagePresent.getImage(this)
     }
 
     //lấy ảnh từ thư viện để hiển thị ra 1 danh sách
@@ -295,10 +292,7 @@ class ListImageActivity : AppCompatActivity(), IListContract.IView {
                 Toast.makeText(applicationContext, data.data, Toast.LENGTH_SHORT)
                     .show()
                 val intent = Intent(applicationContext, Timeline::class.java)
-                intent.putExtra("idalbum",ID_ALBUM)
-                intent.putExtra("nameAlbum",nameAlbum)
-                intent.putExtra("birthday",birthday)
-                intent.putExtra("urlimage",urlimage)
+                intent.putExtra("idalbum", ID_ALBUM)
                 setResult(200, intent)
                 finish()
             }

@@ -1,6 +1,7 @@
 package ai.ftech.babyphoto.screen.createalbum
 
 import ai.ftech.babyphoto.R
+import ai.ftech.babyphoto.base.Constant
 import ai.ftech.babyphoto.model.DataResult
 import ai.ftech.babyphoto.screen.createalbum.preview.PhotoFolderActivity
 import ai.ftech.babyphoto.screen.createalbum.relation.DialogRelationFragment
@@ -70,8 +71,7 @@ class CreateAlbumActivity : AppCompatActivity(), DialogRelationFragment.ICreateN
         super.onCreate(savedInstanceState)
         setContentView(R.layout.create_album_activity)
 
-        var intent = intent
-        ID_ACCOUNT = intent.getIntExtra("idaccount", 0)
+        ID_ACCOUNT = Constant.account.idaccount
         initView()
         getUriBaby()
         getGenderAlbum()

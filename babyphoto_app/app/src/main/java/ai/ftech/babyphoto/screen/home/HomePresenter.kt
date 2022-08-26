@@ -16,7 +16,7 @@ class HomePresenter(private val view: IHomeContract.View) {
     fun getAlbum(idaccount: Int?) {
         if (idaccount == null) return
 
-        apiService.getAlbumId(idaccount).enqueue(
+        apiService.getAlbum(idaccount).enqueue(
             object : Callback<ResponseModel<List<AlbumBaby>>> {
                 override fun onResponse(
                     call: Call<ResponseModel<List<AlbumBaby>>>,

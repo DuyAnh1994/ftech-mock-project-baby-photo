@@ -91,9 +91,6 @@ class Timeline : AppCompatActivity(), ITimelineContract.View {
         fabAdd.setOnClickListener {
             var intent = Intent(this, ListImageActivity::class.java)
             intent.putExtra("idalbum",idAlbum)
-            intent.putExtra("nameAlbum",nameAlbum)
-            intent.putExtra("birthday",birthday)
-            intent.putExtra("urlimage",urlimage)
             startActivity(intent)
         }
 
