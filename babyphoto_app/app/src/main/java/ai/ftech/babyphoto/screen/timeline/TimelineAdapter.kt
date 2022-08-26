@@ -20,12 +20,20 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.squareup.picasso.Picasso
 
 class TimelineAdapter(
-    val context: Context,
-    private val dataImage: List<Image>,
+    private var context: Context
 ) : RecyclerView.Adapter<TimelineAdapter.ViewHolder>() {
+
+
+    var dataImage: MutableList<Image> = mutableListOf()
+    set(value) {
+        field = value
+        notifyDataSetChanged()
+    }
+    var callBack: ICallBack? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.timeline_view_album, parent, false)
@@ -35,12 +43,18 @@ class TimelineAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = dataImage[position]
-        Picasso.get()
-            .load(Uri.parse(item.urlimage))
-            .into(holder.ivTimeLineViewImage)
-        holder.itemView.setOnClickListener {
-            val intent = Intent(context, ListImageActivity::class.java)
-            context.startActivity(intent)
+//        Picasso.get()
+//            .load(item.urlimage)
+//            .into(holder.ivTimeLineViewImage)
+
+        try {
+            Glide.with(context)
+                .load(item.urlimage)
+//                .error("https://images.ctfassets.net/hrltx12pl8hq/7yQR5uJhwEkRfjwMFJ7bUK/dc52a0913e8ff8b5c276177890eb0129/offset_comp_772626-opt.jpg?fit=fill&w=800&h=300")
+                .placeholder(R.drawable.humo)
+                .into(holder.ivTimeLineViewImage)
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
     }
 
@@ -48,8 +62,18 @@ class TimelineAdapter(
         return dataImage.size
     }
 
-    class ViewHolder(ItemView: View) : RecyclerView.ViewHolder(ItemView) {
+    inner class ViewHolder(ItemView: View) : RecyclerView.ViewHolder(ItemView) {
         val ivTimeLineViewImage: ImageView = itemView.findViewById(R.id.ivTimeLineViewImage)
+
+        init {
+            itemView.setOnClickListener {
+                callBack?.onClick()
+            }
+        }
+    }
+
+    interface ICallBack{
+        fun onClick()
     }
 }
 

@@ -24,7 +24,7 @@ class TimelinePresenter(private val view: ITimelineContract.View) {
                     call: Call<ResponseModel<List<Image>>>,
                     response: Response<ResponseModel<List<Image>>>
                 ) {
-                    val res = response.body() as ResponseModel<List<Image>>
+                    val res = response.body() as ResponseModel<MutableList<Image>>
                     view.onGetImage(TimelineState.SUCCESS, "Get image success", res.data)
                 }
 
