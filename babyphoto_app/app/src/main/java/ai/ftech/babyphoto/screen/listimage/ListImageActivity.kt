@@ -64,9 +64,6 @@ class ListImageActivity : AppCompatActivity(), IListContract.IView {
 
         val bundle: Bundle? = intent.extras
         ID_ALBUM = bundle?.getString("idalbum")
-        nameAlbum = bundle?.getString("nameAlbum")
-        birthday = bundle?.get("birthday").toString()
-        urlimage = bundle?.getString("urlimage")
         initView()
         default()
         checkPermission()
@@ -142,6 +139,8 @@ class ListImageActivity : AppCompatActivity(), IListContract.IView {
     }
 
     //lấy ảnh từ thư viện để hiển thị ra 1 danh sách
+
+
     @RequiresApi(Build.VERSION_CODES.O)
     override fun getData(listImage: MutableList<String>, listCb: MutableList<Boolean>) {
 
@@ -294,10 +293,8 @@ class ListImageActivity : AppCompatActivity(), IListContract.IView {
                     .show()
                 val intent = Intent(applicationContext, Timeline::class.java)
                 intent.putExtra("idalbum", ID_ALBUM)
-                intent.putExtra("nameAlbum", nameAlbum)
-                intent.putExtra("birthday", birthday)
-                intent.putExtra("urlimage", urlimage)
-                startActivity(intent)
+                setResult(200, intent)
+                finish()
             }
             DataResult.State.FAIL -> {
                 Toast.makeText(applicationContext, data.data, Toast.LENGTH_SHORT).show()

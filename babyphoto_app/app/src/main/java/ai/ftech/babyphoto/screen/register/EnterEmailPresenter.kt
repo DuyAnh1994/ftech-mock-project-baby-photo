@@ -5,6 +5,7 @@ import ai.ftech.babyphoto.base.Utils
 import ai.ftech.babyphoto.base.service.APIService
 import ai.ftech.babyphoto.model.Account
 import ai.ftech.babyphoto.model.ResponseModel
+import android.app.Dialog
 import android.content.Intent
 import android.util.Log
 import android.view.View
@@ -18,62 +19,41 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class EnterEmailPresenter(private var view: IEnterEmailContract.View) {
-    private var account: Account?= null
-
     //khai báo service
     private val apiService = APIService.base()
-    private var lAccount = listOf<Account>()
 
-    //hàm gọi lấy danh sách tài khoản
-    fun getAccount() {
-        apiService.account().enqueue(
-            object : Callback<ResponseModel<List<Account>>> {
+    fun checkEmail(dialog: Dialog, email: String, account: Account?) {
+        apiService.checkEmail(email).enqueue(
+            object : Callback<ResponseModel<List<String>>> {
                 override fun onResponse(
-                    call: Call<ResponseModel<List<Account>>>,
-                    response: Response<ResponseModel<List<Account>>>
+                    call: Call<ResponseModel<List<String>>>,
+                    response: Response<ResponseModel<List<String>>>
                 ) {
-                    if (response.body() != null){
-                        lAccount = response.body()!!.data
-                        return
+                    dialog.dismiss()
+                    if (response.body() != null && "code12" == response.body()?.code) {
+                        return view.onCheckMail(RegisterState.EMAIL_EXIST, "email is exist")
                     }
+
+                    account?.email = email
+                    view.onNextScreen(RegisterState.SUCCESS, "screen is next", Gson().toJson(account))
                 }
 
-                override fun onFailure(call: Call<ResponseModel<List<Account>>>, t: Throwable) {
-                    Log.e("ERROR",t.toString())
+                override fun onFailure(call: Call<ResponseModel<List<String>>>, t: Throwable) {
+                    dialog.dismiss()
+                    view.onCheckMail(RegisterState.EMAIL_EXIST, "email is exist")
                 }
 
             }
         )
+
     }
 
-    fun checkEmail(email: String){
-        val hasEmail = lAccount.any { accountModel: Account ->  accountModel.email == email}
+    fun validatEmail(email: String) {
         val isEmail = Utils().isEmail(email)
-
-        if (hasEmail){
-            view.onCheckMail(RegisterState.EMAIL_EXIST, "email is exist")
-        }
-
-        if (!isEmail){
+        if (!isEmail) {
             view.onCheckMail(RegisterState.IS_NOT_EMAIL, "this is not a email")
-        }
-
-        if(hasEmail || !isEmail){
-           view.onCheckMail(RegisterState.EMAIL_EXIST_OR_NOT_EMAIL, "emai not exist or not email")
-        }else{
+        }else {
             view.onCheckMail(RegisterState.SUCCESS, "email is ok")
-        }
-
-    }
-
-    fun nextScreen(state: RegisterState, email: String, accountN: Account?){
-        account = accountN
-        when(state){
-            RegisterState.SUCCESS->{
-                account?.email = email
-                view.onNextScreen(RegisterState.SUCCESS, "screen is next", Gson().toJson(account))
-            }
-            else -> {}
         }
     }
 }

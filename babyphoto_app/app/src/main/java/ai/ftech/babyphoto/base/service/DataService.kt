@@ -9,17 +9,24 @@ import retrofit2.Call
 import retrofit2.http.*
 
 interface DataService {
-    //4. khai báo link api, phương thức và kiểu dữ liệu trả về
+    //login
+    @FormUrlEncoded
+    @POST("account_check_login.php")
+    fun login(@Field("email") email: String, @Field("password") password: String): Call<ResponseModel<List<String>>>
 
-    @GET("account.php")
-    fun account(): Call<ResponseModel<List<Account>>>
+    //get account with id
+    @FormUrlEncoded
+    @POST("account_id.php")
+    fun getAccountWithId(@Field("idaccount") idaccount: String): Call<ResponseModel<List<Account>>>
 
     //thêm mới user
-    @POST("account_insert.php")
-    fun insertAccount(
-        @Body body: RequestBody
-    ): Call<ResponseBody>
+    @FormUrlEncoded
+    @POST("account_check_mail.php")
+    fun checkEmail(
+        @Field("email") email: String,
+    ): Call<ResponseModel<List<String>>>
 
+    //thêm mới user
     @FormUrlEncoded
     @POST("account_insert.php")
     fun insertAccount(
@@ -60,11 +67,6 @@ interface DataService {
     @FormUrlEncoded
     @POST("image.php")
     fun getImageId(@Field("idalbum") idalbum: Any?): Call<ResponseModel<List<Image>>>
-
-    //get accountid
-    @FormUrlEncoded
-    @POST("account_id.php")
-    fun getAccountId(@Field("idaccount") idaccount: Int): Call<ResponseModel<List<Account>>>
 
     @Multipart
     @POST("album_insert.php")

@@ -33,7 +33,7 @@ class Timeline : AppCompatActivity(), ITimelineContract.View {
     private var nameAlbum: String? = ""
     private var urlimage: String? = ""
     private var birthday: String? = ""
-    private val lImage: MutableList<Image> = ArrayList()
+    private var adapter: TimelineAdapter = TimelineAdapter(this)
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -67,7 +67,12 @@ class Timeline : AppCompatActivity(), ITimelineContract.View {
         tvTimelineItemTitle.text = nameAlbum.toString()
 
         val rvTimelineViewImage: RecyclerView = findViewById(R.id.rvTimelineViewImage)
-        val timelineAdapter = TimelineAdapter(this, lImage)
+        val timelineAdapter = adapter
+        timelineAdapter?.callBack = object :  TimelineAdapter.ICallBack{
+            override fun onClick() {
+
+            }
+        }
         val staggeredGridLayoutManager = StaggeredGridLayoutManager(2, LinearLayoutManager.VERTICAL)
 
         rvTimelineViewImage.layoutManager = staggeredGridLayoutManager
@@ -77,8 +82,8 @@ class Timeline : AppCompatActivity(), ITimelineContract.View {
         presenter.getImage(idAlbum)
 
         srlTimeLine.setOnRefreshListener {
-            lImage.clear()
-            rvTimelineViewImage.adapter!!.notifyDataSetChanged()
+            adapter.dataImage.clear()
+            adapter.notifyDataSetChanged()
             srlTimeLine.isRefreshing = true
             presenter.getImage(idAlbum)
         }
@@ -91,9 +96,6 @@ class Timeline : AppCompatActivity(), ITimelineContract.View {
         fabAdd.setOnClickListener {
             var intent = Intent(this, ListImageActivity::class.java)
             intent.putExtra("idalbum",idAlbum)
-            intent.putExtra("nameAlbum",nameAlbum)
-            intent.putExtra("birthday",birthday)
-            intent.putExtra("urlimage",urlimage)
             startActivity(intent)
         }
 
@@ -102,14 +104,34 @@ class Timeline : AppCompatActivity(), ITimelineContract.View {
         }
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        when (resultCode){
+            //code 200 là thành công, 400 là lỗi, không có code là back lại bình thường
+            //nếu code == 400 thì truyền thêm msg lỗi là gì
+            200 -> {
+                adapter?.dataImage?.clear()
+                rvTimelineViewImage.adapter!!.notifyDataSetChanged()
+                srlTimeLine.isRefreshing = true
+                presenter.getImage(idAlbum)
+            }
+            400 -> {
+                val msg = data?.getStringExtra("msg")
+                //show lỗi gì đó
+                Toast.makeText(this, msg.toString(), Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
     @RequiresApi(Build.VERSION_CODES.O)
-    override fun onGetImage(state: TimelineState, message: String, lImage: List<Image>) {
+    override fun onGetImage(state: TimelineState, message: String, lImage: MutableList<Image>) {
         when (state) {
             TimelineState.SUCCESS -> {
                 srlTimeLine.isRefreshing = false
-                this.lImage.addAll(lImage)
+                adapter.dataImage = lImage
 
-                rvTimelineViewImage.adapter!!.notifyDataSetChanged()
+//                rvTimelineViewImage.adapter!!.notifyDataSetChanged()
 
                 if (lImage.isEmpty()) return
 

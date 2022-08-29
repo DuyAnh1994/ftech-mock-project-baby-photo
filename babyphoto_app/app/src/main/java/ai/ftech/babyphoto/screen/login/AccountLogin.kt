@@ -1,6 +1,7 @@
 package ai.ftech.babyphoto.screen.login
 
 import ai.ftech.babyphoto.R
+import ai.ftech.babyphoto.base.Utils
 import ai.ftech.babyphoto.screen.home.Home
 import android.app.Dialog
 import android.content.Context
@@ -10,7 +11,6 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.text.Editable
-import android.text.InputType
 import android.text.TextWatcher
 import android.view.Gravity
 import android.view.View
@@ -33,7 +33,7 @@ class AccountLogin : AppCompatActivity(), CompoundButton.OnCheckedChangeListener
     private var KEY_EMAIL = "email_pref"
     private var KEY_PASS = "pass_pref"
     private var email: String? = ""
-
+    private var enableLogin = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,7 +41,6 @@ class AccountLogin : AppCompatActivity(), CompoundButton.OnCheckedChangeListener
         var bundle: Bundle? = intent.extras
         email = bundle?.getString("Email")
         presenter = AccountLoginPresenter(this)
-        presenter?.getAccount()
         presenter?.checkMailNull(email)
         tieAccountLoginEmail.onFocusChangeListener = View.OnFocusChangeListener { v, hasFocus ->
             if (!hasFocus) {
@@ -53,15 +52,23 @@ class AccountLogin : AppCompatActivity(), CompoundButton.OnCheckedChangeListener
             val intent = Intent(this, ai.ftech.babyphoto.MainActivity::class.java)
             startActivity(intent)
         }
+
+        tvAccountLoginTakePass.setOnClickListener {
+            showBottomSheet()
+        }
+
         acbAccountLogin.setOnClickListener {
-            val email = tieAccountLoginEmail.text.toString()
-            val password = tieAccountLoginPass.text.toString()
-            presenter?.login(email, password)
+            if (enableLogin) {
+                val email = tieAccountLoginEmail.text.toString()
+                val password = tieAccountLoginPass.text.toString()
+                val dialog = Utils().loading(this)
+                presenter?.login(dialog, email, password)
+            }
         }
 //        tieAccountLoginPass.inputType = InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
         presenter?.checkValidAccount(
             tieAccountLoginEmail.text.toString().trim(),
-            tieAccountLoginPass.text.toString().trim()
+            tieAccountLoginPass.text.toString().trim(),
         )
         ai.ftech.babyphoto.screen.register.MultiTextWatcher()
             .registerEditText(tieAccountLoginEmail)
@@ -127,37 +134,31 @@ class AccountLogin : AppCompatActivity(), CompoundButton.OnCheckedChangeListener
         managePrefs()
     }
 
-    override fun onLogin(state: LoginState, message: String, idaccount: Int) {
+    override fun onLogin(state: LoginState, message: String) {
         when (state) {
             LoginState.SUCCESS -> {
                 val intent = Intent(this, Home::class.java)
-                intent.putExtra("idaccount", idaccount)
                 startActivity(intent)
                 finish()
             }
-            LoginState.EMAIL_OR_PASS_EMPTY -> {
+            LoginState.INVALID_EMAIL_AND_PASS -> {
+                tvAccountLoginWarning.visibility = View.VISIBLE
                 Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
-            }
-            LoginState.EMAIL_NOT_FOUND -> {
-                showBottomSheet()
             }
             else -> {}
         }
     }
 
     override fun onValidAccount(state: LoginState, message: String) {
+        tvAccountLoginWarning.visibility = View.INVISIBLE
         when (state) {
             LoginState.SUCCESS -> {
-                tvAccountLoginWarning.visibility = View.INVISIBLE
                 acbAccountLogin.setBackgroundResource(R.drawable.selector_rec_orange_color_correct_login)
+                enableLogin = true
             }
-            LoginState.EMAIL_NOT_FOUND -> {
-                tvAccountLoginWarning.visibility = View.VISIBLE
-                acbAccountLogin.setBackgroundResource(R.drawable.selector_rec_orange_color_correct_login)
-            }
-            LoginState.EMAIL_NOT_FOUND_OR_EMPTY -> {
-                tvAccountLoginWarning.visibility = View.VISIBLE
+            LoginState.EMAIL_OR_PASS_EMPTY -> {
                 acbAccountLogin.setBackgroundResource(R.drawable.selector_rec_gray_incorrect_login)
+                enableLogin = false
             }
             else -> {}
         }

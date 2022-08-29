@@ -1,6 +1,7 @@
 package ai.ftech.babyphoto.screen.register
 
 import ai.ftech.babyphoto.R
+import ai.ftech.babyphoto.base.Utils
 import ai.ftech.babyphoto.model.Account
 import android.content.Intent
 import android.os.Bundle
@@ -15,7 +16,7 @@ import kotlinx.android.synthetic.main.activity_enter_email.btnRegisterNext2
 class ActivityEnterEmail : AppCompatActivity(), IEnterEmailContract.View{
     private var presenter: EnterEmailPresenter? = null
     private var account: Account?= null
-    private lateinit var stateCheckMail: RegisterState
+    private var stateCheckMail: RegisterState? = null
     private var textEmail = ""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,22 +29,22 @@ class ActivityEnterEmail : AppCompatActivity(), IEnterEmailContract.View{
         var tieRegisterEmail:TextInputEditText = findViewById(R.id.tieRegisterEmail)
         presenter = EnterEmailPresenter(this)
 
-        presenter!!.getAccount()
-
         ibRegisterBackEmail.setOnClickListener {
             finish()
         }
         btnRegisterNext2.setOnClickListener {
-            presenter!!.nextScreen(stateCheckMail, tieRegisterEmail.text.toString(), account)
+            val dialog = Utils().loading(this)
+            presenter!!.checkEmail(dialog, tieRegisterEmail.text.toString(), account)
         }
 
         tieRegisterEmail.addTextChangedListener {
-            presenter!!.checkEmail(tieRegisterEmail.text.toString())
+            presenter!!.validatEmail(tieRegisterEmail.text.toString())
         }
     }
 
     override fun onCheckMail(state: RegisterState, message: String) {
         stateCheckMail = state
+        tvRegisterWarningEmail.visibility = View.VISIBLE
         when(state){
             RegisterState.SUCCESS ->{
                 tvRegisterWarningEmail.visibility = View.INVISIBLE
@@ -56,7 +57,6 @@ class ActivityEnterEmail : AppCompatActivity(), IEnterEmailContract.View{
                 tvRegisterWarningEmail.text = "This is not email"
             }
             RegisterState.EMAIL_EXIST_OR_NOT_EMAIL ->{
-                tvRegisterWarningEmail.visibility = View.VISIBLE
                 btnRegisterNext2.setBackgroundResource(R.drawable.selector_rec_gray_color_orange_selected)
             }
             else -> {}
