@@ -109,7 +109,7 @@ class ListImageActivity : AppCompatActivity(), IListContract.IView {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         when (requestCode) {
             REQUEST_CODE_IMAGE -> {
-                listImagePresent.getImage( this)
+                listImagePresent.getImage(this)
             }
             REQUEST_CODE_CAMERA -> {
                 if ((grantResults.isNotEmpty() &&
@@ -138,12 +138,10 @@ class ListImageActivity : AppCompatActivity(), IListContract.IView {
                 arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), 998
             )
         }
-        listImagePresent.getImage( this)
+        listImagePresent.getImage(this)
     }
 
     //lấy ảnh từ thư viện để hiển thị ra 1 danh sách
-
-
     @RequiresApi(Build.VERSION_CODES.O)
     override fun getData(listImage: MutableList<String>, listCb: MutableList<Boolean>) {
 
@@ -295,10 +293,10 @@ class ListImageActivity : AppCompatActivity(), IListContract.IView {
                 Toast.makeText(applicationContext, data.data, Toast.LENGTH_SHORT)
                     .show()
                 val intent = Intent(applicationContext, Timeline::class.java)
-                intent.putExtra("idalbum",ID_ALBUM)
-                intent.putExtra("nameAlbum",nameAlbum)
-                intent.putExtra("birthday",birthday)
-                intent.putExtra("urlimage",urlimage)
+                intent.putExtra("idalbum", ID_ALBUM)
+                intent.putExtra("nameAlbum", nameAlbum)
+                intent.putExtra("birthday", birthday)
+                intent.putExtra("urlimage", urlimage)
                 startActivity(intent)
             }
             DataResult.State.FAIL -> {

@@ -67,8 +67,8 @@ class ListImageAdapter(
                 } else {
                     arrayCb[position] = true
                     cbImage.setImageResource(R.drawable.ic_select_on)
-//                    ivImage.layoutParams.height = 165
-//                    ivImage.layoutParams.width = 150
+//                    ivImage.pivotX
+//                    ivImage.pivotY = "70%"
                     iListImage.setImage(position, true)
                 }
             }
