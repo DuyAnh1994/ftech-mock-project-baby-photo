@@ -56,7 +56,7 @@ class ListImageAdapter(
         private val cbImage: ImageView = itemView.findViewById(R.id.ivCheckbox)
         fun bind(position: Int) {
             ivImage.setImageBitmap(BitmapFactory.decodeFile(dataSet[position]))
-            cbImage.setOnClickListener {
+            itemView.setOnClickListener {
                 if (arrayCb[position]) {
                     arrayCb[position] = false
                     cbImage.setImageResource(R.drawable.ic_select_off)
@@ -72,6 +72,14 @@ class ListImageAdapter(
                     iListImage.setImage(position, true)
                 }
             }
+
+            itemView.setOnLongClickListener(object : View.OnLongClickListener{
+                override fun onLongClick(v: View?): Boolean {
+                    iListImage.showPreview(dataSet[position])
+                    return true
+                }
+            })
+
         }
 
     }

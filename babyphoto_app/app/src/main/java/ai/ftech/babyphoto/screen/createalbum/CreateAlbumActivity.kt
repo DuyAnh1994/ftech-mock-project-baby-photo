@@ -7,10 +7,13 @@ import ai.ftech.babyphoto.screen.createalbum.preview.PhotoFolderActivity
 import ai.ftech.babyphoto.screen.createalbum.relation.DialogRelationFragment
 import ai.ftech.babyphoto.screen.home.Home
 import android.app.Activity
+import android.app.Dialog
 import android.app.ProgressDialog
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -56,7 +59,7 @@ class CreateAlbumActivity : AppCompatActivity(), DialogRelationFragment.ICreateN
     private lateinit var rqGender: RequestBody
     private lateinit var rqBirthday: RequestBody
     private lateinit var rqRelation: RequestBody
-    var progressdialog: ProgressDialog? = null
+    var dialog : Dialog? = null
     var bitmapAvatar: Boolean = false
     var ID_ACCOUNT: Int = 0
     private var select: Int = 1
@@ -99,7 +102,7 @@ class CreateAlbumActivity : AppCompatActivity(), DialogRelationFragment.ICreateN
         tvRelation = findViewById(R.id.tvCreateAlbumRelation)
         flRelation = findViewById(R.id.flCreateAlbumRelation)
         flCamera = findViewById(R.id.flCreateAlbumCamera)
-        progressdialog = ProgressDialog(this, R.style.AppCompatAlertDialogStyle)
+        dialog = Dialog(this)
         createAlbumPresenter = CreateAlbumPresenter(this)
     }
 
@@ -306,13 +309,15 @@ class CreateAlbumActivity : AppCompatActivity(), DialogRelationFragment.ICreateN
         }
     }
 
+
     override fun showLoading() {
-        progressdialog?.setMessage("Updating")
-        progressdialog?.setCancelable(false)
-        progressdialog?.show()
+        dialog?.setContentView(R.layout.dialog_loading_album_layout)
+        dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        dialog?.setCancelable(false)
+        dialog?.show()
     }
 
     override fun hideLoading() {
-        progressdialog?.dismiss()
+        dialog?.dismiss()
     }
 }

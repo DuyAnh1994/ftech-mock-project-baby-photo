@@ -129,5 +129,8 @@ class CreateAlbumPresenter(var mView: ICreateContract.IView) : ICreateContract.I
     }
 
 
+
+
+
 }
 

@@ -2,12 +2,16 @@ package ai.ftech.babyphoto.screen.listimage
 
 import ai.ftech.babyphoto.R
 import ai.ftech.babyphoto.model.DataResult
+import ai.ftech.babyphoto.screen.createalbum.preview.DialogPreviewFragment
 import ai.ftech.babyphoto.screen.timeline.Timeline
 import android.Manifest
+import android.app.Dialog
 import android.app.ProgressDialog
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -48,10 +52,7 @@ class ListImageActivity : AppCompatActivity(), IListContract.IView {
     lateinit var path: String
     private val REQUEST_CODE_CAMERA = 998
     private val REQUEST_CODE_IMAGE = 999
-    var progressdialog: ProgressDialog? = null
-    private var nameAlbum: String? = ""
-    private var urlimage: String? = ""
-    private var birthday: String? = ""
+    var dialog : Dialog? = null
 
     var ID_ALBUM: String? = "1"
     private lateinit var listImagePresent: ListImagePresenter
@@ -77,7 +78,7 @@ class ListImageActivity : AppCompatActivity(), IListContract.IView {
         btnAdd = findViewById(R.id.btnListImageAdd)
         tvTitle = findViewById(R.id.tvListImageTitle)
         listImagePresent = ListImagePresenter(this)
-        progressdialog = ProgressDialog(this, R.style.AppCompatAlertDialogStyle)
+        dialog = Dialog(this)
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -171,6 +172,17 @@ class ListImageActivity : AppCompatActivity(), IListContract.IView {
                     }
                 }
             }
+
+            override fun showPreview(linkFolder: String) {
+                val dialogPreviewFragment = DialogPreviewFragment()
+                val bundle = Bundle()
+                bundle.putString("urlImage", linkFolder)
+                bundle.putBoolean("status",false)
+                dialogPreviewFragment.arguments = bundle
+                dialogPreviewFragment.show(supportFragmentManager, dialogPreviewFragment.tag)
+            }
+
+
         })
         rvImageView.setHasFixedSize(true)
         rvImageView.adapter = adapter
@@ -308,13 +320,14 @@ class ListImageActivity : AppCompatActivity(), IListContract.IView {
 
 
     override fun showLoading() {
-        progressdialog?.setMessage("Updating")
-        progressdialog?.setCancelable(false)
-        progressdialog?.show()
+        dialog?.setContentView(R.layout.dialog_loading_image_layout)
+        dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        dialog?.setCancelable(false)
+        dialog?.show()
     }
 
     override fun hideLoading() {
-        progressdialog?.dismiss()
+        dialog?.dismiss()
     }
 
 
