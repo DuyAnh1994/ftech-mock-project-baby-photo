@@ -16,6 +16,9 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Gravity
 import android.view.MenuItem
+import android.view.View
+import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.view.GravityCompat
@@ -27,6 +30,8 @@ import com.google.android.material.navigation.NavigationView
 import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.activity_timeline.*
 import kotlinx.android.synthetic.main.home_view_baby_layout.*
+import kotlinx.android.synthetic.main.nv_home_header_layout.*
+import kotlinx.android.synthetic.main.nv_home_header_layout.view.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -66,46 +71,18 @@ class Home : AppCompatActivity(), BabyHomeAdapter.onItemClickListenerr, IHomeCon
             presenter.getAlbum(Constant.account.idaccount)
         }
 
-//        APIService.base().getAlbumId(idaccount as Int).enqueue(
-//            object : Callback<ResponseModel<List<AlbumBaby>>> {
-//                override fun onResponse(
-//                    call: Call<ResponseModel<List<AlbumBaby>>>,
-//                    response: Response<ResponseModel<List<AlbumBaby>>>
-//                ) {
-//                    res = response.body()!!
-//                    mutableListBaby1.addAll(res.data)
-//                    srlHome.setOnRefreshListener {
-//                        mutableListBaby1.clear()
-//                        mutableListBaby1.addAll(res.data)
-//                        recycleBaby.adapter!!.notifyDataSetChanged()
-//                        srlHome.isRefreshing = false
-//                    }
-//                    var adapter =
-//                        BabyHomeAdapter(this@Home, mutableListBaby1, R.drawable.ic_add_home_24px)
-//                    recycleBaby.adapter = adapter
-//                    adapter.setOnItemClickListener(this@Home)
-//
-////                    val manager = GridLayoutManager(this@Home, 2, GridLayoutManager.VERTICAL, false)
-////                    recycleBaby.layoutManager = manager
-//                }
-//
-//                override fun onFailure(call: Call<ResponseModel<List<AlbumBaby>>>, t: Throwable) {
-//                    Toast.makeText(this@Home, "Get album failed", Toast.LENGTH_SHORT).show()
-//                }
-//
-//            }
-//        )
-
 
         toggle = ActionBarDrawerToggle(this, drawerLayout, R.string.open, R.string.close)
         drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
+        nvHomeToDetailAccount.getHeaderView(0).tvHeaderNameAccount.text = Constant.account.firstname + " " +
+                Constant.account.lastname
+
         ibHomeMenu.setOnClickListener {
             drawerLayout.openDrawer(GravityCompat.START)
         }
-
         navigationView.setNavigationItemSelectedListener {
             var intent = Intent(this, DetailAccount::class.java)
             when (it.itemId) {
@@ -123,6 +100,32 @@ class Home : AppCompatActivity(), BabyHomeAdapter.onItemClickListenerr, IHomeCon
             }
             true
         }
+
+
+        //ads
+        var arrayImage = mutableListOf(R.drawable.ad_home11, R.drawable.ad_home12,
+            R.drawable.img_ads_home1, R.drawable.image_ads_home2)
+        for( image in arrayImage){
+            flipperImage(image)
+        }
+        ibCancelAds.setOnClickListener {
+            vlHomeSlide.removeAllViews()
+            ibCancelAds.visibility = View.INVISIBLE
+        }
+
+
+    }
+    private fun flipperImage(image: Int) {
+        val ivHomeSlide = ImageView(this)
+        ivHomeSlide.scaleType = ImageView.ScaleType.CENTER_CROP
+        ivHomeSlide.adjustViewBounds = true
+        ivHomeSlide.setBackgroundResource(image)
+        vlHomeSlide.addView(ivHomeSlide)
+        vlHomeSlide.flipInterval = 5000
+        vlHomeSlide.setInAnimation(this, R.anim.slide_left)
+//        vlHomeSlide.setOutAnimation(this, R.anim.slide_right)
+        vlHomeSlide.isAutoStart = true
+//        vlHomeSlide.setInAnimation(in)
 
     }
 
@@ -144,15 +147,15 @@ class Home : AppCompatActivity(), BabyHomeAdapter.onItemClickListenerr, IHomeCon
 
     override fun onGetAlbum(state: HomeState, message: String, lAbum: List<AlbumBaby>) {
         srlHome.isRefreshing = false
-        when(state){
-            HomeState.SUCCESS ->{
+        when (state) {
+            HomeState.SUCCESS -> {
                 this.mutableListBaby.addAll(lAbum)
                 rcvHomeViewBaby.adapter!!.notifyDataSetChanged()
             }
-            HomeState.GET_ALBUM_FAIL ->{
+            HomeState.GET_ALBUM_FAIL -> {
                 Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
             }
-            else ->{}
+            else -> {}
         }
     }
 

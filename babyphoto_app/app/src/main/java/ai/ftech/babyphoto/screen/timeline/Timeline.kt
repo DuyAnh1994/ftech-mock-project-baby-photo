@@ -49,7 +49,6 @@ class Timeline : AppCompatActivity(), ITimelineContract.View {
         birthday = bundle?.get("birthday").toString()
         urlimage = bundle?.getString("urlimage")
 
-
         Picasso.get()
             .load(Uri.parse(urlimage))
             .into(civTimeLineAvatarCirCle)
@@ -65,12 +64,14 @@ class Timeline : AppCompatActivity(), ITimelineContract.View {
         tvTimeLineItemDateStart.text = (dt.format(format)).toString()
         tvTimeLineItemDateEnd.text = (LocalDate.now().format(format)).toString()
         tvTimelineItemTitle.text = nameAlbum.toString()
-
+        var intentPre = Intent(this, PreviewTimeLineActivity::class.java)
         val rvTimelineViewImage: RecyclerView = findViewById(R.id.rvTimelineViewImage)
         val timelineAdapter = adapter
-        timelineAdapter?.callBack = object :  TimelineAdapter.ICallBack{
-            override fun onClick() {
 
+        timelineAdapter?.callBack = object :  TimelineAdapter.ICallBack{
+            override fun onClick(position: Int) {
+                intentPre.putExtra("image", timelineAdapter.dataImage[position].urlimage)
+                startActivity(intentPre)
             }
         }
         val staggeredGridLayoutManager = StaggeredGridLayoutManager(2, LinearLayoutManager.VERTICAL)

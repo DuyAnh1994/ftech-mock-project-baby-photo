@@ -13,6 +13,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 import android.widget.ImageButton
+import com.bumptech.glide.Glide
 
 
 class BabyHomeAdapter(
@@ -98,7 +99,10 @@ class BabyHomeAdapter(
 //            ivHomeViewBaby.setImageURI(null)
 //            ivHomeViewBaby.setImageURI(Uri.parse(dataViewBabyHome[position].urlimage))
 
-            Picasso.get().load(dataViewBabyHome[position].urlimage).into(ivHomeViewBaby)
+            Glide.with(context)
+                .load(dataViewBabyHome[position].urlimage)
+                .placeholder(R.drawable.image_default)
+                .into(ivHomeViewBaby)
             tvHomeViewBabyName.text = dataViewBabyHome[position].name
             tvHomeViewBabyCountItem.text = dataViewBabyHome[position].amountimage
             tvHomeViewBabyItem.text = "images"
