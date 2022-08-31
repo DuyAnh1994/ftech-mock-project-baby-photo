@@ -3,7 +3,6 @@ package ai.ftech.babyphoto.screen.register
 import ai.ftech.babyphoto.MainActivity
 import ai.ftech.babyphoto.R
 import ai.ftech.babyphoto.screen.register.MultiTextWatcher.TextWatcherWithInstance
-import ai.ftech.babyphoto.screen.test.TestActivity
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
@@ -16,7 +15,6 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatButton
 import androidx.appcompat.widget.AppCompatEditText
-import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_register.*
 
 
@@ -99,7 +97,7 @@ class RegisterActivity : AppCompatActivity(), IRegisterContract.View {
     override fun onNextScreen(state: RegisterState, message: String, account: String) {
         when(state){
             RegisterState.SUCCESS ->{
-                val intent = Intent(this, ActivityEnterEmail::class.java)
+                val intent = Intent(this, EnterEmailActivity::class.java)
                 intent.putExtra("account", account)
                 startActivity(intent)
             }

@@ -2,7 +2,7 @@ package ai.ftech.babyphoto.screen.register
 
 import ai.ftech.babyphoto.R
 import ai.ftech.babyphoto.data.model.Account
-import ai.ftech.babyphoto.screen.login.AccountLogin
+import ai.ftech.babyphoto.screen.login.AccountLoginActivity
 import android.app.Dialog
 import android.content.Intent
 import android.graphics.Color
@@ -17,7 +17,7 @@ import androidx.core.widget.addTextChangedListener
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_create_pass.*
 
-class ActivityCreatePass() : AppCompatActivity(), ICreatePassContract.View {
+class CreatePassActivity() : AppCompatActivity(), ICreatePassContract.View {
     //    private val view = activity
     private var account: Account? = null
     private var presenter: CreatePassPresenter? = null
@@ -78,7 +78,7 @@ class ActivityCreatePass() : AppCompatActivity(), ICreatePassContract.View {
         when (state) {
             RegisterState.SUCCESS -> {
                 dialog.dismiss()
-                val intent = Intent(this, AccountLogin::class.java)
+                val intent = Intent(this, AccountLoginActivity::class.java)
                 intent.putExtra("Email", email)
                 startActivity(intent)
                 Log.d("TAG", "onInsertAccount: ${email}")

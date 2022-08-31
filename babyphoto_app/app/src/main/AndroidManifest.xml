@@ -51,13 +51,13 @@
             android:name=".screen.createalbum.preview.PhotoFolderActivity"
             android:exported="false" />
         <activity
-            android:name=".screen.login.AccountLogin"
+            android:name=".screen.login.AccountLoginActivity"
             android:exported="false" />
         <activity
-            android:name=".screen.register.ActivityCreatePass"
+            android:name=".screen.register.CreatePassActivity"
             android:exported="false" />
         <activity
-            android:name=".screen.register.ActivityEnterEmail"
+            android:name=".screen.register.EnterEmailActivity"
             android:exported="false" />
         <activity
             android:name=".screen.register.RegisterActivity"

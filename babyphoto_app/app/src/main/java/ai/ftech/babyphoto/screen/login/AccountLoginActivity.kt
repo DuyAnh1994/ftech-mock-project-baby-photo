@@ -23,7 +23,7 @@ import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_account_login.*
 import kotlin.toString as toString
 
-class AccountLogin : AppCompatActivity(), CompoundButton.OnCheckedChangeListener,
+class AccountLoginActivity : AppCompatActivity(), CompoundButton.OnCheckedChangeListener,
     ILoginContract.View {
     private var presenter: AccountLoginPresenter? = null
     private var sharedPreferences: SharedPreferences? = null

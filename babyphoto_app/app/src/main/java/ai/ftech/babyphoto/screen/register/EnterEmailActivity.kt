@@ -13,7 +13,7 @@ import com.google.android.material.textfield.TextInputEditText
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_enter_email.*
 
-class ActivityEnterEmail : AppCompatActivity(), IEnterEmailContract.View{
+class EnterEmailActivity : AppCompatActivity(), IEnterEmailContract.View{
     private var presenter: EnterEmailPresenter? = null
     private var account: Account?= null
     private var stateCheckMail: RegisterState? = null
@@ -73,7 +73,7 @@ class ActivityEnterEmail : AppCompatActivity(), IEnterEmailContract.View{
     override fun onNextScreen(state: RegisterState, message: String, account: String) {
         when(state){
             RegisterState.SUCCESS->{
-                val intent = Intent(this, ActivityCreatePass::class.java)
+                val intent = Intent(this, CreatePassActivity::class.java)
                 intent.putExtra("account", account)
                 startActivity(intent)
             }
