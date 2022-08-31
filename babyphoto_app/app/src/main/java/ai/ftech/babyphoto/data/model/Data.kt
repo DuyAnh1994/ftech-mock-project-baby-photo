@@ -1,3 +1,3 @@
-package ai.ftech.babyphoto.model
+package ai.ftech.babyphoto.data.model
 
 data class Data<T>(val code: String,val msg : String,val data : List<T>)

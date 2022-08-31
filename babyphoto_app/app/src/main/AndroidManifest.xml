@@ -30,16 +30,16 @@
             android:name=".screen.test.TestActivity"
             android:exported="false" />
         <activity
-            android:name=".screen.home.Home"
+            android:name=".screen.home.HomeActivity"
             android:exported="false" />
         <activity
-            android:name=".screen.timeline.Timeline"
+            android:name=".screen.timeline.TimelineActivity"
             android:exported="false" />
         <activity
-            android:name=".screen.detailaccount.DetailAccount"
+            android:name=".screen.detailaccount.DetailAccountActivity"
             android:exported="false" />
         <activity
-            android:name=".screen.changepass.ChangePass"
+            android:name=".screen.changepass.ChangePassActivity"
             android:exported="false" />
         <activity
             android:name=".screen.createalbum.CreateAlbumActivity"

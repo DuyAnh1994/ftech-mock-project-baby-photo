@@ -9,6 +9,8 @@ import android.graphics.Color
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -26,16 +28,19 @@ class RegisterActivity : AppCompatActivity(), IRegisterContract.View {
         setContentView(R.layout.activity_register)
         val edtRegisterFirstName: AppCompatEditText = findViewById(R.id.edtRegisterFirstName)
         val edtRegisterLastName: AppCompatEditText = findViewById(R.id.edtRegisterLastName)
-        val btnRegisterNext1: AppCompatButton = findViewById(R.id.btnRegisterNext1)
+        val btnRegisterNextFLName: AppCompatButton = findViewById(R.id.btnRegisterNextFLName)
 
         presenterRegister = RegisterPresenter(this)
 
-        btnRegisterNext1.setOnClickListener {
+        btnRegisterNextFLName.setOnClickListener {
             presenterRegister!!.nextScreen(stateCheckName, edtRegisterFirstName.text.toString(), edtRegisterLastName.text.toString())
         }
         ibRegisterBack.setOnClickListener {
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
+        }
+        clRegisterNameMain.setOnClickListener {
+            hideKeyboard(clRegisterNameMain)
         }
         MultiTextWatcher()
             .registerEditText(edtRegisterFirstName)
@@ -75,15 +80,20 @@ class RegisterActivity : AppCompatActivity(), IRegisterContract.View {
         stateCheckName = state
         when(state){
             RegisterState.SUCCESS ->{
-                btnRegisterNext1.setBackgroundResource(R.drawable.selector_rec_orange_color)
+                btnRegisterNextFLName.setBackgroundResource(R.drawable.selector_rec_orange_color)
                 tvRegisterWarning.setTextColor(Color.parseColor("#66000000"))
             }
             RegisterState.NAME_NOT_VALID ->{
-                btnRegisterNext1.setBackgroundResource(R.drawable.selector_rec_gray_color_orange_selected)
+                btnRegisterNextFLName.setBackgroundResource(R.drawable.selector_rec_gray_color_orange_selected)
                 tvRegisterWarning.setTextColor(Color.parseColor("#FF4B4B"))
             }
             else -> {}
         }
+    }
+
+    private fun hideKeyboard(view: View) {
+        val inputMethodManager = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+        inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
     }
 
     override fun onNextScreen(state: RegisterState, message: String, account: String) {

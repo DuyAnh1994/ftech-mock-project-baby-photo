@@ -1,17 +1,17 @@
 package ai.ftech.babyphoto.screen.register
 
 import ai.ftech.babyphoto.R
-import ai.ftech.babyphoto.base.Utils
-import ai.ftech.babyphoto.model.Account
+import ai.ftech.babyphoto.data.Utils
+import ai.ftech.babyphoto.data.model.Account
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.addTextChangedListener
 import com.google.android.material.textfield.TextInputEditText
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_enter_email.*
-import kotlinx.android.synthetic.main.activity_enter_email.btnRegisterNext2
 
 class ActivityEnterEmail : AppCompatActivity(), IEnterEmailContract.View{
     private var presenter: EnterEmailPresenter? = null
@@ -32,11 +32,13 @@ class ActivityEnterEmail : AppCompatActivity(), IEnterEmailContract.View{
         ibRegisterBackEmail.setOnClickListener {
             finish()
         }
-        btnRegisterNext2.setOnClickListener {
+        btnRegisterNextEmail.setOnClickListener {
             val dialog = Utils().loading(this)
             presenter!!.checkEmail(dialog, tieRegisterEmail.text.toString(), account)
         }
-
+        clEnterEmailMain.setOnClickListener {
+            hideKeyboard(clEnterEmailMain)
+        }
         tieRegisterEmail.addTextChangedListener {
             presenter!!.validatEmail(tieRegisterEmail.text.toString())
         }
@@ -48,7 +50,7 @@ class ActivityEnterEmail : AppCompatActivity(), IEnterEmailContract.View{
         when(state){
             RegisterState.SUCCESS ->{
                 tvRegisterWarningEmail.visibility = View.INVISIBLE
-                btnRegisterNext2.setBackgroundResource(R.drawable.selector_rec_orange_color)
+                btnRegisterNextEmail.setBackgroundResource(R.drawable.selector_rec_orange_color)
             }
             RegisterState.EMAIL_EXIST ->{
                 tvRegisterWarningEmail.text = "This email is wrong or already exists, please enter a new email"
@@ -57,10 +59,15 @@ class ActivityEnterEmail : AppCompatActivity(), IEnterEmailContract.View{
                 tvRegisterWarningEmail.text = "This is not email"
             }
             RegisterState.EMAIL_EXIST_OR_NOT_EMAIL ->{
-                btnRegisterNext2.setBackgroundResource(R.drawable.selector_rec_gray_color_orange_selected)
+                btnRegisterNextEmail.setBackgroundResource(R.drawable.selector_rec_gray_color_orange_selected)
             }
             else -> {}
         }
+    }
+
+    private fun hideKeyboard(view: View) {
+        val inputMethodManager = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+        inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
     }
 
     override fun onNextScreen(state: RegisterState, message: String, account: String) {

@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     android:id="@+id/drawableLayout"
-    tools:context=".screen.home.Home">
+    tools:context=".screen.home.HomeActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_margin="10dp"
@@ -23,10 +23,9 @@
 
             <ImageButton
                 android:id="@+id/ibHomeMenu"
-                android:layout_width="20dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="5dp"
-                android:layout_marginTop="10dp"
+                android:layout_width="47dp"
+                android:layout_height="40dp"
+                android:paddingRight="20dp"
                 android:background="@color/white"
                 android:src="@drawable/ic_menu_home_24px"
                 app:layout_constraintStart_toStartOf="parent"
@@ -36,7 +35,6 @@
                 android:id="@+id/tvHomeTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="27dp"
                 android:layout_marginTop="6dp"
                 android:text="Baby Photo"
                 android:textColor="#DF000000"

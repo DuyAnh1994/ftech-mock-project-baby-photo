@@ -1,4 +1,4 @@
-package ai.ftech.babyphoto.base.service
+package ai.ftech.babyphoto.data.service
 
 import com.google.gson.GsonBuilder
 import okhttp3.*

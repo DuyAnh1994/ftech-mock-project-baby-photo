@@ -1,4 +1,4 @@
-package ai.ftech.babyphoto.base
+package ai.ftech.babyphoto.data
 
 import ai.ftech.babyphoto.R
 import android.app.Dialog

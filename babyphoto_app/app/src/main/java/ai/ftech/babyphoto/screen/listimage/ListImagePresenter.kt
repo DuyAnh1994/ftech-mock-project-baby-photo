@@ -1,9 +1,9 @@
 package ai.ftech.babyphoto.screen.listimage
 
 import ai.ftech.babyphoto.R
-import ai.ftech.babyphoto.base.service.APIService
-import ai.ftech.babyphoto.model.Data
-import ai.ftech.babyphoto.model.DataResult
+import ai.ftech.babyphoto.data.service.APIService
+import ai.ftech.babyphoto.data.model.Data
+import ai.ftech.babyphoto.data.model.DataResult
 import android.app.Dialog
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable

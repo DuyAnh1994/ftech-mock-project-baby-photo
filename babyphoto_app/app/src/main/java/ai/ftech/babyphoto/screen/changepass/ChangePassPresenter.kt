@@ -1,18 +1,11 @@
 package ai.ftech.babyphoto.screen.changepass
 
-import ai.ftech.babyphoto.base.Constant
-import ai.ftech.babyphoto.base.Utils
-import ai.ftech.babyphoto.base.service.APIService
-import ai.ftech.babyphoto.model.Account
-import ai.ftech.babyphoto.model.ResponseModel
-import ai.ftech.babyphoto.screen.detailaccount.DetailAccount
+import ai.ftech.babyphoto.data.Constant
+import ai.ftech.babyphoto.data.Utils
+import ai.ftech.babyphoto.data.service.APIService
+import ai.ftech.babyphoto.data.model.ResponseModel
 import android.app.Dialog
-import android.content.Intent
-import android.os.Bundle
 import android.util.Log
-import android.widget.Toast
-import kotlinx.android.synthetic.main.activity_change_pass.*
-import kotlinx.android.synthetic.main.activity_detail_account.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

@@ -1,6 +1,6 @@
-package ai.ftech.babyphoto.base
+package ai.ftech.babyphoto.data
 
-import ai.ftech.babyphoto.model.Account
+import ai.ftech.babyphoto.data.model.Account
 
 class Constant {
     companion object{

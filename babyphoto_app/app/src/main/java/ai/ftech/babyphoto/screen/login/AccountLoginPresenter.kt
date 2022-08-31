@@ -1,13 +1,11 @@
 package ai.ftech.babyphoto.screen.login
 
-import ai.ftech.babyphoto.base.Constant
-import ai.ftech.babyphoto.base.Utils
-import ai.ftech.babyphoto.base.service.APIService
-import ai.ftech.babyphoto.model.Account
-import ai.ftech.babyphoto.model.ResponseModel
+import ai.ftech.babyphoto.data.Constant
+import ai.ftech.babyphoto.data.Utils
+import ai.ftech.babyphoto.data.service.APIService
+import ai.ftech.babyphoto.data.model.Account
+import ai.ftech.babyphoto.data.model.ResponseModel
 import android.app.Dialog
-import android.content.SharedPreferences
-import android.util.Log
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

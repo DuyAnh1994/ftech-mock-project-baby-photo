@@ -1,8 +1,8 @@
 package ai.ftech.babyphoto.screen.listimage
 
 import ai.ftech.babyphoto.R
-import ai.ftech.babyphoto.model.DataResult
-import ai.ftech.babyphoto.screen.timeline.Timeline
+import ai.ftech.babyphoto.data.model.DataResult
+import ai.ftech.babyphoto.screen.timeline.TimelineActivity
 import android.Manifest
 import android.app.Activity
 import android.app.ProgressDialog
@@ -292,7 +292,7 @@ class ListImageActivity : AppCompatActivity(), IListContract.IView {
             DataResult.State.SUCCESS -> {
                 Toast.makeText(applicationContext, data.data, Toast.LENGTH_SHORT)
                     .show()
-                val intent = Intent(applicationContext, Timeline::class.java)
+                val intent = Intent(applicationContext, TimelineActivity::class.java)
                 setResult(Activity.RESULT_OK, intent)
                 finish()
             }

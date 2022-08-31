@@ -1,8 +1,8 @@
 package ai.ftech.babyphoto.screen.login
 
 import ai.ftech.babyphoto.R
-import ai.ftech.babyphoto.base.Utils
-import ai.ftech.babyphoto.screen.home.Home
+import ai.ftech.babyphoto.data.Utils
+import ai.ftech.babyphoto.screen.home.HomeActivity
 import android.app.Dialog
 import android.content.Context
 import android.content.Intent
@@ -42,10 +42,8 @@ class AccountLogin : AppCompatActivity(), CompoundButton.OnCheckedChangeListener
         email = bundle?.getString("Email")
         presenter = AccountLoginPresenter(this)
         presenter?.checkMailNull(email)
-        tieAccountLoginEmail.onFocusChangeListener = View.OnFocusChangeListener { v, hasFocus ->
-            if (!hasFocus) {
-                hideKeyboard(v)
-            }
+        clAccountLoginMain.setOnClickListener {
+            hideKeyboard(clAccountLoginMain)
         }
 
         ibAccountLoginBackHome.setOnClickListener {
@@ -111,10 +109,6 @@ class AccountLogin : AppCompatActivity(), CompoundButton.OnCheckedChangeListener
             })
     }
 
-    private fun hideKeyboard(view: View) {
-        val inputMethodManager = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
-        inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
-    }
 
     private fun managePrefs() {
         if (cbAccountLoginRemember.isChecked) {
@@ -137,7 +131,7 @@ class AccountLogin : AppCompatActivity(), CompoundButton.OnCheckedChangeListener
     override fun onLogin(state: LoginState, message: String) {
         when (state) {
             LoginState.SUCCESS -> {
-                val intent = Intent(this, Home::class.java)
+                val intent = Intent(this, HomeActivity::class.java)
                 startActivity(intent)
                 finishAffinity()
             }
@@ -181,6 +175,11 @@ class AccountLogin : AppCompatActivity(), CompoundButton.OnCheckedChangeListener
             }
             else -> {}
         }
+    }
+
+    private fun hideKeyboard(view: View) {
+        val inputMethodManager = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+        inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
     }
 
     fun showBottomSheet(): Dialog {

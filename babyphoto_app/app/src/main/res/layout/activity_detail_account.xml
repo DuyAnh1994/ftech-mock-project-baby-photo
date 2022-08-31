@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
 
     android:layout_height="match_parent"
-    tools:context=".screen.detailaccount.DetailAccount">
+    tools:context=".screen.detailaccount.DetailAccountActivity">
 
     <LinearLayout
         android:id="@+id/llAccountDetailHeader"

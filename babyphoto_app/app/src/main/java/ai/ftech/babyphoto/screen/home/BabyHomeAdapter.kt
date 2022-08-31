@@ -1,7 +1,7 @@
 package ai.ftech.babyphoto.screen.home
 
 import ai.ftech.babyphoto.R
-import ai.ftech.babyphoto.model.AlbumBaby
+import ai.ftech.babyphoto.data.model.AlbumBaby
 import ai.ftech.babyphoto.screen.createalbum.CreateAlbumActivity
 import android.content.Context
 import android.content.Intent
@@ -11,7 +11,6 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.squareup.picasso.Picasso
 import android.widget.ImageButton
 import com.bumptech.glide.Glide
 

@@ -1,19 +1,8 @@
 package ai.ftech.babyphoto.screen.register
 
-import ai.ftech.babyphoto.MainActivity
-import ai.ftech.babyphoto.R
-import ai.ftech.babyphoto.base.Utils
-import ai.ftech.babyphoto.base.service.APIService
-import ai.ftech.babyphoto.model.Account
-import ai.ftech.babyphoto.screen.login.AccountLogin
-import android.app.Dialog
-import android.content.Intent
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
-import android.util.Log
-import android.widget.Toast
-import com.google.gson.Gson
-import kotlinx.android.synthetic.main.activity_create_pass.*
+import ai.ftech.babyphoto.data.Utils
+import ai.ftech.babyphoto.data.service.APIService
+import ai.ftech.babyphoto.data.model.Account
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

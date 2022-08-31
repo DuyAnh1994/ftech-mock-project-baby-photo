@@ -1,16 +1,11 @@
 package ai.ftech.babyphoto.screen.timeline
 
-import ai.ftech.babyphoto.base.service.APIService
-import ai.ftech.babyphoto.model.Image
-import ai.ftech.babyphoto.model.ResponseModel
-import android.os.Build
-import android.widget.Toast
-import androidx.annotation.RequiresApi
-import kotlinx.android.synthetic.main.activity_timeline.*
+import ai.ftech.babyphoto.data.service.APIService
+import ai.ftech.babyphoto.data.model.Image
+import ai.ftech.babyphoto.data.model.ResponseModel
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.time.format.DateTimeFormatter
 
 class TimelinePresenter(private val view: ITimelineContract.View) {
     private val apiService = APIService.base()

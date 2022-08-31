@@ -1,8 +1,8 @@
 package ai.ftech.babyphoto.screen.timeline
 
 import ai.ftech.babyphoto.R
-import ai.ftech.babyphoto.model.Image
-import ai.ftech.babyphoto.screen.home.Home
+import ai.ftech.babyphoto.data.model.Image
+import ai.ftech.babyphoto.screen.home.HomeActivity
 import ai.ftech.babyphoto.screen.listimage.ListImageActivity
 import android.app.Activity
 import android.content.Intent
@@ -23,7 +23,7 @@ import java.time.format.DateTimeFormatter
 
 
 @Suppress("DEPRECATION")
-class Timeline : AppCompatActivity(), ITimelineContract.View {
+class TimelineActivity : AppCompatActivity(), ITimelineContract.View {
     private lateinit var presenter: TimelinePresenter
     private var idAlbum: String? = "0"
     private var nameAlbum: String? = ""
@@ -116,7 +116,7 @@ class Timeline : AppCompatActivity(), ITimelineContract.View {
         }
 
         ibTimeLineBack.setOnClickListener {
-            val intent = Intent(this, Home::class.java)
+            val intent = Intent(this, HomeActivity::class.java)
             setResult(Activity.RESULT_OK, intent)
             finish()
         }

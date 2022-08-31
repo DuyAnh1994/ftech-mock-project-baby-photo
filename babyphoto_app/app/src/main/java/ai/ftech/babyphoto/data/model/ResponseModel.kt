@@ -1,4 +1,4 @@
-package ai.ftech.babyphoto.model
+package ai.ftech.babyphoto.data.model
 
 data class ResponseModel<T>(
     var code: String,

@@ -3,11 +3,10 @@ package ai.ftech.babyphoto.screen.detailaccount
 
 import ai.ftech.babyphoto.MainActivity
 import ai.ftech.babyphoto.R
-import ai.ftech.babyphoto.base.Constant
-import ai.ftech.babyphoto.base.service.APIService
-import ai.ftech.babyphoto.model.Account
-import ai.ftech.babyphoto.model.AccountUpdate
-import ai.ftech.babyphoto.screen.changepass.ChangePass
+import ai.ftech.babyphoto.data.Constant
+import ai.ftech.babyphoto.data.model.Account
+import ai.ftech.babyphoto.data.model.AccountUpdate
+import ai.ftech.babyphoto.screen.changepass.ChangePassActivity
 import android.annotation.SuppressLint
 import android.app.Dialog
 import android.content.ClipData
@@ -18,7 +17,6 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.view.inputmethod.InputMethodManager
@@ -27,17 +25,13 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.getSystemService
 import com.google.android.material.internal.ContextUtils
 import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_detail_account.*
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 
-class DetailAccount : AppCompatActivity(), IDetailAccountContract.View {
+class DetailAccountActivity : AppCompatActivity(), IDetailAccountContract.View {
     private lateinit var presenter: DetailAccountPresenter
     private var account: AccountUpdate = AccountUpdate("", "", "", 0)
 
@@ -83,7 +77,7 @@ class DetailAccount : AppCompatActivity(), IDetailAccountContract.View {
             openDialog()
         }
         clProfileChangePass.setOnClickListener {
-            var intent = Intent(this, ChangePass::class.java)
+            var intent = Intent(this, ChangePassActivity::class.java)
             startActivity(intent)
         }
         Snackbar.make(

@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/clRegisterNameMain"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="20dp"
@@ -10,8 +11,9 @@
     <ImageButton
         android:id="@+id/ibRegisterBack"
         style="@style/BabyButtonBackRegister"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        />
 
     <TextView
         android:id="@+id/tvRegisterQuestion"
@@ -67,7 +69,7 @@
     </LinearLayout>
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btnRegisterNext1"
+        android:id="@+id/btnRegisterNextFLName"
         style="@style/BabyButtonNextRegister"
         android:layout_marginTop="125dp"
         android:textAllCaps="false"
@@ -88,6 +90,6 @@
         app:layout_constraintHorizontal_bias="0.655"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/btnRegisterNext1" />
+        app:layout_constraintTop_toBottomOf="@id/btnRegisterNextFLName" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,10 +1,8 @@
 package ai.ftech.babyphoto.screen.changepass
 
 import ai.ftech.babyphoto.R
-import ai.ftech.babyphoto.base.Constant
-import ai.ftech.babyphoto.screen.detailaccount.DetailAccount
+import ai.ftech.babyphoto.data.Constant
 import android.app.Dialog
-import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import androidx.appcompat.app.AppCompatActivity
@@ -18,7 +16,7 @@ import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_change_pass.*
 
-class ChangePass : AppCompatActivity(), IChangePassContract.View {
+class ChangePassActivity : AppCompatActivity(), IChangePassContract.View {
     private lateinit var presenter: ChangePassPresenter
 
     override fun onCreate(savedInstanceState: Bundle?) {

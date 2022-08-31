@@ -1,10 +1,8 @@
-package ai.ftech.babyphoto.base.service
+package ai.ftech.babyphoto.data.service
 
-import ai.ftech.babyphoto.model.*
-import com.google.gson.annotations.SerializedName
+import ai.ftech.babyphoto.data.model.*
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
-import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.*
 
