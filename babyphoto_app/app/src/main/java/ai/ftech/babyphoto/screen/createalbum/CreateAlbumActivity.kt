@@ -1,11 +1,11 @@
 package ai.ftech.babyphoto.screen.createalbum
 
 import ai.ftech.babyphoto.R
-import ai.ftech.babyphoto.base.Constant
-import ai.ftech.babyphoto.model.DataResult
+import ai.ftech.babyphoto.data.Constant
+import ai.ftech.babyphoto.data.model.DataResult
 import ai.ftech.babyphoto.screen.createalbum.preview.PhotoFolderActivity
 import ai.ftech.babyphoto.screen.createalbum.relation.DialogRelationFragment
-import ai.ftech.babyphoto.screen.home.Home
+import ai.ftech.babyphoto.screen.home.HomeActivity
 import android.app.Activity
 import android.app.Dialog
 import android.app.ProgressDialog
@@ -289,7 +289,7 @@ class CreateAlbumActivity : AppCompatActivity(), DialogRelationFragment.ICreateN
         when (data.state) {
             DataResult.State.SUCCESS -> {
                 Toast.makeText(applicationContext, data.data, Toast.LENGTH_SHORT).show()
-                val intent = Intent(applicationContext, Home::class.java)
+                val intent = Intent(applicationContext, HomeActivity::class.java)
                 intent.putExtra("idaccount", ID_ACCOUNT)
                 startActivity(intent)
             }

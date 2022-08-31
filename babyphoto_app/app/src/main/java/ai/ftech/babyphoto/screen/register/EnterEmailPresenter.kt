@@ -1,19 +1,11 @@
 package ai.ftech.babyphoto.screen.register
 
-import ai.ftech.babyphoto.R
-import ai.ftech.babyphoto.base.Utils
-import ai.ftech.babyphoto.base.service.APIService
-import ai.ftech.babyphoto.model.Account
-import ai.ftech.babyphoto.model.ResponseModel
+import ai.ftech.babyphoto.data.Utils
+import ai.ftech.babyphoto.data.service.APIService
+import ai.ftech.babyphoto.data.model.Account
+import ai.ftech.babyphoto.data.model.ResponseModel
 import android.app.Dialog
-import android.content.Intent
-import android.util.Log
-import android.view.View
-import android.widget.Toast
 import com.google.gson.Gson
-import com.google.gson.JsonElement
-import kotlinx.android.synthetic.main.activity_enter_email.*
-import kotlinx.android.synthetic.main.activity_main.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

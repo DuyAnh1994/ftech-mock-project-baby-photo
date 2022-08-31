@@ -1,28 +1,16 @@
 package ai.ftech.babyphoto.screen.timeline
 
 import ai.ftech.babyphoto.R
-import ai.ftech.babyphoto.model.AlbumBaby
-import ai.ftech.babyphoto.model.Image
-import ai.ftech.babyphoto.screen.createalbum.CreateAlbumActivity
-import ai.ftech.babyphoto.screen.home.BabyHomeAdapter
-import ai.ftech.babyphoto.screen.listimage.ListImageActivity
+import ai.ftech.babyphoto.data.model.Image
 import android.content.Context
-import android.content.Intent
-import android.graphics.BitmapFactory
-import android.net.Uri
-import android.system.Os.bind
-import android.util.Base64
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.TextView
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.squareup.picasso.Picasso
 
+@Suppress("DEPRECATION")
 class TimelineAdapter(
     private var context: Context
 ) : RecyclerView.Adapter<TimelineAdapter.ViewHolder>() {
@@ -43,19 +31,15 @@ class TimelineAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = dataImage[position]
-//        Picasso.get()
-//            .load(item.urlimage)
-//            .into(holder.ivTimeLineViewImage)
-
         try {
             Glide.with(context)
                 .load(item.urlimage)
-//                .error("https://images.ctfassets.net/hrltx12pl8hq/7yQR5uJhwEkRfjwMFJ7bUK/dc52a0913e8ff8b5c276177890eb0129/offset_comp_772626-opt.jpg?fit=fill&w=800&h=300")
-                .placeholder(R.drawable.humo)
+                .placeholder(R.drawable.image_default)
                 .into(holder.ivTimeLineViewImage)
         } catch (e: Exception) {
             e.printStackTrace()
         }
+
     }
 
     override fun getItemCount(): Int {
@@ -67,13 +51,13 @@ class TimelineAdapter(
 
         init {
             itemView.setOnClickListener {
-                callBack?.onClick()
+                callBack?.onClick(position)
             }
         }
     }
 
     interface ICallBack{
-        fun onClick()
+        fun onClick(position: Int)
     }
 }
 

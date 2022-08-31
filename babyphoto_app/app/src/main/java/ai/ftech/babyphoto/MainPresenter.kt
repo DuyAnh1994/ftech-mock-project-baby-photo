@@ -1,14 +1,6 @@
 package ai.ftech.babyphoto
 
-import ai.ftech.babyphoto.base.service.APIService
-import ai.ftech.babyphoto.screen.register.RegisterActivity
-import android.content.Intent
-import android.util.Log
-import kotlinx.android.synthetic.main.activity_main.*
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import java.util.*
+import ai.ftech.babyphoto.data.service.APIService
 
 //lấy file này để xử lý logic
 class MainPresenter(mainActivity: MainActivity) {

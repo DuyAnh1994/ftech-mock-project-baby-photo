@@ -8,6 +8,5 @@ interface ICreatePassContract {
             email: String,
         )
         fun onCheckPass(state: RegisterState, message: String)
-        fun onCheckRePass(state: RegisterState, message: String)
     }
 }

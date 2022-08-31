@@ -23,19 +23,22 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".screen.timeline.PreviewTimeLineActivity"
+            android:exported="false" />
+        <activity
             android:name=".screen.test.TestActivity"
             android:exported="false" />
         <activity
-            android:name=".screen.home.Home"
+            android:name=".screen.home.HomeActivity"
             android:exported="false" />
         <activity
-            android:name=".screen.timeline.Timeline"
+            android:name=".screen.timeline.TimelineActivity"
             android:exported="false" />
         <activity
-            android:name=".screen.detailaccount.DetailAccount"
+            android:name=".screen.detailaccount.DetailAccountActivity"
             android:exported="false" />
         <activity
-            android:name=".screen.changepass.ChangePass"
+            android:name=".screen.changepass.ChangePassActivity"
             android:exported="false" />
         <activity
             android:name=".screen.createalbum.CreateAlbumActivity"
@@ -47,13 +50,13 @@
             android:name=".screen.createalbum.preview.PhotoFolderActivity"
             android:exported="false" />
         <activity
-            android:name=".screen.login.AccountLogin"
+            android:name=".screen.login.AccountLoginActivity"
             android:exported="false" />
         <activity
-            android:name=".screen.register.ActivityCreatePass"
+            android:name=".screen.register.CreatePassActivity"
             android:exported="false" />
         <activity
-            android:name=".screen.register.ActivityEnterEmail"
+            android:name=".screen.register.EnterEmailActivity"
             android:exported="false" />
         <activity
             android:name=".screen.register.RegisterActivity"

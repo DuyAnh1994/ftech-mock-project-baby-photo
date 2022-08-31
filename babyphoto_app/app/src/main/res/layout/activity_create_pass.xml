@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="20dp"
-    tools:context=".screen.register.ActivityCreatePass">
+    android:id="@+id/clCreatePassMain"
+    tools:context=".screen.register.CreatePassActivity">
 
     <ImageButton
         android:id="@+id/ibRegisterBackCreatePass"
@@ -76,7 +77,7 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btnRegisterNext3"
+        android:id="@+id/btnRegisterNextPass"
         style="@style/BabyButtonNextRegister"
         android:layout_marginTop="30dp"
         app:layout_constraintLeft_toLeftOf="parent"

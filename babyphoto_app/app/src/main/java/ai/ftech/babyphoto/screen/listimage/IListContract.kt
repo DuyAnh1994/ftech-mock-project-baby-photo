@@ -1,7 +1,7 @@
 package ai.ftech.babyphoto.screen.listimage
 
-import ai.ftech.babyphoto.model.DataResult
-import ai.ftech.babyphoto.model.IBaseView
+import ai.ftech.babyphoto.data.model.DataResult
+import ai.ftech.babyphoto.data.model.IBaseView
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 

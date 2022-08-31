@@ -4,12 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="10dp"
     android:fitsSystemWindows="true"
     android:id="@+id/drawableLayout"
-    tools:context=".screen.home.Home">
+    tools:context=".screen.home.HomeActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_margin="10dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -23,10 +23,9 @@
 
             <ImageButton
                 android:id="@+id/ibHomeMenu"
-                android:layout_width="20dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="5dp"
-                android:layout_marginTop="10dp"
+                android:layout_width="47dp"
+                android:layout_height="40dp"
+                android:paddingRight="20dp"
                 android:background="@color/white"
                 android:src="@drawable/ic_menu_home_24px"
                 app:layout_constraintStart_toStartOf="parent"
@@ -36,7 +35,6 @@
                 android:id="@+id/tvHomeTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="27dp"
                 android:layout_marginTop="6dp"
                 android:text="Baby Photo"
                 android:textColor="#DF000000"
@@ -120,6 +118,35 @@
           android:id="@+id/tvEndHome"
           app:layout_constraintBottom_toBottomOf="parent"
           app:layout_constraintStart_toStartOf="parent"/>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="7dp"
+            android:layout_marginBottom="15dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="15dp">
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <ViewFlipper
+                        android:id="@+id/vlHomeSlide"
+                        android:layout_width="match_parent"
+                        android:layout_height="70dp"
+                        android:layout_centerHorizontal="true" />
+                    <ImageButton
+                        android:id="@+id/ibCancelAds"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="375dp"
+                        android:background="@drawable/ic_baseline_cancel2_24" />
+                </RelativeLayout>
+            </androidx.cardview.widget.CardView>
+        </RelativeLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
