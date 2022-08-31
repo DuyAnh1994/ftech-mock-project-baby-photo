@@ -11,6 +11,7 @@ import ai.ftech.babyphoto.screen.detailaccount.DetailAccount
 import ai.ftech.babyphoto.screen.timeline.Timeline
 import ai.ftech.babyphoto.screen.timeline.TimelinePresenter
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -20,6 +21,8 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
@@ -43,6 +46,17 @@ class Home : AppCompatActivity(), BabyHomeAdapter.onItemClickListenerr, IHomeCon
     lateinit var drawerLayout: DrawerLayout
     lateinit var navigationView: NavigationView
     private var mutableListBaby: MutableList<AlbumBaby> = mutableListOf()
+
+    //callback result
+    private var getResult = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) {
+        if (it.resultCode == Activity.RESULT_OK) {
+            mutableListBaby.clear()
+            srlHome.isRefreshing = true
+            presenter.getAlbum(Constant.account.idaccount)
+        }
+    }
 
     @SuppressLint("NotifyDataSetChanged")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -76,7 +90,7 @@ class Home : AppCompatActivity(), BabyHomeAdapter.onItemClickListenerr, IHomeCon
         drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-
+        //view info in nav
         nvHomeToDetailAccount.getHeaderView(0).tvHeaderNameAccount.text = Constant.account.firstname + " " +
                 Constant.account.lastname
 
@@ -103,18 +117,21 @@ class Home : AppCompatActivity(), BabyHomeAdapter.onItemClickListenerr, IHomeCon
 
 
         //ads
-        var arrayImage = mutableListOf(R.drawable.ad_home11, R.drawable.ad_home12,
-            R.drawable.img_ads_home1, R.drawable.image_ads_home2)
-        for( image in arrayImage){
+        var arrayImage = mutableListOf(
+            R.drawable.image11, R.drawable.image12,
+            R.drawable.image13, R.drawable.image14, R.drawable.image15
+        )
+
+        for (image in arrayImage) {
             flipperImage(image)
         }
         ibCancelAds.setOnClickListener {
-            vlHomeSlide.removeAllViews()
-            ibCancelAds.visibility = View.INVISIBLE
+//            vlHomeSlide.removeAllViews()
+//            ibCancelAds.visibility = View.INVISIBLE
         }
 
-
     }
+
     private fun flipperImage(image: Int) {
         val ivHomeSlide = ImageView(this)
         ivHomeSlide.scaleType = ImageView.ScaleType.CENTER_CROP
@@ -122,7 +139,8 @@ class Home : AppCompatActivity(), BabyHomeAdapter.onItemClickListenerr, IHomeCon
         ivHomeSlide.setBackgroundResource(image)
         vlHomeSlide.addView(ivHomeSlide)
         vlHomeSlide.flipInterval = 5000
-        vlHomeSlide.setInAnimation(this, R.anim.slide_left)
+        vlHomeSlide.setInAnimation(this, R.anim.slide_right)
+        vlHomeSlide.setOutAnimation(this, R.anim.slide_left)
 //        vlHomeSlide.setOutAnimation(this, R.anim.slide_right)
         vlHomeSlide.isAutoStart = true
 //        vlHomeSlide.setInAnimation(in)
@@ -135,7 +153,8 @@ class Home : AppCompatActivity(), BabyHomeAdapter.onItemClickListenerr, IHomeCon
         intent.putExtra("nameAlbum", mutableListBaby[position].name)
         intent.putExtra("urlimage", mutableListBaby[position].urlimage)
         intent.putExtra("birthday", mutableListBaby[position].birthday)
-        startActivity(intent)
+//        startActivity(intent)
+        getResult.launch(intent)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

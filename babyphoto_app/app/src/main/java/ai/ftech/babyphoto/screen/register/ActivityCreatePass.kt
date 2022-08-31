@@ -3,6 +3,7 @@ package ai.ftech.babyphoto.screen.register
 import ai.ftech.babyphoto.R
 import ai.ftech.babyphoto.model.Account
 import ai.ftech.babyphoto.screen.login.AccountLogin
+import android.app.Activity
 import android.app.Dialog
 import android.content.Intent
 import android.graphics.Color
@@ -41,11 +42,14 @@ class ActivityCreatePass() : AppCompatActivity(), ICreatePassContract.View {
         }
         //check pass
         tieRegisterPass.addTextChangedListener {
-            presenter!!.checkPass(tieRegisterPass.text.toString())
+            presenter!!.checkPass(
+                tieRegisterPass.text.toString(),
+                tieRegisterRePass.text.toString()
+            )
         }
         //check repass
         tieRegisterRePass.addTextChangedListener {
-            presenter!!.checkRePass(
+            presenter!!.checkPass(
                 tieRegisterPass.text.toString(),
                 tieRegisterRePass.text.toString()
             )
@@ -85,32 +89,24 @@ class ActivityCreatePass() : AppCompatActivity(), ICreatePassContract.View {
     }
 
     override fun onCheckPass(state: RegisterState, message: String) {
-        when (state) {
-            RegisterState.SUCCESS -> {
-                tvRegisterWarningPass.setTextColor(Color.parseColor("#DC143C"))
-            }
-            RegisterState.PASS_NOT_VALID -> {
-                tvRegisterWarningPass.setTextColor(Color.parseColor("#FFFFFF"))
-            }
-            else -> {}
-        }
-
-    }
-
-    override fun onCheckRePass(state: RegisterState, message: String) {
         stateCheckRePass = state
+        tvRegisterWarningPass.setTextColor(Color.parseColor("#DC143C"))
+        btnRegisterNext3.setBackgroundResource(R.drawable.selector_rec_gray_color_orange_selected)
         when (state) {
-            RegisterState.PASS_NOT_MATCH -> {
-                tvRegisterWarningPass.text = "Confirm password doesn't match"
-                tvRegisterWarningPass.setTextColor(Color.parseColor("#DC143C"))
-                btnRegisterNext3.setBackgroundResource(R.drawable.selector_rec_gray_color_orange_selected)
-            }
             RegisterState.SUCCESS -> {
                 tvRegisterWarningPass.setTextColor(Color.parseColor("#FFFFFF"))
                 btnRegisterNext3.setBackgroundResource(R.drawable.selector_rec_orange_color)
             }
+            RegisterState.PASS_NOT_VALID -> {
+                tvRegisterWarningPass.text = "Passwords are between 6 and 8 characters, do not use special characters"
+
+            }
+            RegisterState.PASS_NOT_MATCH -> {
+                tvRegisterWarningPass.text = "Confirm password doesn't match"
+            }
             else -> {}
         }
+
     }
 
     fun openDialog(): Dialog {
@@ -123,56 +119,4 @@ class ActivityCreatePass() : AppCompatActivity(), ICreatePassContract.View {
         dialogLoadPass.show()
         return dialogLoadPass
     }
-//    private fun openDialog(): Dialog {
-//        var dialogLoadPass = Dialog(this@ActivityCreatePass)
-//        dialogLoadPass.setContentView(R.layout.dialog_loading_register_layout)
-//        dialogLoadPass.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-//        var appCompatButtonClose: AppCompatButton = dialogLoadPass.findViewById(R.id.btClose)
-//        appCompatButtonClose.setOnClickListener {
-//            dialogLoadPass.dismiss()
-//        }
-//        dialogLoadPass.show()
-//        return dialogLoadPass
-//    }
-//
-//    private fun isMatchPass(pass: String, rePass: String): Boolean {
-//        return Pattern.matches(pass, rePass)
-//    }
-
-//    fun submit() {
-//        if (!isMatchPass(tieRegisterPass.text.toString(), tieRegisterRePass.text.toString())) return
-//
-//        account?.password = tieRegisterPass.text.toString()
-//
-//        print(Gson().toJson(account))
-//
-//        val dialog = openDialog()
-//
-//        ApiService().base().insertAccount(
-//            account!!.email,
-//            account!!.password,
-//            account!!.firstname,
-//            account!!.lastname,
-//            account!!.idaccount
-//        ).enqueue(
-//            object : Callback<String> {
-//                override fun onResponse(call: Call<String>, response: Response<String>) {
-//                    dialog.dismiss()
-//                    Toast.makeText(
-//                        this@ActivityCreatePass.applicationContext,
-//                        response.body().toString(),
-//                        Toast.LENGTH_SHORT
-//                    ).show()
-////                    val intent = Intent(view, MainActivity::class.java)
-////                    startActivity(intent)
-//                }
-//
-//                override fun onFailure(call: Call<String>, t: Throwable) {
-//                    dialog.dismiss()
-//                    Toast.makeText(this@ActivityCreatePass.applicationContext, "Insert failed", Toast.LENGTH_SHORT)
-//                        .show()
-//                }
-//            }
-//        )
-//    }
 }

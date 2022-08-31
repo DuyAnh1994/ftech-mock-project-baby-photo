@@ -19,34 +19,30 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class CreatePassPresenter(private var view: ICreatePassContract.View) {
-//    private val view = activity
+    //    private val view = activity
     private var account: Account? = null
 
 
-    fun checkPass(pass: String){
-        val isValidPassCharacter = Utils().isValidPassCharacter(pass)
-        val isValidPassCount = Utils().isValidPassCount(pass)
-        if (!isValidPassCharacter || !isValidPassCount
-        )
-            view.onCheckPass(RegisterState.SUCCESS, "pass is valid")
-        else
-            view.onCheckPass(RegisterState.PASS_NOT_VALID, "pass is not valid")
-    }
-
-    fun checkRePass(pass: String, rePass: String){
+    fun checkPass(pass: String, rePass: String) {
+        val isValidPassCharacter = Utils().isValidPassCharacter(pass) && Utils().isValidPassCharacter(rePass)
+        val isValidPassCount = Utils().isValidPassCount(pass) && Utils().isValidPassCount(rePass)
         val isMatchPass = Utils().isMatchPass(pass, rePass)
-        if (!isMatchPass) {
-            view.onCheckRePass(RegisterState.PASS_NOT_MATCH, "repass is not match")
 
-        } else {
-            view.onCheckRePass(RegisterState.SUCCESS, "repass is match")
-        }
+        if (!isValidPassCharacter)
+            return view.onCheckPass(RegisterState.PASS_NOT_VALID, "pass is not valid")
+
+        if (!isValidPassCount)
+            return view.onCheckPass(RegisterState.PASS_NOT_VALID, "pass is not valid")
+
+        if (!isMatchPass) return view.onCheckPass(RegisterState.PASS_NOT_MATCH, "repass is not match")
+
+        view.onCheckPass(RegisterState.SUCCESS, "pass is valid")
     }
 
     fun submit(state: RegisterState, pass: String, rePass: String, accountP: Account?) {
         account = accountP
-        when(state){
-            RegisterState.SUCCESS->{
+        when (state) {
+            RegisterState.SUCCESS -> {
                 account?.password = rePass
                 APIService.base().insertAccount(
                     account!!.email,
@@ -58,8 +54,9 @@ class CreatePassPresenter(private var view: ICreatePassContract.View) {
                         override fun onResponse(call: Call<String>, response: Response<String>) {
                             view.onInsertAccount(RegisterState.PASS_NOT_MATCH, "pass is not match", "")
                         }
+
                         override fun onFailure(call: Call<String>, t: Throwable) {
-                            view.onInsertAccount(RegisterState.SUCCESS, "pass is match",  account!!.email)
+                            view.onInsertAccount(RegisterState.SUCCESS, "pass is match", account!!.email)
 
                         }
                     }

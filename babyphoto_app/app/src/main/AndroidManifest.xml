@@ -68,8 +68,6 @@
         <activity
             android:name=".MainActivity"
             android:exported="true">
-            android:name=".screen.home.HomeActivity"
-            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

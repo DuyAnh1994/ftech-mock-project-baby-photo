@@ -94,8 +94,8 @@ class RegisterActivity : AppCompatActivity(), IRegisterContract.View {
                 startActivity(intent)
             }
             RegisterState.NAME_NOT_VALID ->{
-                val intent = Intent(this, TestActivity::class.java)
-                startActivity(intent)
+//                val intent = Intent(this, TestActivity::class.java)
+//                startActivity(intent)
                 Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
             }
             else -> {}

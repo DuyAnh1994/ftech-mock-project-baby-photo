@@ -4,6 +4,7 @@ import ai.ftech.babyphoto.R
 import ai.ftech.babyphoto.model.DataResult
 import ai.ftech.babyphoto.screen.timeline.Timeline
 import android.Manifest
+import android.app.Activity
 import android.app.ProgressDialog
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -292,8 +293,7 @@ class ListImageActivity : AppCompatActivity(), IListContract.IView {
                 Toast.makeText(applicationContext, data.data, Toast.LENGTH_SHORT)
                     .show()
                 val intent = Intent(applicationContext, Timeline::class.java)
-                intent.putExtra("idalbum", ID_ALBUM)
-                setResult(200, intent)
+                setResult(Activity.RESULT_OK, intent)
                 finish()
             }
             DataResult.State.FAIL -> {

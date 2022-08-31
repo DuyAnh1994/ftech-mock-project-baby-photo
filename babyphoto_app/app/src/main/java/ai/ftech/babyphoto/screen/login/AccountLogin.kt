@@ -139,7 +139,7 @@ class AccountLogin : AppCompatActivity(), CompoundButton.OnCheckedChangeListener
             LoginState.SUCCESS -> {
                 val intent = Intent(this, Home::class.java)
                 startActivity(intent)
-                finish()
+                finishAffinity()
             }
             LoginState.INVALID_EMAIL_AND_PASS -> {
                 tvAccountLoginWarning.visibility = View.VISIBLE

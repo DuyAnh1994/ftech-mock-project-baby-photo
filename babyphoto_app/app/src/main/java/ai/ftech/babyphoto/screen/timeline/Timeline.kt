@@ -2,31 +2,27 @@ package ai.ftech.babyphoto.screen.timeline
 
 import ai.ftech.babyphoto.R
 import ai.ftech.babyphoto.model.Image
+import ai.ftech.babyphoto.screen.home.Home
 import ai.ftech.babyphoto.screen.listimage.ListImageActivity
-import ai.ftech.babyphoto.screen.test.TestActivity
-import android.content.Context
+import android.app.Activity
 import android.content.Intent
-import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.util.AttributeSet
-import android.util.Log
-import android.view.View
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import com.bumptech.glide.Glide
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_timeline.*
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
-import java.util.*
-import kotlin.collections.ArrayList
 
 
+@Suppress("DEPRECATION")
 class Timeline : AppCompatActivity(), ITimelineContract.View {
     private lateinit var presenter: TimelinePresenter
     private var idAlbum: String? = "0"
@@ -34,6 +30,7 @@ class Timeline : AppCompatActivity(), ITimelineContract.View {
     private var urlimage: String? = ""
     private var birthday: String? = ""
     private var adapter: TimelineAdapter = TimelineAdapter(this)
+    private var hasChange = false
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -46,15 +43,26 @@ class Timeline : AppCompatActivity(), ITimelineContract.View {
         val bundle: Bundle? = intent.extras
         idAlbum = bundle?.getString("idalbum")
         nameAlbum = bundle?.getString("nameAlbum")
-        birthday = bundle?.get("birthday").toString()
+        birthday = bundle?.getString("birthday")
         urlimage = bundle?.getString("urlimage")
 
-        Picasso.get()
-            .load(Uri.parse(urlimage))
-            .into(civTimeLineAvatarCirCle)
-        val formatter = DateTimeFormatter.ofPattern("dd/M/yyyy")
+//        Picasso.get()
+//            .load(Uri.parse(urlimage))
+//            .into(civTimeLineAvatarCirCle)
+        try {
+            Glide.with(this)
+                .load(urlimage)
+                .placeholder(R.drawable.image_default)
+                .into(civTimeLineAvatarCirCle)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+
+        val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
+        if (birthday!![1] == '/') birthday = "0$birthday"
+        if (birthday!![4] == '/') birthday = birthday?.substring(0, 3) + "0" + birthday?.substring(3)
         birthday.hashCode()
-        var dt = LocalDate.parse("$birthday", formatter)
+        val dt = LocalDate.parse("$birthday", formatter)
 
         tvTimeLineCountYear.text = (dt.until(LocalDate.now()).years).toString()
         tvTimeLineCountMonth.text = (dt.until(LocalDate.now()).months).toString()
@@ -88,40 +96,29 @@ class Timeline : AppCompatActivity(), ITimelineContract.View {
             srlTimeLine.isRefreshing = true
             presenter.getImage(idAlbum)
         }
-
-        fabTimeLineAdd.setOnClickListener {
-            var intent = Intent(this, TestActivity::class.java)
-            startActivity(intent)
-        }
-
+        //callback result
+        val getResult =
+            registerForActivityResult(
+                ActivityResultContracts.StartActivityForResult()
+            ) {
+                if (it.resultCode == Activity.RESULT_OK) {
+                    adapter.dataImage.clear()
+                    adapter.notifyDataSetChanged()
+                    srlTimeLine.isRefreshing = true
+                    presenter.getImage(idAlbum)
+                    hasChange = true
+                }
+            }
         fabAdd.setOnClickListener {
             var intent = Intent(this, ListImageActivity::class.java)
             intent.putExtra("idalbum",idAlbum)
-            startActivity(intent)
+            getResult.launch(intent)
         }
 
         ibTimeLineBack.setOnClickListener {
+            val intent = Intent(this, Home::class.java)
+            setResult(Activity.RESULT_OK, intent)
             finish()
-        }
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-
-        when (resultCode){
-            //code 200 là thành công, 400 là lỗi, không có code là back lại bình thường
-            //nếu code == 400 thì truyền thêm msg lỗi là gì
-            200 -> {
-                adapter?.dataImage?.clear()
-                rvTimelineViewImage.adapter!!.notifyDataSetChanged()
-                srlTimeLine.isRefreshing = true
-                presenter.getImage(idAlbum)
-            }
-            400 -> {
-                val msg = data?.getStringExtra("msg")
-                //show lỗi gì đó
-                Toast.makeText(this, msg.toString(), Toast.LENGTH_SHORT).show()
-            }
         }
     }
 

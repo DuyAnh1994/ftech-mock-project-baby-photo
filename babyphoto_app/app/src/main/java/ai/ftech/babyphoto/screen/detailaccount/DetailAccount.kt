@@ -16,13 +16,18 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.Gravity
+import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.FrameLayout
 import android.widget.TextView
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.getSystemService
 import com.google.android.material.internal.ContextUtils
 import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
@@ -37,6 +42,7 @@ class DetailAccount : AppCompatActivity(), IDetailAccountContract.View {
     private var account: AccountUpdate = AccountUpdate("", "", "", 0)
 
     //    private var mutableListAccount: MutableList<AccountUpdate> = mutableListOf()
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(ai.ftech.babyphoto.R.layout.activity_detail_account)
@@ -44,12 +50,27 @@ class DetailAccount : AppCompatActivity(), IDetailAccountContract.View {
 
         onGetAccount()
 
+        detailAcccountMain.setOnClickListener {
+            hideKeyboard(detailAcccountMain)
+        }
+
         tvCoppyIDAccount.setOnClickListener {
            coppyClipboardManager()
         }
         ibAccountDetailBack.setOnClickListener {
             finish()
         }
+        //edt
+        ibAccountDetailFName.setOnClickListener {
+            focusText(0)
+        }
+        ibAccountDetailLName.setOnClickListener {
+            focusText(1)
+        }
+        ibAccountDetailEmail.setOnClickListener {
+            focusText(2)
+        }
+
         llAccountDetailSaveChange.setOnClickListener {
             account.email = edtViewEmailAccountDetail.text.toString()
             account.firstname = edtAccountDetailName.text.toString()
@@ -73,6 +94,42 @@ class DetailAccount : AppCompatActivity(), IDetailAccountContract.View {
 
     }
 
+    fun focusText(indexTF: Int){
+        edtAccountDetailName.isFocusable = indexTF == 0
+        edtAccountDetailName.isFocusableInTouchMode = indexTF == 0
+
+        edtAccountDetailNameLast.isFocusable = indexTF == 1
+        edtAccountDetailNameLast.isFocusableInTouchMode = indexTF == 1
+
+        edtViewEmailAccountDetail.isFocusable = indexTF == 2
+        edtViewEmailAccountDetail.isFocusableInTouchMode = indexTF == 2
+
+        when (indexTF){
+            0 -> {
+                edtAccountDetailName.setSelection(edtAccountDetailName.text.length)
+                edtAccountDetailName.requestFocus()
+                showSoftKeyboard(edtAccountDetailName)
+            }
+            1 -> {
+                edtAccountDetailNameLast.setSelection(edtAccountDetailNameLast.text.length)
+                edtAccountDetailNameLast.requestFocus()
+                showSoftKeyboard(edtAccountDetailNameLast)
+            }
+            2 -> {
+                edtViewEmailAccountDetail.setSelection(edtViewEmailAccountDetail.text.length)
+                edtViewEmailAccountDetail.requestFocus()
+                showSoftKeyboard(edtViewEmailAccountDetail)
+            }
+        }
+    }
+
+    fun showSoftKeyboard(view: View) {
+        if (view.requestFocus()) {
+            val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT)
+        }
+    }
+
     fun onGetAccount() {
         tvViewIDAccountDetail.text = Constant.account.idaccount.toString()
         edtAccountDetailName.setText(Constant.account.firstname)
@@ -80,7 +137,10 @@ class DetailAccount : AppCompatActivity(), IDetailAccountContract.View {
         edtViewEmailAccountDetail.setText(Constant.account.email)
 
     }
-
+    private fun hideKeyboard(view: View) {
+        val inputMethodManager = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+        inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
+    }
     override fun onUpdateAccount(state: DetailAccountState, message: String) {
         showSnackbar(message)
         when (state) {
