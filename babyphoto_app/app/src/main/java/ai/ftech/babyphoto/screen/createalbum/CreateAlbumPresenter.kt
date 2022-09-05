@@ -1,9 +1,9 @@
 package ai.ftech.babyphoto.screen.createalbum
 
 import ai.ftech.babyphoto.R
-import ai.ftech.babyphoto.data.service.APIService
 import ai.ftech.babyphoto.data.model.Data
 import ai.ftech.babyphoto.data.model.DataResult
+import ai.ftech.babyphoto.data.service.APIService
 import android.app.DatePickerDialog
 import android.app.Dialog
 import android.graphics.Color
@@ -13,6 +13,7 @@ import android.view.Gravity
 import android.view.Window
 import android.widget.Button
 import android.widget.DatePicker
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -70,7 +71,6 @@ class CreateAlbumPresenter(var mView: ICreateContract.IView) : ICreateContract.I
                 mView.onResult(data)
                 mView.hideLoading()
             }
-
         })
     }
 
@@ -107,12 +107,41 @@ class CreateAlbumPresenter(var mView: ICreateContract.IView) : ICreateContract.I
             DatePickerDialog(mThis, object : DatePickerDialog.OnDateSetListener {
                 override fun onDateSet(
                     view: DatePicker?,
-                    year: Int,
-                    month: Int,
-                    dayOfMonth: Int
+                    yearNew: Int,
+                    monthNew: Int,
+                    dayOfMonthNew: Int
                 ) {
-                    time = "${dayOfMonth}/${month + 1}/${year}"
-                    mView.getData(time!!)
+                    if (yearNew <= year) {
+                        if (monthNew < month) {
+                            time = "${dayOfMonthNew}/${monthNew + 1}/${yearNew}"
+                            mView.getData(time!!)
+                        } else {
+                            if (monthNew == month) {
+                                if (dayOfMonthNew <= dayOfMonth) {
+                                    time = "${dayOfMonthNew}/${monthNew + 1}/${yearNew}"
+                                    mView.getData(time!!)
+                                } else {
+                                    Toast.makeText(
+                                        mThis.applicationContext,
+                                        "Date of birth cannot be greater than current date",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                }
+                            } else {
+                                Toast.makeText(
+                                    mThis.applicationContext,
+                                    "Date of birth cannot be greater than current date",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
+                        }
+                    } else {
+                        Toast.makeText(
+                            mThis.applicationContext,
+                            "Date of birth cannot be greater than current date",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
                 }
             }, year, month, dayOfMonth)
         datePickerDialog.setOnCancelListener {
@@ -127,9 +156,6 @@ class CreateAlbumPresenter(var mView: ICreateContract.IView) : ICreateContract.I
         }
         datePickerDialog.show()
     }
-
-
-
 
 
 }

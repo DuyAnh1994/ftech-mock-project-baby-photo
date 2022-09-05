@@ -8,7 +8,6 @@ import ai.ftech.babyphoto.screen.createalbum.relation.DialogRelationFragment
 import ai.ftech.babyphoto.screen.home.HomeActivity
 import android.app.Activity
 import android.app.Dialog
-import android.app.ProgressDialog
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -59,7 +58,7 @@ class CreateAlbumActivity : AppCompatActivity(), DialogRelationFragment.ICreateN
     private lateinit var rqGender: RequestBody
     private lateinit var rqBirthday: RequestBody
     private lateinit var rqRelation: RequestBody
-    var dialog : Dialog? = null
+    var dialog: Dialog? = null
     var bitmapAvatar: Boolean = false
     var ID_ACCOUNT: Int = 0
     private var select: Int = 1
@@ -122,11 +121,13 @@ class CreateAlbumActivity : AppCompatActivity(), DialogRelationFragment.ICreateN
                     ivAvatar.setImageBitmap(bitmap)
                     setBackgroundButton()
                     btnCreate.setOnClickListener {
-                        sendSingleImage(path_image)
-                        createAlbumPresenter.createAlbum(
-                            singleFile,
-                            rqIdaccount, rqName, rqGender, rqBirthday, rqRelation
-                        )
+                        if (edtName.text.toString() != "" && tvBirthday.text.toString() != "" && tvRelation.text.toString() != "") {
+                            sendSingleImage(path_image)
+                            createAlbumPresenter.createAlbum(
+                                singleFile,
+                                rqIdaccount, rqName, rqGender, rqBirthday, rqRelation
+                            )
+                        }
                     }
                     flCamera.visibility = View.GONE
                 }
@@ -140,11 +141,13 @@ class CreateAlbumActivity : AppCompatActivity(), DialogRelationFragment.ICreateN
                     bitmapAvatar = true
                     setBackgroundButton()
                     btnCreate.setOnClickListener {
-                        sendSingleImage(dataImage)
-                        createAlbumPresenter.createAlbum(
-                            singleFile,
-                            rqIdaccount, rqName, rqGender, rqBirthday, rqRelation
-                        )
+                        if (edtName.text.toString() != "" && tvBirthday.text.toString() != "" && tvRelation.text.toString() != "") {
+                            sendSingleImage(dataImage)
+                            createAlbumPresenter.createAlbum(
+                                singleFile,
+                                rqIdaccount, rqName, rqGender, rqBirthday, rqRelation
+                            )
+                        }
                     }
                     flCamera.visibility = View.GONE
                 }
@@ -233,7 +236,8 @@ class CreateAlbumActivity : AppCompatActivity(), DialogRelationFragment.ICreateN
         val birthday: String = tvBirthday.text.toString()
         val relation: String = tvRelation.text.toString()
 
-        rqIdaccount = RequestBody.create(MediaType.parse("multipart/form-data"), ID_ACCOUNT.toString())
+        rqIdaccount =
+            RequestBody.create(MediaType.parse("multipart/form-data"), ID_ACCOUNT.toString())
         rqName = RequestBody.create(MediaType.parse("multipart/form-data"), name)
         rqGender = RequestBody.create(MediaType.parse("multipart/form-data"), strGender)
         rqBirthday = RequestBody.create(MediaType.parse("multipart/form-data"), birthday)
@@ -319,5 +323,9 @@ class CreateAlbumActivity : AppCompatActivity(), DialogRelationFragment.ICreateN
 
     override fun hideLoading() {
         dialog?.dismiss()
+    }
+
+    override fun onBackPressed() {
+        createAlbumPresenter.openBackDialog(this)
     }
 }

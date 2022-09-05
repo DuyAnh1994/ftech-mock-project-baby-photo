@@ -156,5 +156,8 @@ class PhotoFolderActivity : AppCompatActivity(), DialogPreviewFragment.IPreviewU
         }
     }
 
+    override fun onBackPressed() {
+        photoFolderPresenter?.openBackDialog(this)
+    }
 
 }

@@ -1,12 +1,11 @@
 package ai.ftech.babyphoto.screen.listimage
 
 import ai.ftech.babyphoto.R
-import ai.ftech.babyphoto.model.DataResult
+import ai.ftech.babyphoto.data.model.DataResult
 import ai.ftech.babyphoto.screen.createalbum.preview.DialogPreviewFragment
-import ai.ftech.babyphoto.screen.timeline.Timeline
+import ai.ftech.babyphoto.screen.timeline.TimelineActivity
 import android.Manifest
 import android.app.Dialog
-import android.app.ProgressDialog
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
@@ -52,7 +51,7 @@ class ListImageActivity : AppCompatActivity(), IListContract.IView {
     lateinit var path: String
     private val REQUEST_CODE_CAMERA = 998
     private val REQUEST_CODE_IMAGE = 999
-    var dialog : Dialog? = null
+    var dialog: Dialog? = null
 
     var ID_ALBUM: String? = "1"
     private lateinit var listImagePresent: ListImagePresenter
@@ -177,7 +176,7 @@ class ListImageActivity : AppCompatActivity(), IListContract.IView {
                 val dialogPreviewFragment = DialogPreviewFragment()
                 val bundle = Bundle()
                 bundle.putString("urlImage", linkFolder)
-                bundle.putBoolean("status",false)
+                bundle.putBoolean("status", false)
                 dialogPreviewFragment.arguments = bundle
                 dialogPreviewFragment.show(supportFragmentManager, dialogPreviewFragment.tag)
             }
@@ -303,7 +302,7 @@ class ListImageActivity : AppCompatActivity(), IListContract.IView {
             DataResult.State.SUCCESS -> {
                 Toast.makeText(applicationContext, data.data, Toast.LENGTH_SHORT)
                     .show()
-                val intent = Intent(applicationContext, Timeline::class.java)
+                val intent = Intent(applicationContext, TimelineActivity::class.java)
                 intent.putExtra("idalbum", ID_ALBUM)
                 setResult(200, intent)
                 finish()
@@ -328,6 +327,10 @@ class ListImageActivity : AppCompatActivity(), IListContract.IView {
 
     override fun hideLoading() {
         dialog?.dismiss()
+    }
+
+    override fun onBackPressed() {
+        listImagePresent.openBackDialog(this)
     }
 
 

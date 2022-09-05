@@ -1,5 +1,6 @@
 package ai.ftech.babyphoto.screen.login
 
+import ai.ftech.babyphoto.MainActivity
 import ai.ftech.babyphoto.R
 import ai.ftech.babyphoto.data.Utils
 import ai.ftech.babyphoto.screen.home.HomeActivity
@@ -47,7 +48,7 @@ class AccountLoginActivity : AppCompatActivity(), CompoundButton.OnCheckedChange
         }
 
         ibAccountLoginBackHome.setOnClickListener {
-            val intent = Intent(this, ai.ftech.babyphoto.MainActivity::class.java)
+            val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
         }
 
@@ -193,51 +194,5 @@ class AccountLoginActivity : AppCompatActivity(), CompoundButton.OnCheckedChange
         dialog.show()
         dialog.window?.setGravity(Gravity.BOTTOM)
         return dialog
-    }
-}
-
-
-class MultiTextWatcher {
-    private var callback: TextWatcherWithInstance? = null
-    fun setCallback(callback: TextWatcherWithInstance?): MultiTextWatcher {
-        this.callback = callback
-        return this
-    }
-
-    fun registerEditText(editText: EditText): MultiTextWatcher {
-        editText.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
-                callback?.beforeTextChanged(editText, s, start, count, after)
-            }
-
-            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-                callback?.onTextChanged(editText, s, start, before, count)
-            }
-
-            override fun afterTextChanged(editable: Editable) {
-                callback?.afterTextChanged(editText, editable)
-            }
-        })
-        return this
-    }
-
-    interface TextWatcherWithInstance {
-        fun beforeTextChanged(
-            editText: EditText?,
-            s: CharSequence?,
-            start: Int,
-            count: Int,
-            after: Int
-        )
-
-        fun onTextChanged(
-            editText: EditText?,
-            s: CharSequence?,
-            start: Int,
-            before: Int,
-            count: Int
-        )
-
-        fun afterTextChanged(editText: EditText?, editable: Editable?)
     }
 }
