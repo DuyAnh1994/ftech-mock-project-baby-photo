@@ -33,7 +33,7 @@ class EnterEmailActivity : AppCompatActivity(), IEnterEmailContract.View{
             finish()
         }
         btnRegisterNextEmail.setOnClickListener {
-            val dialog = Utils().loading(this)
+            val dialog = Utils.loading(this)
             presenter!!.checkEmail(dialog, tieRegisterEmail.text.toString(), account)
         }
         clEnterEmailMain.setOnClickListener {

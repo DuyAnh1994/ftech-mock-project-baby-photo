@@ -82,7 +82,7 @@ class AccountLoginPresenter(private var view: ILoginContract.View) {
     }
 
     fun checkValidAccount(email: String, pass: String) {
-        val isValid2 = Utils().checkNull(email, pass)
+        val isValid2 = Utils.checkNull(email, pass)
         if (!isValid2) {
             view.onValidAccount(LoginState.SUCCESS, "email, pass is valid")
         } else {

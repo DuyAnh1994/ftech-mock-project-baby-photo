@@ -7,8 +7,8 @@ import kotlin.random.Random
 
 class RegisterPresenter(private var view: IRegisterContract.View) {
     fun checkName(name: String?, name2: String?){
-        val isName = Utils().isValidName(name, name2)
-        val isNull = Utils().checkNull(name, name2)
+        val isName = Utils.isValidName(name, name2)
+        val isNull = Utils.checkNull(name, name2)
         if (isName && !isNull) {
             view.onCheckName(RegisterState.SUCCESS, "name is valid")
         }else {

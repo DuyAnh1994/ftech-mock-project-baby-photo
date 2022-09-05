@@ -16,10 +16,10 @@ class ChangePassPresenter(private var view: IChangePassContract.View) {
         if (oldPass != Constant.account.password){
             return view.onCheckPass(ChangePassState.PASS_NOT_FOUND, "pass not found")
         }
-        if (!Utils().isValidPassCharacter(newPass) || !Utils().isValidPassCount(newPass)){
+        if (!Utils.isValidPassCharacter(newPass) || !Utils.isValidPassCount(newPass)){
             return view.onCheckNewPass(ChangePassState.PASS_NOT_VALID, "new pass is not valid")
         }
-        if (!Utils().isValidPassCharacter(reNewPass) || !Utils().isValidPassCount(reNewPass) || !Utils().isMatchPass
+        if (!Utils.isValidPassCharacter(reNewPass) || !Utils.isValidPassCount(reNewPass) || !Utils.isMatchPass
                 (newPass, reNewPass)){
             return view.onCheckReNewPass(ChangePassState.PASS_NOT_MATCH, "re new pass is not match")
         }

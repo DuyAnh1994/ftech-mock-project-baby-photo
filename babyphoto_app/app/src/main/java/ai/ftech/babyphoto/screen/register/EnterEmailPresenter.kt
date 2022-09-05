@@ -41,7 +41,7 @@ class EnterEmailPresenter(private var view: IEnterEmailContract.View) {
     }
 
     fun validatEmail(email: String) {
-        val isEmail = Utils().isEmail(email)
+        val isEmail = Utils.isEmail(email)
         if (!isEmail) {
             view.onCheckMail(RegisterState.IS_NOT_EMAIL, "this is not a email")
         }else {
