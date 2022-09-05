@@ -123,6 +123,7 @@ class PhotoFolderActivity : AppCompatActivity(), DialogPreviewFragment.IPreviewU
                 val dialogPreviewFragment = DialogPreviewFragment()
                 val bundle = Bundle()
                 bundle.putString("urlImage", uriBaby)
+                bundle.putBoolean("status",true)
                 dialogPreviewFragment.arguments = bundle
                 dialogPreviewFragment.show(supportFragmentManager, dialogPreviewFragment.tag)
             }
@@ -155,5 +156,8 @@ class PhotoFolderActivity : AppCompatActivity(), DialogPreviewFragment.IPreviewU
         }
     }
 
+    override fun onBackPressed() {
+        photoFolderPresenter?.openBackDialog(this)
+    }
 
 }

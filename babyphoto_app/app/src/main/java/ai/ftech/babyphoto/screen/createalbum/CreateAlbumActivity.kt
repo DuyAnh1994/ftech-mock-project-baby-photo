@@ -7,10 +7,12 @@ import ai.ftech.babyphoto.screen.createalbum.preview.PhotoFolderActivity
 import ai.ftech.babyphoto.screen.createalbum.relation.DialogRelationFragment
 import ai.ftech.babyphoto.screen.home.HomeActivity
 import android.app.Activity
-import android.app.ProgressDialog
+import android.app.Dialog
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -56,7 +58,7 @@ class CreateAlbumActivity : AppCompatActivity(), DialogRelationFragment.ICreateN
     private lateinit var rqGender: RequestBody
     private lateinit var rqBirthday: RequestBody
     private lateinit var rqRelation: RequestBody
-    var progressdialog: ProgressDialog? = null
+    var dialog: Dialog? = null
     var bitmapAvatar: Boolean = false
     var ID_ACCOUNT: Int = 0
     private var select: Int = 1
@@ -99,7 +101,7 @@ class CreateAlbumActivity : AppCompatActivity(), DialogRelationFragment.ICreateN
         tvRelation = findViewById(R.id.tvCreateAlbumRelation)
         flRelation = findViewById(R.id.flCreateAlbumRelation)
         flCamera = findViewById(R.id.flCreateAlbumCamera)
-        progressdialog = ProgressDialog(this, R.style.AppCompatAlertDialogStyle)
+        dialog = Dialog(this)
         createAlbumPresenter = CreateAlbumPresenter(this)
     }
 
@@ -119,11 +121,13 @@ class CreateAlbumActivity : AppCompatActivity(), DialogRelationFragment.ICreateN
                     ivAvatar.setImageBitmap(bitmap)
                     setBackgroundButton()
                     btnCreate.setOnClickListener {
-                        sendSingleImage(path_image)
-                        createAlbumPresenter.createAlbum(
-                            singleFile,
-                            rqIdaccount, rqName, rqGender, rqBirthday, rqRelation
-                        )
+                        if (edtName.text.toString() != "" && tvBirthday.text.toString() != "" && tvRelation.text.toString() != "") {
+                            sendSingleImage(path_image)
+                            createAlbumPresenter.createAlbum(
+                                singleFile,
+                                rqIdaccount, rqName, rqGender, rqBirthday, rqRelation
+                            )
+                        }
                     }
                     flCamera.visibility = View.GONE
                 }
@@ -137,11 +141,13 @@ class CreateAlbumActivity : AppCompatActivity(), DialogRelationFragment.ICreateN
                     bitmapAvatar = true
                     setBackgroundButton()
                     btnCreate.setOnClickListener {
-                        sendSingleImage(dataImage)
-                        createAlbumPresenter.createAlbum(
-                            singleFile,
-                            rqIdaccount, rqName, rqGender, rqBirthday, rqRelation
-                        )
+                        if (edtName.text.toString() != "" && tvBirthday.text.toString() != "" && tvRelation.text.toString() != "") {
+                            sendSingleImage(dataImage)
+                            createAlbumPresenter.createAlbum(
+                                singleFile,
+                                rqIdaccount, rqName, rqGender, rqBirthday, rqRelation
+                            )
+                        }
                     }
                     flCamera.visibility = View.GONE
                 }
@@ -230,7 +236,8 @@ class CreateAlbumActivity : AppCompatActivity(), DialogRelationFragment.ICreateN
         val birthday: String = tvBirthday.text.toString()
         val relation: String = tvRelation.text.toString()
 
-        rqIdaccount = RequestBody.create(MediaType.parse("multipart/form-data"), ID_ACCOUNT.toString())
+        rqIdaccount =
+            RequestBody.create(MediaType.parse("multipart/form-data"), ID_ACCOUNT.toString())
         rqName = RequestBody.create(MediaType.parse("multipart/form-data"), name)
         rqGender = RequestBody.create(MediaType.parse("multipart/form-data"), strGender)
         rqBirthday = RequestBody.create(MediaType.parse("multipart/form-data"), birthday)
@@ -306,13 +313,19 @@ class CreateAlbumActivity : AppCompatActivity(), DialogRelationFragment.ICreateN
         }
     }
 
+
     override fun showLoading() {
-        progressdialog?.setMessage("Updating")
-        progressdialog?.setCancelable(false)
-        progressdialog?.show()
+        dialog?.setContentView(R.layout.dialog_loading_album_layout)
+        dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        dialog?.setCancelable(false)
+        dialog?.show()
     }
 
     override fun hideLoading() {
-        progressdialog?.dismiss()
+        dialog?.dismiss()
+    }
+
+    override fun onBackPressed() {
+        createAlbumPresenter.openBackDialog(this)
     }
 }

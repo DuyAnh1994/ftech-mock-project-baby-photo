@@ -10,6 +10,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.WindowManager
 import android.widget.ImageView
+import androidx.core.view.isGone
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -43,6 +44,12 @@ class DialogPreviewFragment : BottomSheetDialogFragment() {
         ivBaby = view.findViewById(R.id.ivPreviewBaby)
 
         val urlImage = arguments?.getString("urlImage")
+        val status = arguments?.getBoolean("status")
+        if(status!!){
+            ivOk.visibility = View.VISIBLE
+        }else{
+            ivOk.visibility = View.GONE
+        }
         ivBaby.setImageBitmap(BitmapFactory.decodeFile(urlImage))
         setOnClick(urlImage)
         return bottomSheetDialog

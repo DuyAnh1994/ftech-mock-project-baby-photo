@@ -32,11 +32,6 @@ class CreatePassActivity() : AppCompatActivity(), ICreatePassContract.View {
         }
         presenter = CreatePassPresenter(this)
 
-//        intent.extras?.let {
-//            it.apply {
-//                account = Gson().fromJson(get("account") as String, AccountModel::class.java)
-//            }
-//        }
 
         ibRegisterBackCreatePass.setOnClickListener {
             finish()
@@ -56,12 +51,14 @@ class CreatePassActivity() : AppCompatActivity(), ICreatePassContract.View {
             )
         }
         btnRegisterNextPass.setOnClickListener {
+
             presenter!!.submit(
                 stateCheckRePass,
                 tieRegisterPass.text.toString(),
                 tieRegisterRePass.text.toString(),
                 account
             )
+            openDialog()
         }
         clCreatePassMain.setOnClickListener {
             hideKeyboard(clCreatePassMain)
@@ -112,6 +109,8 @@ class CreatePassActivity() : AppCompatActivity(), ICreatePassContract.View {
         }
 
     }
+
+
 
     private fun hideKeyboard(view: View) {
         val inputMethodManager = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
