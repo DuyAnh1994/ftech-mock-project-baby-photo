@@ -13,9 +13,9 @@ class CreatePassPresenter(private var view: ICreatePassContract.View) {
 
 
     fun checkPass(pass: String, rePass: String) {
-        val isValidPassCharacter = Utils().isValidPassCharacter(pass) && Utils().isValidPassCharacter(rePass)
-        val isValidPassCount = Utils().isValidPassCount(pass) && Utils().isValidPassCount(rePass)
-        val isMatchPass = Utils().isMatchPass(pass, rePass)
+        val isValidPassCharacter = Utils.isValidPassCharacter(pass) && Utils.isValidPassCharacter(rePass)
+        val isValidPassCount = Utils.isValidPassCount(pass) && Utils.isValidPassCount(rePass)
+        val isMatchPass = Utils.isMatchPass(pass, rePass)
 
         if (!isValidPassCharacter)
             return view.onCheckPass(RegisterState.PASS_NOT_VALID, "pass is not valid")

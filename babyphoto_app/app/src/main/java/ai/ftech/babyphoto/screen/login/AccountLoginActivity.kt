@@ -60,7 +60,7 @@ class AccountLoginActivity : AppCompatActivity(), CompoundButton.OnCheckedChange
             if (enableLogin) {
                 val email = tieAccountLoginEmail.text.toString()
                 val password = tieAccountLoginPass.text.toString()
-                val dialog = Utils().loading(this)
+                val dialog = Utils.loading(this)
                 presenter?.login(dialog, email, password)
             }
         }
