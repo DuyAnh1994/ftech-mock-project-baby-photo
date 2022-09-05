@@ -3,14 +3,22 @@ package ai.ftech.babyphoto.screen.home
 import ai.ftech.babyphoto.R
 import ai.ftech.babyphoto.data.Constant
 import ai.ftech.babyphoto.data.model.AlbumBaby
+import ai.ftech.babyphoto.screen.createalbum.CreateAlbumActivity
 import ai.ftech.babyphoto.screen.detailaccount.DetailAccountActivity
 import ai.ftech.babyphoto.screen.timeline.TimelineActivity
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.app.AlertDialog
+import android.app.Dialog
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Gravity
 import android.view.MenuItem
+import android.view.Window
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
@@ -158,9 +166,27 @@ class HomeActivity : AppCompatActivity(), BabyHomeAdapter.onItemClickListenerr, 
             HomeState.GET_ALBUM_FAIL -> {
                 Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
             }
-            else -> {}
         }
     }
 
+    override fun onBackPressed() {
+        val dialog = Dialog(this)
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.setContentView(R.layout.dialog_back_create_album_layout)
+        val window: Window = dialog.window ?: return
+        window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        val windowAttributes = window.attributes
+        windowAttributes.gravity = Gravity.CENTER
+        window.attributes = windowAttributes
+        val btnCancel: Button = dialog.findViewById(R.id.btnDialogBacKCancel)
+        val btnOK: Button = dialog.findViewById(R.id.btnDialogBacKOk)
+        btnOK.setOnClickListener {
+            this.finishAffinity()
+        }
+        btnCancel.setOnClickListener {
+            dialog.cancel()
+        }
+        dialog.show()
+    }
 
 }

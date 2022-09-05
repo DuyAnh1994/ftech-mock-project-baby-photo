@@ -140,4 +140,5 @@ class TimelineActivity : AppCompatActivity(), ITimelineContract.View {
             }
         }
     }
+
 }

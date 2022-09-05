@@ -190,9 +190,15 @@ class AccountLoginActivity : AppCompatActivity(), CompoundButton.OnCheckedChange
             ViewGroup.LayoutParams.MATCH_PARENT,
             ViewGroup.LayoutParams.WRAP_CONTENT
         )
+        dialog.setCancelable(false)
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         dialog.show()
         dialog.window?.setGravity(Gravity.BOTTOM)
         return dialog
+    }
+
+    override fun onBackPressed() {
+        var intent = Intent(this, MainActivity::class.java)
+        startActivity(intent)
     }
 }
