@@ -1,7 +1,6 @@
 package ai.ftech.babyphoto.screen.createalbum.preview
 
 
-
 import ai.ftech.babyphoto.R
 import android.app.Dialog
 import android.content.Context
@@ -16,7 +15,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
 
-class DialogPreviewFragment :  BottomSheetDialogFragment() {
+class DialogPreviewFragment : BottomSheetDialogFragment() {
     private lateinit var bottomSheetDialog: BottomSheetDialog
     private lateinit var ivCancel: ImageView
     private lateinit var ivOk: ImageView
@@ -45,7 +44,7 @@ class DialogPreviewFragment :  BottomSheetDialogFragment() {
 
         val urlImage = arguments?.getString("urlImage")
         ivBaby.setImageBitmap(BitmapFactory.decodeFile(urlImage))
-            setOnClick(urlImage)
+        setOnClick(urlImage)
         return bottomSheetDialog
     }
 
@@ -67,6 +66,7 @@ class DialogPreviewFragment :  BottomSheetDialogFragment() {
     }
 
     private lateinit var iPreviewUri: IPreviewUri
+
     interface IPreviewUri {
         fun getBitmap(Uri: String)
     }

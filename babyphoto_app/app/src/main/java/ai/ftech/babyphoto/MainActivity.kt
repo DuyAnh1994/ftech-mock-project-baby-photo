@@ -1,14 +1,11 @@
 package ai.ftech.babyphoto
 
-import ai.ftech.babyphoto.screen.login.AccountLogin
+import ai.ftech.babyphoto.screen.login.AccountLoginActivity
 import ai.ftech.babyphoto.screen.register.RegisterActivity
 import android.content.Intent
 import android.os.Bundle
-import android.view.MotionEvent
 import androidx.appcompat.app.AppCompatActivity
-import com.google.firebase.storage.StorageReference
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlin.math.sign
 
 class MainActivity : AppCompatActivity() {
     //khai báo presenter
@@ -21,7 +18,7 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
         tvMainLogin.setOnClickListener {
-            val intent = Intent(this, AccountLogin::class.java)
+            val intent = Intent(this, AccountLoginActivity::class.java)
             startActivity(intent)
         }
 

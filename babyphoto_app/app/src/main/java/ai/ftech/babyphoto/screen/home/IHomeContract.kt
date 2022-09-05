@@ -1,6 +1,6 @@
 package ai.ftech.babyphoto.screen.home
 
-import ai.ftech.babyphoto.model.AlbumBaby
+import ai.ftech.babyphoto.data.model.AlbumBaby
 
 interface IHomeContract {
     interface View{

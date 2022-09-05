@@ -1,7 +1,7 @@
 package ai.ftech.babyphoto.screen.home
 
 import ai.ftech.babyphoto.R
-import ai.ftech.babyphoto.model.AlbumBaby
+import ai.ftech.babyphoto.data.model.AlbumBaby
 import ai.ftech.babyphoto.screen.createalbum.CreateAlbumActivity
 import android.content.Context
 import android.content.Intent
@@ -11,8 +11,8 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.squareup.picasso.Picasso
 import android.widget.ImageButton
+import com.bumptech.glide.Glide
 
 
 class BabyHomeAdapter(
@@ -98,7 +98,10 @@ class BabyHomeAdapter(
 //            ivHomeViewBaby.setImageURI(null)
 //            ivHomeViewBaby.setImageURI(Uri.parse(dataViewBabyHome[position].urlimage))
 
-            Picasso.get().load(dataViewBabyHome[position].urlimage).into(ivHomeViewBaby)
+            Glide.with(context)
+                .load(dataViewBabyHome[position].urlimage)
+                .placeholder(R.drawable.image_default)
+                .into(ivHomeViewBaby)
             tvHomeViewBabyName.text = dataViewBabyHome[position].name
             tvHomeViewBabyCountItem.text = dataViewBabyHome[position].amountimage
             tvHomeViewBabyItem.text = "images"
@@ -108,7 +111,7 @@ class BabyHomeAdapter(
 //                val intent = Intent(this, TimelineAdapter::class.java)
 //                intent.putExtra("account", )
 //                startActivity(intent)
-                if (this@BabyHomeAdapter.mListener !=null){
+                if (dataViewBabyHome.isNotEmpty()){
                     if (position!=RecyclerView.NO_POSITION)
                         this@BabyHomeAdapter.mListener.onItemClick(position)
                 }

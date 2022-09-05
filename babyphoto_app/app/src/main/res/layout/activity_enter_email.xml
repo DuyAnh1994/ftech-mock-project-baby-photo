@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="20dp"
-    tools:context=".screen.register.ActivityEnterEmail">
+    android:id="@+id/clEnterEmailMain"
+    tools:context=".screen.register.EnterEmailActivity">
 
     <ImageButton
         android:id="@+id/ibRegisterBackEmail"
@@ -50,7 +51,7 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btnRegisterNext2"
+        android:id="@+id/btnRegisterNextEmail"
         android:layout_marginTop="130dp"
         style="@style/BabyButtonNextRegister"
         app:layout_constraintLeft_toLeftOf="parent"

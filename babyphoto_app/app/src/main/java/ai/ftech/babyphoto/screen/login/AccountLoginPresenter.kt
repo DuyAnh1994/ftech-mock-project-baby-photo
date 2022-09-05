@@ -1,92 +1,93 @@
 package ai.ftech.babyphoto.screen.login
 
-import ai.ftech.babyphoto.R
-import ai.ftech.babyphoto.base.Constant
-import ai.ftech.babyphoto.base.Utils
-import ai.ftech.babyphoto.base.service.APIService
-import ai.ftech.babyphoto.model.Account
-import ai.ftech.babyphoto.model.ResponseModel
+import ai.ftech.babyphoto.data.Constant
+import ai.ftech.babyphoto.data.Utils
+import ai.ftech.babyphoto.data.service.APIService
+import ai.ftech.babyphoto.data.model.Account
+import ai.ftech.babyphoto.data.model.ResponseModel
 import android.app.Dialog
-import android.content.Context
-import android.content.SharedPreferences
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
-import android.util.Log
-import android.view.Gravity
-import android.view.View
-import android.view.ViewGroup
-import android.widget.Toast
-import kotlinx.android.synthetic.main.activity_account_login.*
-import kotlinx.android.synthetic.main.activity_enter_email.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 class AccountLoginPresenter(private var view: ILoginContract.View) {
-
     private val apiService = APIService.base()
-    private var lAccount = mutableListOf<Account>()
-    private var index1: Int = 0
-    private var sharedPreferences: SharedPreferences? = null
-    private var editor: SharedPreferences.Editor? = null
 
-    fun getAccount() {
-        apiService.account().enqueue(
-            object : Callback<ResponseModel<List<Account>>> {
+    fun login(dialog: Dialog, email: String, password: String) {
+        if (email.trim().isEmpty() || password.trim().isEmpty()) {
+            view.onLogin(LoginState.EMAIL_OR_PASS_EMPTY, "email, pass is empty")
+        } else {
+            getIdAccount(dialog, email, password)
+        }
+    }
+
+    fun getIdAccount(dialog: Dialog, email: String, password: String){
+        dialog.show()
+        apiService.login(email, password).enqueue(
+            object : Callback<ResponseModel<List<String>>>{
                 override fun onResponse(
-                    call: Call<ResponseModel<List<Account>>>,
-                    response: Response<ResponseModel<List<Account>>>
+                    call: Call<ResponseModel<List<String>>>,
+                    response: Response<ResponseModel<List<String>>>
                 ) {
-                    if (response.body() != null) {
-                        response.body()!!.data.also { lAccount = it as MutableList<Account> }
+                    if (response.body() != null && "code12" == response.body()?.code && response.body()!!.data
+                            .isNotEmpty()){
+                        getAccountWithID(dialog, response.body()!!.data.get(0))
                         return
                     }
+                    view.onLogin(LoginState.INVALID_EMAIL_AND_PASS, "get id failed")
+                    dialog.dismiss()
                 }
 
-                override fun onFailure(call: Call<ResponseModel<List<Account>>>, t: Throwable) {
-                    Log.e("ERROR", t.toString())
+                override fun onFailure(call: Call<ResponseModel<List<String>>>, t: Throwable) {
+                    view.onLogin(LoginState.INVALID_EMAIL_AND_PASS, "get id failed")
+                    dialog.dismiss()
                 }
 
             }
         )
     }
 
-    fun login(email: String, password: String) {
+    fun getAccountWithID(dialog: Dialog, id: String){
+        apiService.getAccountWithId(id).enqueue(
+            object : Callback<ResponseModel<List<Account>>>{
+                override fun onResponse(
+                    call: Call<ResponseModel<List<Account>>>,
+                    response: Response<ResponseModel<List<Account>>>
+                ) {
+                    dialog.dismiss()
+                    if (response.body() != null && "code12" == response.body()?.code && response.body()!!.data
+                            .isNotEmpty()) {
+                        Constant.account = response.body()!!.data.get(0)
+                        view.onLogin(LoginState.SUCCESS, "Login success")
+                        return
+                    }
+                    view.onLogin(LoginState.INVALID_EMAIL_AND_PASS, "Login failed")
+                }
 
-        if (email.trim().isEmpty() || password.trim().isEmpty()) {
-            view.onLogin(LoginState.EMAIL_OR_PASS_EMPTY, "email, pass is empty", -1)
-        } else {
-            val account: Account? = lAccount.find { password == it.password && email == it.email }
+                override fun onFailure(call: Call<ResponseModel<List<Account>>>, t: Throwable) {
+                    view.onLogin(LoginState.INVALID_EMAIL_AND_PASS, "Login failed")
+                    dialog.dismiss()
+                }
 
-            if (account != null) {
-                Constant.account = account
-                view.onLogin(LoginState.SUCCESS, "email, pass is valid", lAccount[index1].idaccount)
-            } else {
-                view.onLogin(LoginState.EMAIL_NOT_FOUND, "email, pass is not found", -1)
             }
-        }
+        )
     }
 
     fun checkMailNull(email: String?) {
         if (email == null) {
             view.onCheckMailNull(LoginState.MAIL_NULL, "emai is null")
-
         } else {
             view.onCheckMailNull(LoginState.MAIL_NOT_NULL, "email is not null")
         }
     }
 
     fun checkValidAccount(email: String, pass: String) {
-        val isValid =
-            lAccount.any { account: Account -> account.email == email && account.password == pass }//mk correct
-        val isValid2 = Utils().checkNull(email, pass)// true->null
-        if (!isValid2 && isValid) {
+        val isValid2 = Utils().checkNull(email, pass)
+        if (!isValid2) {
             view.onValidAccount(LoginState.SUCCESS, "email, pass is valid")
-        } else if (!isValid2 && !isValid) {
-            view.onValidAccount(LoginState.EMAIL_NOT_FOUND, "email, pass is not found")
         } else {
             view.onValidAccount(
-                LoginState.EMAIL_NOT_FOUND_OR_EMPTY,
+                LoginState.EMAIL_OR_PASS_EMPTY,
                 "email, pass is not found or empty"
             )
         }

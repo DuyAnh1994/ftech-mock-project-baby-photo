@@ -1,6 +1,5 @@
 package ai.ftech.babyphoto.screen.changepass
 
-import ai.ftech.babyphoto.model.Account
 import android.app.Dialog
 
 interface IChangePassContract {

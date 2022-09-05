@@ -6,12 +6,13 @@
     android:layout_height="match_parent"
     android:padding="30dp"
     android:id="@+id/ctChangePassMain"
-    tools:context=".screen.changepass.ChangePass">
+    tools:context=".screen.changepass.ChangePassActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/llChangePassMenuTop"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="28dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">

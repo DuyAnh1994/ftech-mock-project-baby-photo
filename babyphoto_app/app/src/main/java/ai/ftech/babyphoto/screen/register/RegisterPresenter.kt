@@ -1,10 +1,8 @@
 package ai.ftech.babyphoto.screen.register
 
-import ai.ftech.babyphoto.base.Utils
-import ai.ftech.babyphoto.model.Account
-import android.content.Intent
+import ai.ftech.babyphoto.data.Utils
+import ai.ftech.babyphoto.data.model.Account
 import com.google.gson.Gson
-import kotlinx.android.synthetic.main.activity_register.*
 import kotlin.random.Random
 
 class RegisterPresenter(private var view: IRegisterContract.View) {
