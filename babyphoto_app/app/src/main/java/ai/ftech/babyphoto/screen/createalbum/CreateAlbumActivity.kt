@@ -36,19 +36,19 @@ import java.io.File
 
 class CreateAlbumActivity : AppCompatActivity(), DialogRelationFragment.ICreateName,
     ICreateContract.IView {
-    lateinit var ivBackHome: ImageView
-    lateinit var btnCreate: Button
-    lateinit var ivAvatar: CircleImageView
-    lateinit var edtName: EditText
-    lateinit var ivBoy: ImageView
-    lateinit var ivGirl: ImageView
-    lateinit var tvBirthday: TextView
-    lateinit var flBirthday: FrameLayout
-    lateinit var tvRelation: TextView
-    lateinit var flRelation: FrameLayout
-    lateinit var flCamera: FrameLayout
-    lateinit var createAlbumPresenter: CreateAlbumPresenter
-    lateinit var activityResultLauncher: ActivityResultLauncher<Intent>
+    private lateinit var ivBackHome: ImageView
+    private lateinit var btnCreate: Button
+    private lateinit var ivAvatar: CircleImageView
+    private lateinit var edtName: EditText
+    private lateinit var ivBoy: ImageView
+    private lateinit var ivGirl: ImageView
+    private lateinit var tvBirthday: TextView
+    private lateinit var flBirthday: FrameLayout
+    private lateinit var tvRelation: TextView
+    private lateinit var flRelation: FrameLayout
+    private lateinit var flCamera: FrameLayout
+    private lateinit var createAlbumPresenter: CreateAlbumPresenter
+    private lateinit var activityResultLauncher: ActivityResultLauncher<Intent>
     private lateinit var file_path: String
     private lateinit var strGender: String
     private lateinit var requestBody: RequestBody
@@ -58,7 +58,7 @@ class CreateAlbumActivity : AppCompatActivity(), DialogRelationFragment.ICreateN
     private lateinit var rqGender: RequestBody
     private lateinit var rqBirthday: RequestBody
     private lateinit var rqRelation: RequestBody
-    var dialog: Dialog? = null
+    private var dialog: Dialog? = null
     var bitmapAvatar: Boolean = false
     var ID_ACCOUNT: Int = 0
     private var select: Int = 1
@@ -105,6 +105,7 @@ class CreateAlbumActivity : AppCompatActivity(), DialogRelationFragment.ICreateN
         createAlbumPresenter = CreateAlbumPresenter(this)
     }
 
+    // nhận ảnh từ library và camera
     @RequiresApi(Build.VERSION_CODES.O)
     private fun getAvatar() {
         activityResultLauncher = registerForActivityResult(
@@ -186,7 +187,7 @@ class CreateAlbumActivity : AppCompatActivity(), DialogRelationFragment.ICreateN
         })
     }
 
-    fun getUriBaby() {
+    private fun getUriBaby() {
         ivAvatar.setOnClickListener {
             val intent = Intent(this, PhotoFolderActivity::class.java)
             activityResultLauncher.launch(intent)
@@ -197,7 +198,7 @@ class CreateAlbumActivity : AppCompatActivity(), DialogRelationFragment.ICreateN
     }
 
 
-    fun getGenderAlbum(): Int {
+    private fun getGenderAlbum(): Int {
         ivBoy.setOnClickListener {
             ivBoy.setBackgroundResource(R.drawable.shape_cir_yellow_bg_corner_large)
             ivGirl.setBackgroundResource(R.drawable.shape_cir_grey_bg_corner_90)
@@ -211,7 +212,7 @@ class CreateAlbumActivity : AppCompatActivity(), DialogRelationFragment.ICreateN
         return select
     }
 
-    fun getRelationAlbum() {
+    private fun getRelationAlbum() {
         flRelation.setOnClickListener {
             val dialogRelationFragment = DialogRelationFragment()
             dialogRelationFragment.show(this.supportFragmentManager, dialogRelationFragment.tag)
@@ -219,7 +220,7 @@ class CreateAlbumActivity : AppCompatActivity(), DialogRelationFragment.ICreateN
     }
 
 
-    fun sendSingleImage(pathImage: String) {
+    private fun sendSingleImage(pathImage: String) {
         file = File(pathImage)
         file_path = file.absolutePath + System.currentTimeMillis() + ".png"
         requestBody = RequestBody.create(MediaType.parse("multipart/form-data"), file)
@@ -260,8 +261,8 @@ class CreateAlbumActivity : AppCompatActivity(), DialogRelationFragment.ICreateN
         return path
     }
 
+    //convert bitmap to uri
     private fun convertUri(bitmap: Bitmap): Uri {
-        //convert bitmap to uri
         val bytes = ByteArrayOutputStream()
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, bytes)
         val path: String = MediaStore.Images.Media.insertImage(

@@ -17,11 +17,14 @@ class PhotoFolderAdapter(
 ) :
     RecyclerView.Adapter<PhotoFolderAdapter.ViewHolder>() {
 
-    class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         var ivItem: ImageView
 
         init {
             ivItem = view.findViewById(R.id.ivImage)
+            itemView.setOnClickListener {
+                iPreview.setInsert(dataSet[adapterPosition])
+            }
         }
     }
 
@@ -33,9 +36,6 @@ class PhotoFolderAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.ivItem.setImageBitmap(BitmapFactory.decodeFile(dataSet[position]))
-        holder.itemView.setOnClickListener {
-            iPreview.setInsert(dataSet[position])
-        }
     }
 
     override fun getItemCount(): Int {

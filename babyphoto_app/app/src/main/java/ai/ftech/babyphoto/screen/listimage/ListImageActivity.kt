@@ -138,9 +138,6 @@ class ListImageActivity : AppCompatActivity(), IListContract.IView {
         listImagePresent.getImage(this)
     }
 
-    //lấy ảnh từ thư viện để hiển thị ra 1 danh sách
-
-
     @RequiresApi(Build.VERSION_CODES.O)
     override fun getData(listImage: MutableList<String>, listCb: MutableList<Boolean>) {
 

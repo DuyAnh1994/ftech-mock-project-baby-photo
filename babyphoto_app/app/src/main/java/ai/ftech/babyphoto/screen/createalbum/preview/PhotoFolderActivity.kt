@@ -19,16 +19,16 @@ import androidx.recyclerview.widget.RecyclerView
 
 class PhotoFolderActivity : AppCompatActivity(), DialogPreviewFragment.IPreviewUri,
     IPhotoContract.IView {
-    lateinit var ivCancel: ImageView
-    lateinit var ivCamera: ImageView
-    lateinit var rvPhotoFolderImage: RecyclerView
-    val REQUEST_CODE_CAMERA = 999
-    val REQUEST_CODE_IMAGE = 998
-    val RESULT_CODE_CAMERA = 123
-    val RESULT_CODE_IMAGE = 234
-    var uriImage: String? = null
-    lateinit var activityResultLauncher: ActivityResultLauncher<Intent>
-    var photoFolderPresenter: PhotoFolderPresenter? = null
+    private lateinit var ivCancel: ImageView
+    private lateinit var ivCamera: ImageView
+    private lateinit var rvPhotoFolderImage: RecyclerView
+    private val REQUEST_CODE_CAMERA = 999
+    private val REQUEST_CODE_IMAGE = 998
+    private val RESULT_CODE_CAMERA = 123
+    private val RESULT_CODE_IMAGE = 234
+    private var uriImage: String? = null
+    private lateinit var activityResultLauncher: ActivityResultLauncher<Intent>
+    private var photoFolderPresenter: PhotoFolderPresenter? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.photo_folder_activity)
@@ -39,8 +39,8 @@ class PhotoFolderActivity : AppCompatActivity(), DialogPreviewFragment.IPreviewU
         setCamera()
     }
 
+    // nhận kết quả trả về từ máy ảnh
     private fun default() {
-        // nhận kết quả trả về từ máy ảnh
         activityResultLauncher = registerForActivityResult(
             ActivityResultContracts.StartActivityForResult()
         ) { result ->
@@ -100,8 +100,8 @@ class PhotoFolderActivity : AppCompatActivity(), DialogPreviewFragment.IPreviewU
         }
     }
 
-    fun checkPermission() {
-        // xin quyền truy cập trong thư viện
+    // xin quyền truy cập trong thư viện
+    private fun checkPermission() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
             != PackageManager.PERMISSION_GRANTED
         ) {
@@ -123,7 +123,7 @@ class PhotoFolderActivity : AppCompatActivity(), DialogPreviewFragment.IPreviewU
                 val dialogPreviewFragment = DialogPreviewFragment()
                 val bundle = Bundle()
                 bundle.putString("urlImage", uriBaby)
-                bundle.putBoolean("status",true)
+                bundle.putBoolean("status", true)
                 dialogPreviewFragment.arguments = bundle
                 dialogPreviewFragment.show(supportFragmentManager, dialogPreviewFragment.tag)
             }
@@ -132,10 +132,9 @@ class PhotoFolderActivity : AppCompatActivity(), DialogPreviewFragment.IPreviewU
         rvPhotoFolderImage.adapter = adapter
     }
 
-    fun setCamera() {
+    //check quyền camera
+    private fun setCamera() {
         ivCamera.setOnClickListener {
-            //check quyền camera
-
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
                 != PackageManager.PERMISSION_GRANTED
             ) {
@@ -150,7 +149,7 @@ class PhotoFolderActivity : AppCompatActivity(), DialogPreviewFragment.IPreviewU
 
     }
 
-    fun backCreateAlbum() {
+    private fun backCreateAlbum() {
         ivCancel.setOnClickListener {
             photoFolderPresenter?.openBackDialog(this)
         }

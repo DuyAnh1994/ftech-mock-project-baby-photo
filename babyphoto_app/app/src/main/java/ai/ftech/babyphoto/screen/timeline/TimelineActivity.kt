@@ -46,9 +46,6 @@ class TimelineActivity : AppCompatActivity(), ITimelineContract.View {
         birthday = bundle?.getString("birthday")
         urlimage = bundle?.getString("urlimage")
 
-//        Picasso.get()
-//            .load(Uri.parse(urlimage))
-//            .into(civTimeLineAvatarCirCle)
         try {
             Glide.with(this)
                 .load(urlimage)

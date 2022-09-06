@@ -5,12 +5,12 @@ import ai.ftech.babyphoto.data.Constant
 import android.app.Dialog
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Gravity
 import android.view.View
 import android.widget.FrameLayout
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.addTextChangedListener
 import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
@@ -29,19 +29,22 @@ class ChangePassActivity : AppCompatActivity(), IChangePassContract.View {
             presenter.validPassword(
                 tieCurrentPass.text.toString(),
                 tieNewPass.text.toString(),
-                tieReNewPass.text.toString(),)
+                tieReNewPass.text.toString(),
+            )
         }
         tieNewPass!!.addTextChangedListener {
             presenter.validPassword(
                 tieCurrentPass.text.toString(),
                 tieNewPass.text.toString(),
-                tieReNewPass.text.toString(),)
+                tieReNewPass.text.toString(),
+            )
         }
         tieReNewPass!!.addTextChangedListener {
             presenter.validPassword(
                 tieCurrentPass.text.toString(),
                 tieNewPass.text.toString(),
-                tieReNewPass.text.toString(),)
+                tieReNewPass.text.toString(),
+            )
         }
         tvSaveChange.setOnClickListener {
             val dialog = openDialog()
@@ -133,7 +136,7 @@ class ChangePassActivity : AppCompatActivity(), IChangePassContract.View {
 
     }
 
-    fun openDialog(): Dialog {
+    private fun openDialog(): Dialog {
         var dialogLoadPass = Dialog(this)
         dialogLoadPass.setContentView(R.layout.dialog_loading_register_layout)
         dialogLoadPass.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))

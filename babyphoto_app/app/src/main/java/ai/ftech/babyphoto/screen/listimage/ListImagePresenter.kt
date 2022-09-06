@@ -1,9 +1,9 @@
 package ai.ftech.babyphoto.screen.listimage
 
 import ai.ftech.babyphoto.R
-import ai.ftech.babyphoto.data.service.APIService
 import ai.ftech.babyphoto.data.model.Data
 import ai.ftech.babyphoto.data.model.DataResult
+import ai.ftech.babyphoto.data.service.APIService
 import android.app.Dialog
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
@@ -20,7 +20,6 @@ import retrofit2.Response
 
 class ListImagePresenter(var mView: IListContract.IView) : IListContract.IPresenter {
 
-
     override fun addMultiImageToServer(
         files: MutableList<MultipartBody.Part>,
         idalbum: RequestBody,
@@ -35,7 +34,6 @@ class ListImagePresenter(var mView: IListContract.IView) : IListContract.IPresen
                 call: Call<Data<String>>,
                 response: Response<Data<String>>
             ) {
-
                 if (response.body()!!.code == "code13") {
                     val data = DataResult<String>()
                     data.state = DataResult.State.SUCCESS

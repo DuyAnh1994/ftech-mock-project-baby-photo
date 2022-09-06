@@ -12,7 +12,6 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.text.Editable
-import android.text.TextWatcher
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
@@ -22,7 +21,6 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_account_login.*
-import kotlin.toString as toString
 
 class AccountLoginActivity : AppCompatActivity(), CompoundButton.OnCheckedChangeListener,
     ILoginContract.View {
@@ -39,7 +37,7 @@ class AccountLoginActivity : AppCompatActivity(), CompoundButton.OnCheckedChange
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_account_login)
-        var bundle: Bundle? = intent.extras
+        val bundle: Bundle? = intent.extras
         email = bundle?.getString("Email")
         presenter = AccountLoginPresenter(this)
         presenter?.checkMailNull(email)
@@ -64,7 +62,7 @@ class AccountLoginActivity : AppCompatActivity(), CompoundButton.OnCheckedChange
                 presenter?.login(dialog, email, password)
             }
         }
-//        tieAccountLoginPass.inputType = InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
+
         presenter?.checkValidAccount(
             tieAccountLoginEmail.text.toString().trim(),
             tieAccountLoginPass.text.toString().trim(),
@@ -183,8 +181,8 @@ class AccountLoginActivity : AppCompatActivity(), CompoundButton.OnCheckedChange
         inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
     }
 
-    fun showBottomSheet(): Dialog {
-        var dialog = Dialog(this)
+    private fun showBottomSheet(): Dialog {
+        val dialog = Dialog(this)
         dialog.setContentView(R.layout.password_recovery_bottomsheet_layout)
         dialog.window?.setLayout(
             ViewGroup.LayoutParams.MATCH_PARENT,
@@ -198,7 +196,7 @@ class AccountLoginActivity : AppCompatActivity(), CompoundButton.OnCheckedChange
     }
 
     override fun onBackPressed() {
-        var intent = Intent(this, MainActivity::class.java)
+        val intent = Intent(this, MainActivity::class.java)
         startActivity(intent)
     }
 }

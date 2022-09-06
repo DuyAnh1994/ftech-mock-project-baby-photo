@@ -16,13 +16,21 @@ class RelationAdapter(
     RecyclerView.Adapter<RelationAdapter.ViewHolder>() {
     var count: Int = 0
 
-    class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val tvName: TextView
-        val ivCheckBox: ImageView
+        private val ivCheckBox: ImageView
 
         init {
             tvName = view.findViewById(R.id.tvRelationName)
             ivCheckBox = view.findViewById(R.id.ivRelationCheckBox)
+            itemView.setOnClickListener {
+                count++
+                if (count == 1) {
+                    iRelation.getName(dataSet[adapterPosition].name)
+                    tvName.setTextColor(Color.parseColor("#81D600"))
+                    ivCheckBox.visibility = View.VISIBLE
+                }
+            }
         }
     }
 
@@ -35,15 +43,6 @@ class RelationAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val arrayRelation = dataSet[position]
         holder.tvName.text = arrayRelation.name
-        holder.itemView.setOnClickListener {
-            count++
-            if (count == 1) {
-                iRelation.getName(arrayRelation.name)
-                holder.tvName.setTextColor(Color.parseColor("#81D600"))
-                holder.ivCheckBox.visibility = View.VISIBLE
-            }
-        }
-
     }
 
     override fun getItemCount(): Int {

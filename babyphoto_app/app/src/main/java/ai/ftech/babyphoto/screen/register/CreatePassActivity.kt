@@ -7,18 +7,17 @@ import android.app.Dialog
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.addTextChangedListener
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_create_pass.*
 
 class CreatePassActivity() : AppCompatActivity(), ICreatePassContract.View {
-    //    private val view = activity
     private var account: Account? = null
     private var presenter: CreatePassPresenter? = null
     private lateinit var stateCheckRePass: RegisterState
@@ -39,23 +38,23 @@ class CreatePassActivity() : AppCompatActivity(), ICreatePassContract.View {
         //check pass
         tieRegisterPass.addTextChangedListener {
             presenter!!.checkPass(
-                tieRegisterPass.text.toString(),
-                tieRegisterRePass.text.toString()
+                tieRegisterPass.text.toString().trim(),
+                tieRegisterRePass.text.toString().trim()
             )
         }
         //check repass
         tieRegisterRePass.addTextChangedListener {
             presenter!!.checkPass(
-                tieRegisterPass.text.toString(),
-                tieRegisterRePass.text.toString()
+                tieRegisterPass.text.toString().trim(),
+                tieRegisterRePass.text.toString().trim()
             )
         }
         btnRegisterNextPass.setOnClickListener {
 
             presenter!!.submit(
                 stateCheckRePass,
-                tieRegisterPass.text.toString(),
-                tieRegisterRePass.text.toString(),
+                tieRegisterPass.text.toString().trim(),
+                tieRegisterRePass.text.toString().trim(),
                 account
             )
             openDialog()
@@ -99,7 +98,8 @@ class CreatePassActivity() : AppCompatActivity(), ICreatePassContract.View {
                 btnRegisterNextPass.setBackgroundResource(R.drawable.selector_rec_orange_color)
             }
             RegisterState.PASS_NOT_VALID -> {
-                tvRegisterWarningPass.text = "Passwords are between 6 and 8 characters, do not use special characters"
+                tvRegisterWarningPass.text =
+                    "Passwords are between 6 and 8 characters, do not use special characters"
 
             }
             RegisterState.PASS_NOT_MATCH -> {
@@ -111,13 +111,12 @@ class CreatePassActivity() : AppCompatActivity(), ICreatePassContract.View {
     }
 
 
-
     private fun hideKeyboard(view: View) {
         val inputMethodManager = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
         inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
     }
 
-    fun openDialog(): Dialog {
+    private fun openDialog(): Dialog {
         var dialogLoadPass = Dialog(this)
         dialogLoadPass.setContentView(R.layout.dialog_loading_register_layout)
         dialogLoadPass.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
