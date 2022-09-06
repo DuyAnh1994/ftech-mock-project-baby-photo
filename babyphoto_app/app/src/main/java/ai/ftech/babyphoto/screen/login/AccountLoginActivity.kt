@@ -6,6 +6,7 @@ import ai.ftech.babyphoto.screen.home.HomeActivity
 import android.app.Dialog
 import android.content.Context
 import android.content.Intent
+import android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP
 import android.content.SharedPreferences
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
