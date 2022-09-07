@@ -9,7 +9,7 @@ interface ILoginContract {
         fun onCheckMailNull(state: LoginState, message: String)
     }
 
-    interface Presenter {
+    interface IPresenter {
         fun login(dialog: Dialog, email: String, password: String)
         fun getIdAccount(dialog: Dialog, email: String, password: String)
         fun getAccountWithID(dialog: Dialog, id: String)

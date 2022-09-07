@@ -10,7 +10,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class AccountLoginPresenter(private var view: ILoginContract.View) : ILoginContract.Presenter {
+class AccountLoginPresenter(private var view: ILoginContract.View) : ILoginContract.IPresenter {
     private val apiService = APIService.base()
 
     override fun login(dialog: Dialog, email: String, password: String) {
