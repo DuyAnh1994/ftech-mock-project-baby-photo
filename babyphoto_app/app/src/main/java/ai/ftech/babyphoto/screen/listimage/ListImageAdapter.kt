@@ -5,7 +5,6 @@ import android.graphics.BitmapFactory
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.GridLayout
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 
@@ -56,24 +55,24 @@ class ListImageAdapter(
         private val cbImage: ImageView = itemView.findViewById(R.id.ivCheckbox)
         fun bind(position: Int) {
             ivImage.setImageBitmap(BitmapFactory.decodeFile(dataSet[position]))
-            cbImage.setOnClickListener {
+            itemView.setOnClickListener {
                 if (arrayCb[position]) {
                     arrayCb[position] = false
                     cbImage.setImageResource(R.drawable.ic_select_off)
-                    ivImage.layoutParams.height = GridLayout.LayoutParams.MATCH_PARENT
-                    ivImage.layoutParams.width = GridLayout.LayoutParams.MATCH_PARENT
                     iListImage.setImage(position, false)
 
                 } else {
                     arrayCb[position] = true
                     cbImage.setImageResource(R.drawable.ic_select_on)
-//                    ivImage.layoutParams.height = 165
-//                    ivImage.layoutParams.width = 150
                     iListImage.setImage(position, true)
                 }
             }
-        }
 
+            itemView.setOnLongClickListener {
+                iListImage.showPreview(dataSet[position])
+                true
+            }
+        }
     }
 
     override fun getItemCount(): Int {

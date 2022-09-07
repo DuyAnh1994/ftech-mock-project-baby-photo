@@ -1,9 +1,9 @@
 package ai.ftech.babyphoto.screen.register
 
 import ai.ftech.babyphoto.data.Utils
-import ai.ftech.babyphoto.data.service.APIService
 import ai.ftech.babyphoto.data.model.Account
 import ai.ftech.babyphoto.data.model.ResponseModel
+import ai.ftech.babyphoto.data.service.APIService
 import android.app.Dialog
 import com.google.gson.Gson
 import retrofit2.Call
@@ -27,7 +27,11 @@ class EnterEmailPresenter(private var view: IEnterEmailContract.View) {
                     }
 
                     account?.email = email
-                    view.onNextScreen(RegisterState.SUCCESS, "screen is next", Gson().toJson(account))
+                    view.onNextScreen(
+                        RegisterState.SUCCESS,
+                        "screen is next",
+                        Gson().toJson(account)
+                    )
                 }
 
                 override fun onFailure(call: Call<ResponseModel<List<String>>>, t: Throwable) {
@@ -41,10 +45,10 @@ class EnterEmailPresenter(private var view: IEnterEmailContract.View) {
     }
 
     fun validatEmail(email: String) {
-        val isEmail = Utils().isEmail(email)
+        val isEmail = Utils.isEmail(email)
         if (!isEmail) {
             view.onCheckMail(RegisterState.IS_NOT_EMAIL, "this is not a email")
-        }else {
+        } else {
             view.onCheckMail(RegisterState.SUCCESS, "email is ok")
         }
     }

@@ -43,6 +43,12 @@ class DialogPreviewFragment : BottomSheetDialogFragment() {
         ivBaby = view.findViewById(R.id.ivPreviewBaby)
 
         val urlImage = arguments?.getString("urlImage")
+        val status = arguments?.getBoolean("status")
+        if (status!!) {
+            ivOk.visibility = View.VISIBLE
+        } else {
+            ivOk.visibility = View.GONE
+        }
         ivBaby.setImageBitmap(BitmapFactory.decodeFile(urlImage))
         setOnClick(urlImage)
         return bottomSheetDialog

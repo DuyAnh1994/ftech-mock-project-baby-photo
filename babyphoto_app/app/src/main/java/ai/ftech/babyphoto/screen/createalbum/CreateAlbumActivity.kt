@@ -7,10 +7,12 @@ import ai.ftech.babyphoto.screen.createalbum.preview.PhotoFolderActivity
 import ai.ftech.babyphoto.screen.createalbum.relation.DialogRelationFragment
 import ai.ftech.babyphoto.screen.home.HomeActivity
 import android.app.Activity
-import android.app.ProgressDialog
+import android.app.Dialog
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -34,19 +36,19 @@ import java.io.File
 
 class CreateAlbumActivity : AppCompatActivity(), DialogRelationFragment.ICreateName,
     ICreateContract.IView {
-    lateinit var ivBackHome: ImageView
-    lateinit var btnCreate: Button
-    lateinit var ivAvatar: CircleImageView
-    lateinit var edtName: EditText
-    lateinit var ivBoy: ImageView
-    lateinit var ivGirl: ImageView
-    lateinit var tvBirthday: TextView
-    lateinit var flBirthday: FrameLayout
-    lateinit var tvRelation: TextView
-    lateinit var flRelation: FrameLayout
-    lateinit var flCamera: FrameLayout
-    lateinit var createAlbumPresenter: CreateAlbumPresenter
-    lateinit var activityResultLauncher: ActivityResultLauncher<Intent>
+    private lateinit var ivBackHome: ImageView
+    private lateinit var btnCreate: Button
+    private lateinit var ivAvatar: CircleImageView
+    private lateinit var edtName: EditText
+    private lateinit var ivBoy: ImageView
+    private lateinit var ivGirl: ImageView
+    private lateinit var tvBirthday: TextView
+    private lateinit var flBirthday: FrameLayout
+    private lateinit var tvRelation: TextView
+    private lateinit var flRelation: FrameLayout
+    private lateinit var flCamera: FrameLayout
+    private lateinit var createAlbumPresenter: CreateAlbumPresenter
+    private lateinit var activityResultLauncher: ActivityResultLauncher<Intent>
     private lateinit var file_path: String
     private lateinit var strGender: String
     private lateinit var requestBody: RequestBody
@@ -56,7 +58,7 @@ class CreateAlbumActivity : AppCompatActivity(), DialogRelationFragment.ICreateN
     private lateinit var rqGender: RequestBody
     private lateinit var rqBirthday: RequestBody
     private lateinit var rqRelation: RequestBody
-    var progressdialog: ProgressDialog? = null
+    private var dialog: Dialog? = null
     var bitmapAvatar: Boolean = false
     var ID_ACCOUNT: Int = 0
     private var select: Int = 1
@@ -99,10 +101,11 @@ class CreateAlbumActivity : AppCompatActivity(), DialogRelationFragment.ICreateN
         tvRelation = findViewById(R.id.tvCreateAlbumRelation)
         flRelation = findViewById(R.id.flCreateAlbumRelation)
         flCamera = findViewById(R.id.flCreateAlbumCamera)
-        progressdialog = ProgressDialog(this, R.style.AppCompatAlertDialogStyle)
+        dialog = Dialog(this)
         createAlbumPresenter = CreateAlbumPresenter(this)
     }
 
+    // nhận ảnh từ library và camera
     @RequiresApi(Build.VERSION_CODES.O)
     private fun getAvatar() {
         activityResultLauncher = registerForActivityResult(
@@ -119,11 +122,13 @@ class CreateAlbumActivity : AppCompatActivity(), DialogRelationFragment.ICreateN
                     ivAvatar.setImageBitmap(bitmap)
                     setBackgroundButton()
                     btnCreate.setOnClickListener {
-                        sendSingleImage(path_image)
-                        createAlbumPresenter.createAlbum(
-                            singleFile,
-                            rqIdaccount, rqName, rqGender, rqBirthday, rqRelation
-                        )
+                        if (edtName.text.toString() != "" && tvBirthday.text.toString() != "" && tvRelation.text.toString() != "") {
+                            sendSingleImage(path_image)
+                            createAlbumPresenter.createAlbum(
+                                singleFile,
+                                rqIdaccount, rqName, rqGender, rqBirthday, rqRelation
+                            )
+                        }
                     }
                     flCamera.visibility = View.GONE
                 }
@@ -137,11 +142,13 @@ class CreateAlbumActivity : AppCompatActivity(), DialogRelationFragment.ICreateN
                     bitmapAvatar = true
                     setBackgroundButton()
                     btnCreate.setOnClickListener {
-                        sendSingleImage(dataImage)
-                        createAlbumPresenter.createAlbum(
-                            singleFile,
-                            rqIdaccount, rqName, rqGender, rqBirthday, rqRelation
-                        )
+                        if (edtName.text.toString() != "" && tvBirthday.text.toString() != "" && tvRelation.text.toString() != "") {
+                            sendSingleImage(dataImage)
+                            createAlbumPresenter.createAlbum(
+                                singleFile,
+                                rqIdaccount, rqName, rqGender, rqBirthday, rqRelation
+                            )
+                        }
                     }
                     flCamera.visibility = View.GONE
                 }
@@ -180,7 +187,7 @@ class CreateAlbumActivity : AppCompatActivity(), DialogRelationFragment.ICreateN
         })
     }
 
-    fun getUriBaby() {
+    private fun getUriBaby() {
         ivAvatar.setOnClickListener {
             val intent = Intent(this, PhotoFolderActivity::class.java)
             activityResultLauncher.launch(intent)
@@ -191,7 +198,7 @@ class CreateAlbumActivity : AppCompatActivity(), DialogRelationFragment.ICreateN
     }
 
 
-    fun getGenderAlbum(): Int {
+    private fun getGenderAlbum(): Int {
         ivBoy.setOnClickListener {
             ivBoy.setBackgroundResource(R.drawable.shape_cir_yellow_bg_corner_large)
             ivGirl.setBackgroundResource(R.drawable.shape_cir_grey_bg_corner_90)
@@ -205,7 +212,7 @@ class CreateAlbumActivity : AppCompatActivity(), DialogRelationFragment.ICreateN
         return select
     }
 
-    fun getRelationAlbum() {
+    private fun getRelationAlbum() {
         flRelation.setOnClickListener {
             val dialogRelationFragment = DialogRelationFragment()
             dialogRelationFragment.show(this.supportFragmentManager, dialogRelationFragment.tag)
@@ -213,7 +220,7 @@ class CreateAlbumActivity : AppCompatActivity(), DialogRelationFragment.ICreateN
     }
 
 
-    fun sendSingleImage(pathImage: String) {
+    private fun sendSingleImage(pathImage: String) {
         file = File(pathImage)
         file_path = file.absolutePath + System.currentTimeMillis() + ".png"
         requestBody = RequestBody.create(MediaType.parse("multipart/form-data"), file)
@@ -230,7 +237,8 @@ class CreateAlbumActivity : AppCompatActivity(), DialogRelationFragment.ICreateN
         val birthday: String = tvBirthday.text.toString()
         val relation: String = tvRelation.text.toString()
 
-        rqIdaccount = RequestBody.create(MediaType.parse("multipart/form-data"), ID_ACCOUNT.toString())
+        rqIdaccount =
+            RequestBody.create(MediaType.parse("multipart/form-data"), ID_ACCOUNT.toString())
         rqName = RequestBody.create(MediaType.parse("multipart/form-data"), name)
         rqGender = RequestBody.create(MediaType.parse("multipart/form-data"), strGender)
         rqBirthday = RequestBody.create(MediaType.parse("multipart/form-data"), birthday)
@@ -253,8 +261,8 @@ class CreateAlbumActivity : AppCompatActivity(), DialogRelationFragment.ICreateN
         return path
     }
 
+    //convert bitmap to uri
     private fun convertUri(bitmap: Bitmap): Uri {
-        //convert bitmap to uri
         val bytes = ByteArrayOutputStream()
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, bytes)
         val path: String = MediaStore.Images.Media.insertImage(
@@ -306,13 +314,19 @@ class CreateAlbumActivity : AppCompatActivity(), DialogRelationFragment.ICreateN
         }
     }
 
+
     override fun showLoading() {
-        progressdialog?.setMessage("Updating")
-        progressdialog?.setCancelable(false)
-        progressdialog?.show()
+        dialog?.setContentView(R.layout.dialog_loading_album_layout)
+        dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        dialog?.setCancelable(false)
+        dialog?.show()
     }
 
     override fun hideLoading() {
-        progressdialog?.dismiss()
+        dialog?.dismiss()
+    }
+
+    override fun onBackPressed() {
+        createAlbumPresenter.openBackDialog(this)
     }
 }

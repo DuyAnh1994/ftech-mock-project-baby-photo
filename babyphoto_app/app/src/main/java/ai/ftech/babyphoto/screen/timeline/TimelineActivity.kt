@@ -46,9 +46,6 @@ class TimelineActivity : AppCompatActivity(), ITimelineContract.View {
         birthday = bundle?.getString("birthday")
         urlimage = bundle?.getString("urlimage")
 
-//        Picasso.get()
-//            .load(Uri.parse(urlimage))
-//            .into(civTimeLineAvatarCirCle)
         try {
             Glide.with(this)
                 .load(urlimage)
@@ -60,7 +57,8 @@ class TimelineActivity : AppCompatActivity(), ITimelineContract.View {
 
         val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
         if (birthday!![1] == '/') birthday = "0$birthday"
-        if (birthday!![4] == '/') birthday = birthday?.substring(0, 3) + "0" + birthday?.substring(3)
+        if (birthday!![4] == '/') birthday =
+            birthday?.substring(0, 3) + "0" + birthday?.substring(3)
         birthday.hashCode()
         val dt = LocalDate.parse("$birthday", formatter)
 
@@ -76,7 +74,7 @@ class TimelineActivity : AppCompatActivity(), ITimelineContract.View {
         val rvTimelineViewImage: RecyclerView = findViewById(R.id.rvTimelineViewImage)
         val timelineAdapter = adapter
 
-        timelineAdapter?.callBack = object :  TimelineAdapter.ICallBack{
+        timelineAdapter.callBack = object : TimelineAdapter.ICallBack {
             override fun onClick(position: Int) {
                 intentPre.putExtra("image", timelineAdapter.dataImage[position].urlimage)
                 startActivity(intentPre)
@@ -101,7 +99,7 @@ class TimelineActivity : AppCompatActivity(), ITimelineContract.View {
             registerForActivityResult(
                 ActivityResultContracts.StartActivityForResult()
             ) {
-                if (it.resultCode == Activity.RESULT_OK) {
+                if (it.resultCode == 200) {
                     adapter.dataImage.clear()
                     adapter.notifyDataSetChanged()
                     srlTimeLine.isRefreshing = true
@@ -111,7 +109,7 @@ class TimelineActivity : AppCompatActivity(), ITimelineContract.View {
             }
         fabAdd.setOnClickListener {
             var intent = Intent(this, ListImageActivity::class.java)
-            intent.putExtra("idalbum",idAlbum)
+            intent.putExtra("idalbum", idAlbum)
             getResult.launch(intent)
         }
 
@@ -139,4 +137,5 @@ class TimelineActivity : AppCompatActivity(), ITimelineContract.View {
             }
         }
     }
+
 }

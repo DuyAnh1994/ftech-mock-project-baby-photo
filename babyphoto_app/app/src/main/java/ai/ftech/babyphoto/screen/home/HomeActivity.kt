@@ -7,14 +7,20 @@ import ai.ftech.babyphoto.screen.detailaccount.DetailAccountActivity
 import ai.ftech.babyphoto.screen.timeline.TimelineActivity
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.app.Dialog
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.view.Gravity
 import android.view.MenuItem
+import android.view.Window
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.recyclerview.widget.GridLayoutManager
@@ -75,8 +81,9 @@ class HomeActivity : AppCompatActivity(), BabyHomeAdapter.onItemClickListenerr, 
         toggle.syncState()
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         //view info in nav
-        nvHomeToDetailAccount.getHeaderView(0).tvHeaderNameAccount.text = Constant.account.firstname + " " +
-                Constant.account.lastname
+        nvHomeToDetailAccount.getHeaderView(0).tvHeaderNameAccount.text =
+            Constant.account.firstname + " " +
+                    Constant.account.lastname
 
         ibHomeMenu.setOnClickListener {
             drawerLayout.openDrawer(GravityCompat.START)
@@ -109,11 +116,6 @@ class HomeActivity : AppCompatActivity(), BabyHomeAdapter.onItemClickListenerr, 
         for (image in arrayImage) {
             flipperImage(image)
         }
-        ibCancelAds.setOnClickListener {
-//            vlHomeSlide.removeAllViews()
-//            ibCancelAds.visibility = View.INVISIBLE
-        }
-
     }
 
     private fun flipperImage(image: Int) {
@@ -125,9 +127,7 @@ class HomeActivity : AppCompatActivity(), BabyHomeAdapter.onItemClickListenerr, 
         vlHomeSlide.flipInterval = 5000
         vlHomeSlide.setInAnimation(this, R.anim.slide_right)
         vlHomeSlide.setOutAnimation(this, R.anim.slide_left)
-//        vlHomeSlide.setOutAnimation(this, R.anim.slide_right)
         vlHomeSlide.isAutoStart = true
-//        vlHomeSlide.setInAnimation(in)
 
     }
 
@@ -137,7 +137,6 @@ class HomeActivity : AppCompatActivity(), BabyHomeAdapter.onItemClickListenerr, 
         intent.putExtra("nameAlbum", mutableListBaby[position].name)
         intent.putExtra("urlimage", mutableListBaby[position].urlimage)
         intent.putExtra("birthday", mutableListBaby[position].birthday)
-//        startActivity(intent)
         getResult.launch(intent)
     }
 
@@ -158,9 +157,27 @@ class HomeActivity : AppCompatActivity(), BabyHomeAdapter.onItemClickListenerr, 
             HomeState.GET_ALBUM_FAIL -> {
                 Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
             }
-            else -> {}
         }
     }
 
+    override fun onBackPressed() {
+        val dialog = Dialog(this)
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.setContentView(R.layout.dialog_back_create_album_layout)
+        val window: Window = dialog.window ?: return
+        window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        val windowAttributes = window.attributes
+        windowAttributes.gravity = Gravity.CENTER
+        window.attributes = windowAttributes
+        val btnCancel: Button = dialog.findViewById(R.id.btnDialogBacKCancel)
+        val btnOK: Button = dialog.findViewById(R.id.btnDialogBacKOk)
+        btnOK.setOnClickListener {
+            this.finishAffinity()
+        }
+        btnCancel.setOnClickListener {
+            dialog.cancel()
+        }
+        dialog.show()
+    }
 
 }

@@ -8,10 +8,10 @@ import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import android.widget.ImageButton
 import com.bumptech.glide.Glide
 
 
@@ -30,7 +30,8 @@ class BabyHomeAdapter(
     interface onItemClickListenerr {
         fun onItemClick(position: Int)
     }
-    fun setOnItemClickListener(listener: onItemClickListenerr){
+
+    fun setOnItemClickListener(listener: onItemClickListenerr) {
         mListener = listener
     }
 
@@ -68,7 +69,7 @@ class BabyHomeAdapter(
         fun bind(image: Int) {
             ibHomeAddBaby.setBackgroundResource(image)
             ibHomeAddBaby.setOnClickListener {
-                val intent = Intent(context,CreateAlbumActivity::class.java)
+                val intent = Intent(context, CreateAlbumActivity::class.java)
                 context.startActivity(intent)
             }
         }
@@ -81,22 +82,6 @@ class BabyHomeAdapter(
             view.findViewById(R.id.tvHomeViewBabyCountItem)
         private val tvHomeViewBabyItem: TextView = view.findViewById(R.id.tvHomeViewBabyItem)
         fun bind(position: Int) {
-//            val decodedString: ByteArray =
-//                Base64.decode(dataViewBabyHome[position].urlimage, Base64.DEFAULT)
-//            var decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.size)
-//            val height = 150
-//            val factor: Float = (height * 1.0 / decodedByte.height).toFloat()
-//            decodedByte = Bitmap.createScaledBitmap(
-//                decodedByte,
-//                (decodedByte.width * factor * 1.0).toInt(), height, true
-//            )
-//            Glide.with(context).load(dataViewBabyHome[position].urlimage).into(ivHomeViewBaby)
-//            Picasso.get()
-//                .load(Uri.parse(dataViewBabyHome[position].urlimage))
-//                .into(ivHomeViewBaby)
-//            ivHomeViewBaby.setImageBitmap(decodedByte)
-//            ivHomeViewBaby.setImageURI(null)
-//            ivHomeViewBaby.setImageURI(Uri.parse(dataViewBabyHome[position].urlimage))
 
             Glide.with(context)
                 .load(dataViewBabyHome[position].urlimage)
@@ -106,22 +91,12 @@ class BabyHomeAdapter(
             tvHomeViewBabyCountItem.text = dataViewBabyHome[position].amountimage
             tvHomeViewBabyItem.text = "images"
             itemView.setOnClickListener {
-//                POSITION0 = position as Int
-//                POSITION = dataViewBabyHome[position].idalbum as Int
-//                val intent = Intent(this, TimelineAdapter::class.java)
-//                intent.putExtra("account", )
-//                startActivity(intent)
-                if (dataViewBabyHome.isNotEmpty()){
-                    if (position!=RecyclerView.NO_POSITION)
+                if (dataViewBabyHome.isNotEmpty()) {
+                    if (position != RecyclerView.NO_POSITION)
                         this@BabyHomeAdapter.mListener.onItemClick(position)
                 }
             }
         }
-//        init {
-//            itemView.setOnClickListener {
-//                listener.onItemClick(adapterPosition)
-//            }
-//        }
     }
 
     override fun getItemViewType(position: Int): Int {

@@ -31,12 +31,17 @@ class RegisterActivity : AppCompatActivity(), IRegisterContract.View {
         presenterRegister = RegisterPresenter(this)
 
         btnRegisterNextFLName.setOnClickListener {
-            presenterRegister!!.nextScreen(stateCheckName, edtRegisterFirstName.text.toString(), edtRegisterLastName.text.toString())
+            presenterRegister!!.nextScreen(
+                stateCheckName,
+                edtRegisterFirstName.text.toString(),
+                edtRegisterLastName.text.toString()
+            )
         }
         ibRegisterBack.setOnClickListener {
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
         }
+
         clRegisterNameMain.setOnClickListener {
             hideKeyboard(clRegisterNameMain)
         }
@@ -76,12 +81,12 @@ class RegisterActivity : AppCompatActivity(), IRegisterContract.View {
 
     override fun onCheckName(state: RegisterState, message: String) {
         stateCheckName = state
-        when(state){
-            RegisterState.SUCCESS ->{
+        when (state) {
+            RegisterState.SUCCESS -> {
                 btnRegisterNextFLName.setBackgroundResource(R.drawable.selector_rec_orange_color)
                 tvRegisterWarning.setTextColor(Color.parseColor("#66000000"))
             }
-            RegisterState.NAME_NOT_VALID ->{
+            RegisterState.NAME_NOT_VALID -> {
                 btnRegisterNextFLName.setBackgroundResource(R.drawable.selector_rec_gray_color_orange_selected)
                 tvRegisterWarning.setTextColor(Color.parseColor("#FF4B4B"))
             }
@@ -95,15 +100,13 @@ class RegisterActivity : AppCompatActivity(), IRegisterContract.View {
     }
 
     override fun onNextScreen(state: RegisterState, message: String, account: String) {
-        when(state){
-            RegisterState.SUCCESS ->{
+        when (state) {
+            RegisterState.SUCCESS -> {
                 val intent = Intent(this, EnterEmailActivity::class.java)
                 intent.putExtra("account", account)
                 startActivity(intent)
             }
-            RegisterState.NAME_NOT_VALID ->{
-//                val intent = Intent(this, TestActivity::class.java)
-//                startActivity(intent)
+            RegisterState.NAME_NOT_VALID -> {
                 Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
             }
             else -> {}
