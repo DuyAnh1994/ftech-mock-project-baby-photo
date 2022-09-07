@@ -8,10 +8,10 @@ import retrofit2.Callback
 import retrofit2.Response
 
 
-class HomePresenter(private val view: IHomeContract.View) {
+class HomePresenter(private val view: IHomeContract.View) : IHomeContract.IPresenter{
     private val apiService = APIService.base()
 
-    fun getAlbum(idaccount: Int?) {
+    override fun getAlbum(idaccount: Int?) {
         if (idaccount == null) return
 
         apiService.getAlbum(idaccount).enqueue(

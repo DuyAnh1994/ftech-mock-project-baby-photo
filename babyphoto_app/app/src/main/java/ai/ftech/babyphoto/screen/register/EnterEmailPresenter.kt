@@ -10,11 +10,11 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class EnterEmailPresenter(private var view: IEnterEmailContract.View) {
+class EnterEmailPresenter(private var view: IEnterEmailContract.View) : IEnterEmailContract.IPresenter{
     //khai báo service
     private val apiService = APIService.base()
 
-    fun checkEmail(dialog: Dialog, email: String, account: Account?) {
+    override fun checkEmail(dialog: Dialog, email: String, account: Account?) {
         apiService.checkEmail(email).enqueue(
             object : Callback<ResponseModel<List<String>>> {
                 override fun onResponse(
@@ -44,7 +44,7 @@ class EnterEmailPresenter(private var view: IEnterEmailContract.View) {
 
     }
 
-    fun validatEmail(email: String) {
+    override fun validatEmail(email: String) {
         val isEmail = Utils.isEmail(email)
         if (!isEmail) {
             view.onCheckMail(RegisterState.IS_NOT_EMAIL, "this is not a email")

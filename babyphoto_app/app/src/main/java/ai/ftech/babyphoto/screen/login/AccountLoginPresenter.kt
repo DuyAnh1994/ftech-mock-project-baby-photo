@@ -10,10 +10,10 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class AccountLoginPresenter(private var view: ILoginContract.View) {
+class AccountLoginPresenter(private var view: ILoginContract.View) : ILoginContract.Presenter {
     private val apiService = APIService.base()
 
-    fun login(dialog: Dialog, email: String, password: String) {
+    override fun login(dialog: Dialog, email: String, password: String) {
         if (email.trim().isEmpty() || password.trim().isEmpty()) {
             view.onLogin(LoginState.EMAIL_OR_PASS_EMPTY, "email, pass is empty")
         } else {
@@ -21,7 +21,7 @@ class AccountLoginPresenter(private var view: ILoginContract.View) {
         }
     }
 
-    private fun getIdAccount(dialog: Dialog, email: String, password: String) {
+    override fun getIdAccount(dialog: Dialog, email: String, password: String) {
         dialog.show()
         apiService.login(email, password).enqueue(
             object : Callback<ResponseModel<List<String>>> {
@@ -48,7 +48,7 @@ class AccountLoginPresenter(private var view: ILoginContract.View) {
         )
     }
 
-    fun getAccountWithID(dialog: Dialog, id: String) {
+    override fun getAccountWithID(dialog: Dialog, id: String) {
         apiService.getAccountWithId(id).enqueue(
             object : Callback<ResponseModel<List<Account>>> {
                 override fun onResponse(
@@ -75,7 +75,7 @@ class AccountLoginPresenter(private var view: ILoginContract.View) {
         )
     }
 
-    fun checkMailNull(email: String?) {
+    override fun checkMailNull(email: String?) {
         if (email == null) {
             view.onCheckMailNull(LoginState.MAIL_NULL, "emai is null")
         } else {
@@ -83,7 +83,7 @@ class AccountLoginPresenter(private var view: ILoginContract.View) {
         }
     }
 
-    fun checkValidAccount(email: String, pass: String) {
+    override fun checkValidAccount(email: String, pass: String) {
         val isValid2 = Utils.checkNull(email, pass)
         if (!isValid2) {
             view.onValidAccount(LoginState.SUCCESS, "email, pass is valid")

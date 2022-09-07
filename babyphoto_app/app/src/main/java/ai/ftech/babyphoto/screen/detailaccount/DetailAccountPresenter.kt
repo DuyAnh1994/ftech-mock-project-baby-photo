@@ -10,9 +10,9 @@ import retrofit2.Callback
 import retrofit2.Response
 
 
-class DetailAccountPresenter(private var view: IDetailAccountContract.View) {
+class DetailAccountPresenter(private var view: IDetailAccountContract.View) :IDetailAccountContract.IPresenter{
 
-    fun updateAccount(account: AccountUpdate) {
+    override fun updateAccount(account: AccountUpdate) {
         APIService.base().updateAccount(
             account.email, account.firstname, account.lastname,
             account.idaccount

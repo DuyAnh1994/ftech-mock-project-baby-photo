@@ -22,14 +22,14 @@ object Utils {
     }
 
     fun isValidName(name: String?, name2: String?): Boolean {
-        return Pattern.matches("[a-zA-Z]+", name) && Pattern.matches("[a-zA-Z]+", name2)
+        return Pattern.matches("[a-zA-Z0-9]+", name) && Pattern.matches("[a-zA-Z0-9]+", name2)
     }
     fun checkNull(firstName: String?, lastName: String?): Boolean {
         return firstName == "" || lastName == ""
     }
 
     fun isValidPassCharacter(pass: String): Boolean {
-        return Pattern.matches("[a-zA-Z]+", pass)
+        return Pattern.matches("[a-zA-Z0-9]+", pass)
     }
 
     fun isValidPassCount(pass: String): Boolean {
@@ -46,6 +46,7 @@ object Utils {
     fun loading(context: Context): Dialog {
         var dialogLoadPass = Dialog(context)
         dialogLoadPass.setContentView(R.layout.dialog_loading_register_layout)
+        dialogLoadPass.setCancelable(false)
         dialogLoadPass.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         dialogLoadPass.show()
         return dialogLoadPass

@@ -119,6 +119,7 @@ class CreatePassActivity() : AppCompatActivity(), ICreatePassContract.View {
     private fun openDialog(): Dialog {
         var dialogLoadPass = Dialog(this)
         dialogLoadPass.setContentView(R.layout.dialog_loading_register_layout)
+        dialogLoadPass.setCancelable(false)
         dialogLoadPass.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         this.btnRegisterNextPass.setOnClickListener {
             dialogLoadPass.dismiss()

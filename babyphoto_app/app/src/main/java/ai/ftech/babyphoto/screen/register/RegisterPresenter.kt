@@ -5,8 +5,8 @@ import ai.ftech.babyphoto.data.model.Account
 import com.google.gson.Gson
 import kotlin.random.Random
 
-class RegisterPresenter(private var view: IRegisterContract.View) {
-    fun checkName(name: String?, name2: String?) {
+class RegisterPresenter(private var view: IRegisterContract.View):IRegisterContract.IPresenter {
+    override fun checkName(name: String?, name2: String?) {
         val isName = Utils.isValidName(name, name2)
         val isNull = Utils.checkNull(name, name2)
         if (isName && !isNull) {
@@ -16,7 +16,7 @@ class RegisterPresenter(private var view: IRegisterContract.View) {
         }
     }
 
-    fun nextScreen(state: RegisterState, firstName: String, lastName: String) {
+    override fun nextScreen(state: RegisterState, firstName: String, lastName: String) {
         when (state) {
             RegisterState.SUCCESS -> {
                 val account = Account(

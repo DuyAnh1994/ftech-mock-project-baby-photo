@@ -172,6 +172,13 @@ class AccountLoginActivity : AppCompatActivity(), CompoundButton.OnCheckedChange
             LoginState.MAIL_NOT_NULL -> {
                 tieAccountLoginEmail.setText(email.toString())
                 tieAccountLoginPass.setText("")
+                sharedPreferences = getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
+                editor = sharedPreferences?.edit()
+                cbAccountLoginRemember.isChecked =
+                    sharedPreferences!!.getBoolean(KEY_REMEMBER, false)//check is_checked
+                cbAccountLoginRemember.setOnCheckedChangeListener(this)
+//                cbAccountLoginRemember.isChecked =
+//                    sharedPreferences!!.getBoolean(KEY_REMEMBER, false)//check is_checked
             }
             else -> {}
         }

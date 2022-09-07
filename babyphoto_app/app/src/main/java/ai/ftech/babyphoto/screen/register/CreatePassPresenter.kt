@@ -7,11 +7,11 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class CreatePassPresenter(private var view: ICreatePassContract.View) {
+class CreatePassPresenter(private var view: ICreatePassContract.View) :ICreatePassContract.IPresenter{
     private var account: Account? = null
 
 
-    fun checkPass(pass: String, rePass: String) {
+    override fun checkPass(pass: String, rePass: String)  {
         val isValidPassCharacter =
             Utils.isValidPassCharacter(pass) && Utils.isValidPassCharacter(rePass)
         val isValidPassCount = Utils.isValidPassCount(pass) && Utils.isValidPassCount(rePass)
@@ -31,7 +31,7 @@ class CreatePassPresenter(private var view: ICreatePassContract.View) {
         view.onCheckPass(RegisterState.SUCCESS, "pass is valid")
     }
 
-    fun submit(state: RegisterState, pass: String, rePass: String, accountP: Account?) {
+    override fun submit(state: RegisterState, pass: String, rePass: String, accountP: Account?) {
         account = accountP
         when (state) {
             RegisterState.SUCCESS -> {

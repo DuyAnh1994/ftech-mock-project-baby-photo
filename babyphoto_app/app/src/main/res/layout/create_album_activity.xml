@@ -11,8 +11,9 @@
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/ivCreateAlbumBackHome"
-        android:layout_height="20dp"
-        android:layout_width="20dp"
+        android:layout_height="35dp"
+        android:layout_width="35dp"
+        android:padding="15dp"
         android:layout_marginStart="20dp"
         android:layout_marginTop="30dp"
         android:background="@drawable/ic_back_home"

@@ -6,4 +6,7 @@ interface IHomeContract {
     interface View {
         fun onGetAlbum(state: HomeState, message: String, lAbum: List<AlbumBaby>)
     }
+    interface IPresenter {
+        fun getAlbum(idaccount: Int?)
+    }
 }

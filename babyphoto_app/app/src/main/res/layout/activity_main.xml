@@ -39,7 +39,7 @@
         android:background="@drawable/selector_rec_red_color_red_selected"
         android:drawableStart="@drawable/ic_baseline_email_24"
         android:paddingStart="20dp"
-        android:paddingEnd="100dp"
+        android:paddingEnd="75dp"
         android:text="Continue with email "
         android:textAllCaps="false"
         android:textColor="@color/white"
@@ -57,7 +57,7 @@
         android:background="@drawable/selector_rec_blue_color_blue_selected"
         android:drawableStart="@drawable/ic_facebook_main_x15"
         android:paddingStart="20dp"
-        android:paddingEnd="85dp"
+        android:paddingEnd="50dp"
         android:text="Continue with Facebook"
         android:textAllCaps="false"
         android:textColor="@color/white"
@@ -81,7 +81,7 @@
     <LinearLayout
         android:id="@+id/lilMainRegister"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="20dp"
         android:gravity="center"
         android:layout_marginBottom="3dp"
         android:orientation="horizontal"
@@ -91,7 +91,7 @@
         <TextView
             android:id="@+id/tvMainQuestionRegister"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_marginRight="7dp"
             android:text="Do not have an account?"
             android:textColor="@color/black_40"
@@ -100,7 +100,7 @@
         <TextView
             android:id="@+id/tvMainRegister"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:text="Create Account"
             android:textColor="@color/blue_link"
             android:textSize="13sp" />
@@ -109,7 +109,7 @@
     <LinearLayout
         android:id="@+id/lilMainLogin"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="20dp"
         android:layout_marginBottom="20dp"
         android:gravity="center"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -118,7 +118,7 @@
         <TextView
             android:id="@+id/tvMainLogin"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:text="Sign In "
             android:textColor="@color/blue_link"
             android:textSize="13sp" />
@@ -126,7 +126,7 @@
         <TextView
             android:id="@+id/tvMainQuestionLogin"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:text="now if you already have an account"
             android:textColor="@color/black_40"
             android:textSize="13sp" />
