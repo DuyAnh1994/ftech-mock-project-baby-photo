@@ -2,18 +2,18 @@ package ai.ftech.babyphoto.screen.login
 
 import ai.ftech.babyphoto.data.Constant
 import ai.ftech.babyphoto.data.Utils
-import ai.ftech.babyphoto.data.service.APIService
 import ai.ftech.babyphoto.data.model.Account
 import ai.ftech.babyphoto.data.model.ResponseModel
+import ai.ftech.babyphoto.data.service.APIService
 import android.app.Dialog
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class AccountLoginPresenter(private var view: ILoginContract.View) {
+class AccountLoginPresenter(private var view: ILoginContract.View) : ILoginContract.IPresenter {
     private val apiService = APIService.base()
 
-    fun login(dialog: Dialog, email: String, password: String) {
+    override fun login(dialog: Dialog, email: String, password: String) {
         if (email.trim().isEmpty() || password.trim().isEmpty()) {
             view.onLogin(LoginState.EMAIL_OR_PASS_EMPTY, "email, pass is empty")
         } else {
@@ -21,16 +21,17 @@ class AccountLoginPresenter(private var view: ILoginContract.View) {
         }
     }
 
-    fun getIdAccount(dialog: Dialog, email: String, password: String){
+    override fun getIdAccount(dialog: Dialog, email: String, password: String) {
         dialog.show()
         apiService.login(email, password).enqueue(
-            object : Callback<ResponseModel<List<String>>>{
+            object : Callback<ResponseModel<List<String>>> {
                 override fun onResponse(
                     call: Call<ResponseModel<List<String>>>,
                     response: Response<ResponseModel<List<String>>>
                 ) {
                     if (response.body() != null && "code12" == response.body()?.code && response.body()!!.data
-                            .isNotEmpty()){
+                            .isNotEmpty()
+                    ) {
                         getAccountWithID(dialog, response.body()!!.data.get(0))
                         return
                     }
@@ -46,17 +47,18 @@ class AccountLoginPresenter(private var view: ILoginContract.View) {
             }
         )
     }
-
-    fun getAccountWithID(dialog: Dialog, id: String){
+   //save account in object companient Contain
+    override fun getAccountWithID(dialog: Dialog, id: String) {
         apiService.getAccountWithId(id).enqueue(
-            object : Callback<ResponseModel<List<Account>>>{
+            object : Callback<ResponseModel<List<Account>>> {
                 override fun onResponse(
                     call: Call<ResponseModel<List<Account>>>,
                     response: Response<ResponseModel<List<Account>>>
                 ) {
                     dialog.dismiss()
                     if (response.body() != null && "code12" == response.body()?.code && response.body()!!.data
-                            .isNotEmpty()) {
+                            .isNotEmpty()
+                    ) {
                         Constant.account = response.body()!!.data.get(0)
                         view.onLogin(LoginState.SUCCESS, "Login success")
                         return
@@ -73,15 +75,15 @@ class AccountLoginPresenter(private var view: ILoginContract.View) {
         )
     }
 
-    fun checkMailNull(email: String?) {
+    override fun checkMailNull(email: String?) {
         if (email == null) {
-            view.onCheckMailNull(LoginState.MAIL_NULL, "emai is null")
+            view.onCheckMailNull(LoginState.MAIL_NULL, "email is null")
         } else {
             view.onCheckMailNull(LoginState.MAIL_NOT_NULL, "email is not null")
         }
     }
 
-    fun checkValidAccount(email: String, pass: String) {
+    override fun checkValidAccount(email: String, pass: String) {
         val isValid2 = Utils.checkNull(email, pass)
         if (!isValid2) {
             view.onValidAccount(LoginState.SUCCESS, "email, pass is valid")
@@ -92,15 +94,4 @@ class AccountLoginPresenter(private var view: ILoginContract.View) {
             )
         }
     }
-
-
-//    fun hideKeyboard(view: View) {
-//        val inputMethodManager = getSystemService(view.context.applicationContext.INPUT_METHOD_SERVICE) as InputMethodManager
-//        inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
-//    }
-//    fun nextScreen(){
-//        if (checkValidAccount(view.tieAccountLoginEmail.text.toString(), view.tieAccountLoginPass.text.toString())) return
-//        val intent = Intent(view, ActivityCreatePass::class.java)
-//        view.startActivity(intent)
-//    }
 }

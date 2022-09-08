@@ -22,13 +22,13 @@ class TimelineAdapter(
         notifyDataSetChanged()
     }
     var callBack: ICallBack? = null
-
+    // tạo view hiển thị cho từng item
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.timeline_view_album, parent, false)
 
         return ViewHolder(view)
     }
-
+    //liên kết các item trong danh sách với các view
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = dataImage[position]
         try {
@@ -41,11 +41,11 @@ class TimelineAdapter(
         }
 
     }
-
+    //số lượng item
     override fun getItemCount(): Int {
         return dataImage.size
     }
-
+    //ánh xạ các view của item
     inner class ViewHolder(ItemView: View) : RecyclerView.ViewHolder(ItemView) {
         val ivTimeLineViewImage: ImageView = itemView.findViewById(R.id.ivTimeLineViewImage)
 

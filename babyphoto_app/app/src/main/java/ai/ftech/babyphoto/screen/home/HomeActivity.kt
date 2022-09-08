@@ -3,17 +3,14 @@ package ai.ftech.babyphoto.screen.home
 import ai.ftech.babyphoto.R
 import ai.ftech.babyphoto.data.Constant
 import ai.ftech.babyphoto.data.model.AlbumBaby
-import ai.ftech.babyphoto.screen.createalbum.CreateAlbumActivity
 import ai.ftech.babyphoto.screen.detailaccount.DetailAccountActivity
 import ai.ftech.babyphoto.screen.timeline.TimelineActivity
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Gravity
 import android.view.MenuItem
@@ -23,6 +20,7 @@ import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.recyclerview.widget.GridLayoutManager
@@ -58,7 +56,6 @@ class HomeActivity : AppCompatActivity(), BabyHomeAdapter.onItemClickListenerr, 
         drawerLayout = findViewById(R.id.drawableLayout)
         navigationView = findViewById(R.id.nvHomeToDetailAccount)
 
-        rcvHomeViewBaby.layoutManager = LinearLayoutManager(this)
 
         val adapter =
             BabyHomeAdapter(this@HomeActivity, mutableListBaby, R.drawable.ic_add_home_24px)
@@ -77,17 +74,15 @@ class HomeActivity : AppCompatActivity(), BabyHomeAdapter.onItemClickListenerr, 
             presenter.getAlbum(Constant.account.idaccount)
         }
 
-
+        //xử lý sự kiện đóng mở sử dụng ActionBarDrawer
         toggle = ActionBarDrawerToggle(this, drawerLayout, R.string.open, R.string.close)
+        //lắng nghe sự kiện đóng mở khi ấn nút
         drawerLayout.addDrawerListener(toggle)
-        toggle.syncState()
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        //view info in nav
-        nvHomeToDetailAccount.getHeaderView(0).tvHeaderNameAccount.text = Constant.account.firstname + " " +
-                Constant.account.lastname
-
         ibHomeMenu.setOnClickListener {
             drawerLayout.openDrawer(GravityCompat.START)
+            nvHomeToDetailAccount.getHeaderView(0).tvHeaderNameAccount.text =
+                Constant.account.firstname + " " +
+                        Constant.account.lastname
         }
         navigationView.setNavigationItemSelectedListener {
             var intent = Intent(this, DetailAccountActivity::class.java)
@@ -113,30 +108,19 @@ class HomeActivity : AppCompatActivity(), BabyHomeAdapter.onItemClickListenerr, 
             R.drawable.image16, R.drawable.image17,
             R.drawable.image13, R.drawable.image14, R.drawable.image15
         )
-
         for (image in arrayImage) {
             flipperImage(image)
         }
-        ibCancelAds.setOnClickListener {
-//            vlHomeSlide.removeAllViews()
-//            ibCancelAds.visibility = View.INVISIBLE
-        }
-
     }
 
     private fun flipperImage(image: Int) {
         val ivHomeSlide = ImageView(this)
-        ivHomeSlide.scaleType = ImageView.ScaleType.CENTER_CROP
-        ivHomeSlide.adjustViewBounds = true
         ivHomeSlide.setBackgroundResource(image)
         vlHomeSlide.addView(ivHomeSlide)
         vlHomeSlide.flipInterval = 5000
         vlHomeSlide.setInAnimation(this, R.anim.slide_right)
         vlHomeSlide.setOutAnimation(this, R.anim.slide_left)
-//        vlHomeSlide.setOutAnimation(this, R.anim.slide_right)
         vlHomeSlide.isAutoStart = true
-//        vlHomeSlide.setInAnimation(in)
-
     }
 
     override fun onItemClick(position: Int) {
@@ -145,10 +129,10 @@ class HomeActivity : AppCompatActivity(), BabyHomeAdapter.onItemClickListenerr, 
         intent.putExtra("nameAlbum", mutableListBaby[position].name)
         intent.putExtra("urlimage", mutableListBaby[position].urlimage)
         intent.putExtra("birthday", mutableListBaby[position].birthday)
-//        startActivity(intent)
         getResult.launch(intent)
     }
 
+    //khi ấn button sẽ gọi tới hàm này -> cần gọi để view hide drawer
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (toggle.onOptionsItemSelected(item)) {
             true

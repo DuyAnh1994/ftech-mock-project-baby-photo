@@ -1,20 +1,20 @@
 package ai.ftech.babyphoto.screen.register
 
 import ai.ftech.babyphoto.data.Utils
-import ai.ftech.babyphoto.data.service.APIService
 import ai.ftech.babyphoto.data.model.Account
 import ai.ftech.babyphoto.data.model.ResponseModel
+import ai.ftech.babyphoto.data.service.APIService
 import android.app.Dialog
 import com.google.gson.Gson
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class EnterEmailPresenter(private var view: IEnterEmailContract.View) {
+class EnterEmailPresenter(private var view: IEnterEmailContract.View) : IEnterEmailContract.IPresenter{
     //khai báo service
     private val apiService = APIService.base()
 
-    fun checkEmail(dialog: Dialog, email: String, account: Account?) {
+    override fun checkEmail(dialog: Dialog, email: String, account: Account?) {
         apiService.checkEmail(email).enqueue(
             object : Callback<ResponseModel<List<String>>> {
                 override fun onResponse(
@@ -27,7 +27,11 @@ class EnterEmailPresenter(private var view: IEnterEmailContract.View) {
                     }
 
                     account?.email = email
-                    view.onNextScreen(RegisterState.SUCCESS, "screen is next", Gson().toJson(account))
+                    view.onNextScreen(
+                        RegisterState.SUCCESS,
+                        "screen is next",
+                        Gson().toJson(account)
+                    )
                 }
 
                 override fun onFailure(call: Call<ResponseModel<List<String>>>, t: Throwable) {
@@ -40,11 +44,11 @@ class EnterEmailPresenter(private var view: IEnterEmailContract.View) {
 
     }
 
-    fun validatEmail(email: String) {
+    override fun validatEmail(email: String) {
         val isEmail = Utils.isEmail(email)
         if (!isEmail) {
             view.onCheckMail(RegisterState.IS_NOT_EMAIL, "this is not a email")
-        }else {
+        } else {
             view.onCheckMail(RegisterState.SUCCESS, "email is ok")
         }
     }

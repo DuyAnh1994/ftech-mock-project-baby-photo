@@ -35,11 +35,10 @@ class DetailAccountActivity : AppCompatActivity(), IDetailAccountContract.View {
     private lateinit var presenter: DetailAccountPresenter
     private var account: AccountUpdate = AccountUpdate("", "", "", 0)
 
-    //    private var mutableListAccount: MutableList<AccountUpdate> = mutableListOf()
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(ai.ftech.babyphoto.R.layout.activity_detail_account)
+        setContentView(R.layout.activity_detail_account)
         presenter = DetailAccountPresenter(this)
 
         onGetAccount()
@@ -49,7 +48,7 @@ class DetailAccountActivity : AppCompatActivity(), IDetailAccountContract.View {
         }
 
         tvCoppyIDAccount.setOnClickListener {
-           coppyClipboardManager()
+            coppyClipboardManager()
         }
         ibAccountDetailBack.setOnClickListener {
             finish()
@@ -80,15 +79,15 @@ class DetailAccountActivity : AppCompatActivity(), IDetailAccountContract.View {
             var intent = Intent(this, ChangePassActivity::class.java)
             startActivity(intent)
         }
-        Snackbar.make(
-            findViewById(ai.ftech.babyphoto.R.id.llAccountDetailLogout),
-            ai.ftech.babyphoto.R.string.add_baby,
-            Snackbar.LENGTH_SHORT
-        ).show()
+//        Snackbar.make(
+//            findViewById(R.id.llAccountDetailLogout),
+//            ai.ftech.babyphoto.R.string.add_baby,
+//            Snackbar.LENGTH_SHORT
+//        ).show()
 
     }
 
-    fun focusText(indexTF: Int){
+    fun focusText(indexTF: Int) {
         edtAccountDetailName.isFocusable = indexTF == 0
         edtAccountDetailName.isFocusableInTouchMode = indexTF == 0
 
@@ -98,7 +97,7 @@ class DetailAccountActivity : AppCompatActivity(), IDetailAccountContract.View {
         edtViewEmailAccountDetail.isFocusable = indexTF == 2
         edtViewEmailAccountDetail.isFocusableInTouchMode = indexTF == 2
 
-        when (indexTF){
+        when (indexTF) {
             0 -> {
                 edtAccountDetailName.setSelection(edtAccountDetailName.text.length)
                 edtAccountDetailName.requestFocus()
@@ -117,24 +116,26 @@ class DetailAccountActivity : AppCompatActivity(), IDetailAccountContract.View {
         }
     }
 
-    fun showSoftKeyboard(view: View) {
+    private fun showSoftKeyboard(view: View) {
         if (view.requestFocus()) {
             val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             imm.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT)
         }
     }
 
-    fun onGetAccount() {
+    private fun onGetAccount() {
         tvViewIDAccountDetail.text = Constant.account.idaccount.toString()
         edtAccountDetailName.setText(Constant.account.firstname)
         edtAccountDetailNameLast.setText(Constant.account.lastname)
         edtViewEmailAccountDetail.setText(Constant.account.email)
 
     }
+
     private fun hideKeyboard(view: View) {
         val inputMethodManager = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
         inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
     }
+
     override fun onUpdateAccount(state: DetailAccountState, message: String) {
         showSnackbar(message)
         when (state) {
@@ -145,11 +146,13 @@ class DetailAccountActivity : AppCompatActivity(), IDetailAccountContract.View {
             else -> {}
         }
     }
+
     @SuppressLint("RestrictedApi")
     fun coppyClipboardManager() {
         val stringYouExtracted: String = tvViewIDAccountDetail.text.toString()
         val clipboard =
-            ContextUtils.getActivity(this)!!.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+            ContextUtils.getActivity(this)!!
+                .getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
         val clip = ClipData.newPlainText("Copied Text", stringYouExtracted)
 
         clipboard.setPrimaryClip(clip)
@@ -162,11 +165,8 @@ class DetailAccountActivity : AppCompatActivity(), IDetailAccountContract.View {
             .show()
     }
 
-    fun showSnackbar(content: String) {
+    private fun showSnackbar(content: String) {
         val mSnackBar = Snackbar.make(this.detailAcccountMain, content, Snackbar.LENGTH_LONG)
-//        mSnackBar.setAction("close", View.OnClickListener {
-//
-//        })
             .setActionTextColor(Color.parseColor("#FFFFFF"))
             .setBackgroundTint(Color.parseColor("#FECE00"))
             .setTextColor(Color.parseColor("#FFFFFF"))
@@ -177,12 +177,13 @@ class DetailAccountActivity : AppCompatActivity(), IDetailAccountContract.View {
         mSnackBar.animationMode = BaseTransientBottomBar.ANIMATION_MODE_FADE
         mSnackBar.show()
     }
-    fun openDialog() {
+
+    private fun openDialog() {
         var dialog = Dialog(this)
         dialog.setContentView(R.layout.dialog_logout_layout)
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        var tvDialogCancel : TextView = dialog.findViewById(R.id.tvDialogCancel)
-        var tvDialogLogout : TextView = dialog.findViewById(R.id.tvDialogLogout)
+        var tvDialogCancel: TextView = dialog.findViewById(R.id.tvDialogCancel)
+        var tvDialogLogout: TextView = dialog.findViewById(R.id.tvDialogLogout)
         tvDialogCancel.setOnClickListener {
             dialog.dismiss()
         }

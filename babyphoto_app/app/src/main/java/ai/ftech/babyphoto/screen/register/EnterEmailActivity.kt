@@ -13,11 +13,11 @@ import com.google.android.material.textfield.TextInputEditText
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_enter_email.*
 
-class EnterEmailActivity : AppCompatActivity(), IEnterEmailContract.View{
+class EnterEmailActivity : AppCompatActivity(), IEnterEmailContract.View {
     private var presenter: EnterEmailPresenter? = null
-    private var account: Account?= null
+    private var account: Account? = null
     private var stateCheckMail: RegisterState? = null
-    private var textEmail = ""
+    private var enableEnterEmail = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_enter_email)
@@ -33,8 +33,10 @@ class EnterEmailActivity : AppCompatActivity(), IEnterEmailContract.View{
             finish()
         }
         btnRegisterNextEmail.setOnClickListener {
-            val dialog = Utils.loading(this)
-            presenter!!.checkEmail(dialog, tieRegisterEmail.text.toString(), account)
+            if (enableEnterEmail){
+                val dialog = Utils.loading(this)
+                presenter!!.checkEmail(dialog, tieRegisterEmail.text.toString(), account)
+            }
         }
         clEnterEmailMain.setOnClickListener {
             hideKeyboard(clEnterEmailMain)
@@ -47,18 +49,23 @@ class EnterEmailActivity : AppCompatActivity(), IEnterEmailContract.View{
     override fun onCheckMail(state: RegisterState, message: String) {
         stateCheckMail = state
         tvRegisterWarningEmail.visibility = View.VISIBLE
-        when(state){
-            RegisterState.SUCCESS ->{
+        when (state) {
+            RegisterState.SUCCESS -> {
+                enableEnterEmail = true
                 tvRegisterWarningEmail.visibility = View.INVISIBLE
                 btnRegisterNextEmail.setBackgroundResource(R.drawable.selector_rec_orange_color)
             }
-            RegisterState.EMAIL_EXIST ->{
-                tvRegisterWarningEmail.text = "This email is wrong or already exists, please enter a new email"
+            RegisterState.EMAIL_EXIST -> {
+                enableEnterEmail = false
+                tvRegisterWarningEmail.text =
+                    "This email is wrong or already exists, please enter a new email"
             }
-            RegisterState.IS_NOT_EMAIL ->{
+            RegisterState.IS_NOT_EMAIL -> {
+                enableEnterEmail = false
                 tvRegisterWarningEmail.text = "This is not email"
             }
-            RegisterState.EMAIL_EXIST_OR_NOT_EMAIL ->{
+            RegisterState.EMAIL_EXIST_OR_NOT_EMAIL -> {
+                enableEnterEmail = false
                 btnRegisterNextEmail.setBackgroundResource(R.drawable.selector_rec_gray_color_orange_selected)
             }
             else -> {}
@@ -71,8 +78,8 @@ class EnterEmailActivity : AppCompatActivity(), IEnterEmailContract.View{
     }
 
     override fun onNextScreen(state: RegisterState, message: String, account: String) {
-        when(state){
-            RegisterState.SUCCESS->{
+        when (state) {
+            RegisterState.SUCCESS -> {
                 val intent = Intent(this, CreatePassActivity::class.java)
                 intent.putExtra("account", account)
                 startActivity(intent)

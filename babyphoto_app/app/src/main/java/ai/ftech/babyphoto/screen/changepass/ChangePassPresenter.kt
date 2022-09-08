@@ -2,36 +2,37 @@ package ai.ftech.babyphoto.screen.changepass
 
 import ai.ftech.babyphoto.data.Constant
 import ai.ftech.babyphoto.data.Utils
-import ai.ftech.babyphoto.data.service.APIService
 import ai.ftech.babyphoto.data.model.ResponseModel
+import ai.ftech.babyphoto.data.service.APIService
 import android.app.Dialog
 import android.util.Log
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class ChangePassPresenter(private var view: IChangePassContract.View) {
-    fun validPassword(oldPass: String, newPass: String, reNewPass: String){
+class ChangePassPresenter(private var view: IChangePassContract.View) : IChangePassContract.IPresenter{
+    override fun validPassword(oldPass: String, newPass: String, reNewPass: String) {
         view.onCheckNull(ChangePassState.PASS_NULL, "pass is null")
-        if (oldPass != Constant.account.password){
+        if (oldPass != Constant.account.password) {
             return view.onCheckPass(ChangePassState.PASS_NOT_FOUND, "pass not found")
         }
-        if (!Utils.isValidPassCharacter(newPass) || !Utils.isValidPassCount(newPass)){
+        if (!Utils.isValidPassCharacter(newPass) || !Utils.isValidPassCount(newPass)) {
             return view.onCheckNewPass(ChangePassState.PASS_NOT_VALID, "new pass is not valid")
         }
         if (!Utils.isValidPassCharacter(reNewPass) || !Utils.isValidPassCount(reNewPass) || !Utils.isMatchPass
-                (newPass, reNewPass)){
+                (newPass, reNewPass)
+        ) {
             return view.onCheckReNewPass(ChangePassState.PASS_NOT_MATCH, "re new pass is not match")
         }
 
         view.onCheckPass(ChangePassState.SUCCESS, "pass found")
 
-        if (oldPass.isNotEmpty() && newPass.isNotEmpty() && reNewPass.isNotEmpty()){
+        if (oldPass.isNotEmpty() && newPass.isNotEmpty() && reNewPass.isNotEmpty()) {
             return view.onCheckNull(ChangePassState.PASS_NOT_NULL, "pass is null")
         }
     }
 
-    fun submit(dialog: Dialog, idaccount: Int, pass: String) {
+    override fun submit(dialog: Dialog, idaccount: Int, pass: String) {
         APIService.base().updatePass(
             idaccount, pass
         ).enqueue(

@@ -46,9 +46,6 @@ class TimelineActivity : AppCompatActivity(), ITimelineContract.View {
         birthday = bundle?.getString("birthday")
         urlimage = bundle?.getString("urlimage")
 
-//        Picasso.get()
-//            .load(Uri.parse(urlimage))
-//            .into(civTimeLineAvatarCirCle)
         try {
             Glide.with(this)
                 .load(urlimage)
@@ -110,6 +107,7 @@ class TimelineActivity : AppCompatActivity(), ITimelineContract.View {
                     hasChange = true
                 }
             }
+
         fabAdd.setOnClickListener {
             var intent = Intent(this, ListImageActivity::class.java)
             intent.putExtra("idalbum", idAlbum)

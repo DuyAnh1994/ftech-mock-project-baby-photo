@@ -7,10 +7,10 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class TimelinePresenter(private val view: ITimelineContract.View) {
+class TimelinePresenter(private val view: ITimelineContract.View) : ITimelineContract.IPresenter{
     private val apiService = APIService.base()
 
-    fun getImage(idalbum: String?) {
+    override fun getImage(idalbum: String?) {
         if (idalbum == null) return
 
         apiService.getImageId(idalbum).enqueue(

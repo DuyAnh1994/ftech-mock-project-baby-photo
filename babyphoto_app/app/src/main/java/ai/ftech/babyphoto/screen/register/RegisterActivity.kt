@@ -21,6 +21,7 @@ import kotlinx.android.synthetic.main.activity_register.*
 class RegisterActivity : AppCompatActivity(), IRegisterContract.View {
     private var presenterRegister: RegisterPresenter? = null
     private lateinit var stateCheckName: RegisterState
+    private var enableRegister = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
@@ -31,12 +32,19 @@ class RegisterActivity : AppCompatActivity(), IRegisterContract.View {
         presenterRegister = RegisterPresenter(this)
 
         btnRegisterNextFLName.setOnClickListener {
-            presenterRegister!!.nextScreen(stateCheckName, edtRegisterFirstName.text.toString(), edtRegisterLastName.text.toString())
+            if (enableRegister){
+                presenterRegister!!.nextScreen(
+                    stateCheckName,
+                    edtRegisterFirstName.text.toString(),
+                    edtRegisterLastName.text.toString()
+                )
+            }
         }
         ibRegisterBack.setOnClickListener {
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
         }
+
         clRegisterNameMain.setOnClickListener {
             hideKeyboard(clRegisterNameMain)
         }
@@ -76,12 +84,14 @@ class RegisterActivity : AppCompatActivity(), IRegisterContract.View {
 
     override fun onCheckName(state: RegisterState, message: String) {
         stateCheckName = state
-        when(state){
-            RegisterState.SUCCESS ->{
+        when (state) {
+            RegisterState.SUCCESS -> {
+                enableRegister = true
                 btnRegisterNextFLName.setBackgroundResource(R.drawable.selector_rec_orange_color)
                 tvRegisterWarning.setTextColor(Color.parseColor("#66000000"))
             }
-            RegisterState.NAME_NOT_VALID ->{
+            RegisterState.NAME_NOT_VALID -> {
+                enableRegister = false
                 btnRegisterNextFLName.setBackgroundResource(R.drawable.selector_rec_gray_color_orange_selected)
                 tvRegisterWarning.setTextColor(Color.parseColor("#FF4B4B"))
             }
@@ -95,15 +105,14 @@ class RegisterActivity : AppCompatActivity(), IRegisterContract.View {
     }
 
     override fun onNextScreen(state: RegisterState, message: String, account: String) {
-        when(state){
-            RegisterState.SUCCESS ->{
+        when (state) {
+            RegisterState.SUCCESS -> {
+                enableRegister = true
                 val intent = Intent(this, EnterEmailActivity::class.java)
                 intent.putExtra("account", account)
                 startActivity(intent)
             }
-            RegisterState.NAME_NOT_VALID ->{
-//                val intent = Intent(this, TestActivity::class.java)
-//                startActivity(intent)
+            RegisterState.NAME_NOT_VALID -> {
                 Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
             }
             else -> {}
