@@ -47,7 +47,7 @@ class AccountLoginPresenter(private var view: ILoginContract.View) : ILoginContr
             }
         )
     }
-
+   //save account in object companient Contain
     override fun getAccountWithID(dialog: Dialog, id: String) {
         apiService.getAccountWithId(id).enqueue(
             object : Callback<ResponseModel<List<Account>>> {
@@ -77,7 +77,7 @@ class AccountLoginPresenter(private var view: ILoginContract.View) : ILoginContr
 
     override fun checkMailNull(email: String?) {
         if (email == null) {
-            view.onCheckMailNull(LoginState.MAIL_NULL, "emai is null")
+            view.onCheckMailNull(LoginState.MAIL_NULL, "email is null")
         } else {
             view.onCheckMailNull(LoginState.MAIL_NOT_NULL, "email is not null")
         }

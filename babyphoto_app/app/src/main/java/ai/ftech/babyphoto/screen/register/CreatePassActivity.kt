@@ -21,6 +21,7 @@ class CreatePassActivity() : AppCompatActivity(), ICreatePassContract.View {
     private var account: Account? = null
     private var presenter: CreatePassPresenter? = null
     private lateinit var stateCheckRePass: RegisterState
+    private var enableCreatePass = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_pass)
@@ -51,13 +52,15 @@ class CreatePassActivity() : AppCompatActivity(), ICreatePassContract.View {
         }
         btnRegisterNextPass.setOnClickListener {
 
-            presenter!!.submit(
-                stateCheckRePass,
-                tieRegisterPass.text.toString().trim(),
-                tieRegisterRePass.text.toString().trim(),
-                account
-            )
-            openDialog()
+            if (enableCreatePass){
+                presenter!!.submit(
+                    stateCheckRePass,
+                    tieRegisterPass.text.toString().trim(),
+                    tieRegisterRePass.text.toString().trim(),
+                    account
+                )
+                openDialog()
+            }
         }
         clCreatePassMain.setOnClickListener {
             hideKeyboard(clCreatePassMain)
@@ -94,15 +97,18 @@ class CreatePassActivity() : AppCompatActivity(), ICreatePassContract.View {
         btnRegisterNextPass.setBackgroundResource(R.drawable.selector_rec_gray_color_orange_selected)
         when (state) {
             RegisterState.SUCCESS -> {
+                enableCreatePass = true
                 tvRegisterWarningPass.setTextColor(Color.parseColor("#FFFFFF"))
                 btnRegisterNextPass.setBackgroundResource(R.drawable.selector_rec_orange_color)
             }
             RegisterState.PASS_NOT_VALID -> {
+                enableCreatePass = false
                 tvRegisterWarningPass.text =
                     "Passwords are between 6 and 8 characters, do not use special characters"
 
             }
             RegisterState.PASS_NOT_MATCH -> {
+                enableCreatePass = false
                 tvRegisterWarningPass.text = "Confirm password doesn't match"
             }
             else -> {}

@@ -10,8 +10,8 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class ChangePassPresenter(private var view: IChangePassContract.View) {
-    fun validPassword(oldPass: String, newPass: String, reNewPass: String) {
+class ChangePassPresenter(private var view: IChangePassContract.View) : IChangePassContract.IPresenter{
+    override fun validPassword(oldPass: String, newPass: String, reNewPass: String) {
         view.onCheckNull(ChangePassState.PASS_NULL, "pass is null")
         if (oldPass != Constant.account.password) {
             return view.onCheckPass(ChangePassState.PASS_NOT_FOUND, "pass not found")
@@ -32,7 +32,7 @@ class ChangePassPresenter(private var view: IChangePassContract.View) {
         }
     }
 
-    fun submit(dialog: Dialog, idaccount: Int, pass: String) {
+    override fun submit(dialog: Dialog, idaccount: Int, pass: String) {
         APIService.base().updatePass(
             idaccount, pass
         ).enqueue(

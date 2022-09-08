@@ -17,7 +17,7 @@ class EnterEmailActivity : AppCompatActivity(), IEnterEmailContract.View {
     private var presenter: EnterEmailPresenter? = null
     private var account: Account? = null
     private var stateCheckMail: RegisterState? = null
-    private var textEmail = ""
+    private var enableEnterEmail = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_enter_email)
@@ -33,8 +33,10 @@ class EnterEmailActivity : AppCompatActivity(), IEnterEmailContract.View {
             finish()
         }
         btnRegisterNextEmail.setOnClickListener {
-            val dialog = Utils.loading(this)
-            presenter!!.checkEmail(dialog, tieRegisterEmail.text.toString(), account)
+            if (enableEnterEmail){
+                val dialog = Utils.loading(this)
+                presenter!!.checkEmail(dialog, tieRegisterEmail.text.toString(), account)
+            }
         }
         clEnterEmailMain.setOnClickListener {
             hideKeyboard(clEnterEmailMain)
@@ -49,17 +51,21 @@ class EnterEmailActivity : AppCompatActivity(), IEnterEmailContract.View {
         tvRegisterWarningEmail.visibility = View.VISIBLE
         when (state) {
             RegisterState.SUCCESS -> {
+                enableEnterEmail = true
                 tvRegisterWarningEmail.visibility = View.INVISIBLE
                 btnRegisterNextEmail.setBackgroundResource(R.drawable.selector_rec_orange_color)
             }
             RegisterState.EMAIL_EXIST -> {
+                enableEnterEmail = false
                 tvRegisterWarningEmail.text =
                     "This email is wrong or already exists, please enter a new email"
             }
             RegisterState.IS_NOT_EMAIL -> {
+                enableEnterEmail = false
                 tvRegisterWarningEmail.text = "This is not email"
             }
             RegisterState.EMAIL_EXIST_OR_NOT_EMAIL -> {
+                enableEnterEmail = false
                 btnRegisterNextEmail.setBackgroundResource(R.drawable.selector_rec_gray_color_orange_selected)
             }
             else -> {}

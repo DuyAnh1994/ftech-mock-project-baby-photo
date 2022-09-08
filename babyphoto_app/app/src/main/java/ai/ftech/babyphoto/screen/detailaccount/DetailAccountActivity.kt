@@ -79,11 +79,11 @@ class DetailAccountActivity : AppCompatActivity(), IDetailAccountContract.View {
             var intent = Intent(this, ChangePassActivity::class.java)
             startActivity(intent)
         }
-        Snackbar.make(
-            findViewById(R.id.llAccountDetailLogout),
-            ai.ftech.babyphoto.R.string.add_baby,
-            Snackbar.LENGTH_SHORT
-        ).show()
+//        Snackbar.make(
+//            findViewById(R.id.llAccountDetailLogout),
+//            ai.ftech.babyphoto.R.string.add_baby,
+//            Snackbar.LENGTH_SHORT
+//        ).show()
 
     }
 

@@ -12,4 +12,8 @@ interface IChangePassContract {
         fun onSubmit(state: ChangePassState, message: String, dialog: Dialog)
 
     }
+    interface IPresenter {
+        fun validPassword(oldPass: String, newPass: String, reNewPass: String)
+        fun submit(dialog: Dialog, idaccount: Int, pass: String)
+    }
 }
