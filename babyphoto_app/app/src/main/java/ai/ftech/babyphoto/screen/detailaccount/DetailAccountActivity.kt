@@ -73,7 +73,7 @@ class DetailAccountActivity : AppCompatActivity(), IDetailAccountContract.View {
             presenter.updateAccount(account)
         }
         llAccountDetailLogout.setOnClickListener {
-            openDialog()
+//            openDialog()
         }
         clProfileChangePass.setOnClickListener {
             var intent = Intent(this, ChangePassActivity::class.java)
@@ -193,7 +193,7 @@ class DetailAccountActivity : AppCompatActivity(), IDetailAccountContract.View {
             var intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
         }
-        dialog.show()
+//        dialog.show()
     }
 
 }

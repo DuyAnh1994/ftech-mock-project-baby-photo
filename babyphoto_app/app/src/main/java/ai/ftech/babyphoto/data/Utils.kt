@@ -48,7 +48,7 @@ object Utils {
         dialogLoadPass.setContentView(R.layout.dialog_loading_register_layout)
         dialogLoadPass.setCancelable(false)
         dialogLoadPass.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        dialogLoadPass.show()
+//        dialogLoadPass.show()
         return dialogLoadPass
     }
 }

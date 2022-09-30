@@ -44,7 +44,7 @@
             android:name=".screen.createalbum.preview.PhotoFolderActivity"
             android:exported="false" />
         <activity
-            android:name=".screen.login.AccountLoginActivity"
+            android:name=".MainActivity"
             android:exported="false" />
         <activity
             android:name=".screen.register.CreatePassActivity"
@@ -59,7 +59,7 @@
             android:name=".screen.listimage.ListImageActivity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".screen.login.AccountLoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

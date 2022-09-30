@@ -16,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatButton
 import androidx.appcompat.widget.AppCompatEditText
 import kotlinx.android.synthetic.main.activity_register.*
+import kotlinx.android.synthetic.main.header_custom.view.*
 
 
 class RegisterActivity : AppCompatActivity(), IRegisterContract.View {
@@ -32,7 +33,7 @@ class RegisterActivity : AppCompatActivity(), IRegisterContract.View {
         presenterRegister = RegisterPresenter(this)
 
         btnRegisterNextFLName.setOnClickListener {
-            if (enableRegister){
+            if (enableRegister) {
                 presenterRegister!!.nextScreen(
                     stateCheckName,
                     edtRegisterFirstName.text.toString(),
@@ -40,10 +41,16 @@ class RegisterActivity : AppCompatActivity(), IRegisterContract.View {
                 )
             }
         }
-        ibRegisterBack.setOnClickListener {
+        //using include for simplification xml code
+        hvHeaderView.setTitle("What's your name?")
+        hvHeaderView.ibHeaderCustomBackActivity.setOnClickListener {
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
         }
+//        ibRegisterBack.setOnClickListener {
+//            val intent = Intent(this, MainActivity::class.java)
+//            startActivity(intent)
+//        }
 
         clRegisterNameMain.setOnClickListener {
             hideKeyboard(clRegisterNameMain)

@@ -4,6 +4,7 @@ import ai.ftech.babyphoto.MainActivity
 import ai.ftech.babyphoto.R
 import ai.ftech.babyphoto.data.Utils
 import ai.ftech.babyphoto.screen.home.HomeActivity
+import ai.ftech.babyphoto.screen.register.RegisterActivity
 import android.app.Dialog
 import android.content.Context
 import android.content.Intent
@@ -13,6 +14,7 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.text.Editable
+import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
@@ -32,8 +34,12 @@ class AccountLoginActivity : AppCompatActivity(), CompoundButton.OnCheckedChange
     private var KEY_REMEMBER = "remember"
     private var KEY_EMAIL = "email_pref"
     private var KEY_PASS = "pass_pref"
+    private var PREF_NAME2 = "prefs2"
+    private var KEY_REMEMBER2 = "remember2"
+    private var KEY_MESSAGE = "message_pref"
     private var email: String? = ""
     private var enableLogin = false
+    private var messageS: String? = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,6 +48,7 @@ class AccountLoginActivity : AppCompatActivity(), CompoundButton.OnCheckedChange
         email = bundle?.getString("Email")
         presenter = AccountLoginPresenter(this)
         presenter?.checkMailNull(email)
+
         clAccountLoginMain.setOnClickListener {
             hideKeyboard(clAccountLoginMain)
         }
@@ -129,13 +136,30 @@ class AccountLoginActivity : AppCompatActivity(), CompoundButton.OnCheckedChange
     }
 
     override fun onLogin(state: LoginState, message: String) {
+        Log.d("TAGLOGIN", "onLogin: ok! vào đây rồi!${message}")
+        messageS = message
+        Log.d("TAGLOGIN", "onLogin: $messageS")
         when (state) {
             LoginState.SUCCESS -> {
+
+//                tvTestVP.text = message.toString()
+                sharedPreferences = getSharedPreferences(PREF_NAME2, Context.MODE_PRIVATE)
+                editor = sharedPreferences?.edit()
+                editor?.remove(KEY_MESSAGE)
+                editor?.putString(KEY_MESSAGE,message)
+                editor?.apply()
+                Log.d("TAGLOGIN", "onLogin: Success ${sharedPreferences?.getString(KEY_MESSAGE,"hiiCheck")}")
                 val intent = Intent(this, HomeActivity::class.java)
                 startActivity(intent)
                 finishAffinity()
             }
             LoginState.INVALID_EMAIL_AND_PASS -> {
+                sharedPreferences = getSharedPreferences(PREF_NAME2, Context.MODE_PRIVATE)
+                editor = sharedPreferences?.edit()
+                editor?.remove(KEY_MESSAGE)
+                editor?.putString(KEY_MESSAGE,message)
+                editor?.apply()
+                Log.d("TAGLOGIN", "onLogin: Success ${sharedPreferences?.getString(KEY_MESSAGE,"hiiCheck")}")
                 tvAccountLoginWarning.visibility = View.VISIBLE
                 Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
             }
@@ -144,6 +168,7 @@ class AccountLoginActivity : AppCompatActivity(), CompoundButton.OnCheckedChange
     }
 
     override fun onValidAccount(state: LoginState, message: String) {
+        Log.d("TAGLOGIN", "onValidAccount: ok vào đây")
         tvAccountLoginWarning.visibility = View.INVISIBLE
         when (state) {
             LoginState.SUCCESS -> {
@@ -159,6 +184,7 @@ class AccountLoginActivity : AppCompatActivity(), CompoundButton.OnCheckedChange
     }
 
     override fun onCheckMailNull(state: LoginState, message: String) {
+        Log.d("TAGLOGIN", "onCheckMailNull: ok ")
         when (state) {
             LoginState.MAIL_NULL -> {
                 sharedPreferences = getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
@@ -206,5 +232,36 @@ class AccountLoginActivity : AppCompatActivity(), CompoundButton.OnCheckedChange
     override fun onBackPressed() {
         val intent = Intent(this, MainActivity::class.java)
         startActivity(intent)
+    }
+
+    override fun onStart() {
+        super.onStart()
+        Log.d("TAGLOGIN", "onStart: ")
+        tvTestVP.text = messageS
+    }
+
+    override fun onResume() {
+        super.onResume()
+//        tvTestVP.text = messageS
+        Log.d("TAGLOGIN", "onResume: $messageS")
+        //
+//        sharedPreferences = getSharedPreferences(PREF_NAME2, Context.MODE_PRIVATE)
+//        editor = sharedPreferences?.edit()
+//        tvTestVP.text = sharedPreferences?.getString(KEY_MESSAGE,"hiiCheck")
+    }
+
+    override fun onPause() {
+        super.onPause()
+        Log.d("TAGLOGIN", "onPause: ")
+    }
+    override fun onStop() {
+        super.onStop()
+        var save: String = messageS.toString()
+        Log.d("TAGLOGIN", "onStop: $save")
+
+    }
+    override fun onDestroy() {
+        super.onDestroy()
+        Log.d("TAGLOGIN", "onDestroy: ")
     }
 }

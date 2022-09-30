@@ -7,22 +7,13 @@
     android:layout_height="match_parent"
     android:padding="20dp"
     tools:context=".screen.register.RegisterActivity">
-
-    <ImageButton
-        android:id="@+id/ibRegisterBack"
-        style="@style/BabyButtonBackRegister"
+    <ai.ftech.babyphoto.screen.HeaderView
+        android:id="@+id/hvHeaderView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        />
-
-    <TextView
-        android:id="@+id/tvRegisterQuestion"
-        style="@style/BabyTitleRegister"
-        android:layout_marginTop="23dp"
-        android:text="What's Your Name?"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ibRegisterBack" />
-
+        android:orientation="vertical"/>
     <LinearLayout
         android:id="@+id/llRegisterForm"
         android:layout_width="wrap_content"
@@ -31,7 +22,7 @@
         android:layout_marginTop="25dp"
         android:orientation="horizontal"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvRegisterQuestion">
+        app:layout_constraintTop_toBottomOf="@+id/hvHeaderView">
 
         <TextView
             android:layout_width="wrap_content"

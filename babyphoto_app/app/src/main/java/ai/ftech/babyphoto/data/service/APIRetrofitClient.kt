@@ -11,9 +11,9 @@ object APIRetrofitClient {
     private lateinit var retrofit: Retrofit
     fun getClient(base_url: String): Retrofit {
         val okHttpClient = OkHttpClient.Builder()
-            .readTimeout(1000000, TimeUnit.MILLISECONDS)
-            .writeTimeout(1000000, TimeUnit.MILLISECONDS)
-            .connectTimeout(1000000, TimeUnit.MILLISECONDS)
+            .readTimeout(1000, TimeUnit.MILLISECONDS)
+            .writeTimeout(1000, TimeUnit.MILLISECONDS)
+            .connectTimeout(1000, TimeUnit.MILLISECONDS)
             .retryOnConnectionFailure(true)
             .protocols(Arrays.asList(Protocol.HTTP_1_1))
             .build()

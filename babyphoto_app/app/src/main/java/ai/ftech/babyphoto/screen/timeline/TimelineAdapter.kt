@@ -22,7 +22,7 @@ class TimelineAdapter(
         notifyDataSetChanged()
     }
     var callBack: ICallBack? = null
-    // tạo view hiển thị cho từng item
+    // khởi tạo view hiển thị cho từng item
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.timeline_view_album, parent, false)
 

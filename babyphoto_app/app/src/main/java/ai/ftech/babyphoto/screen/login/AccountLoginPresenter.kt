@@ -6,6 +6,7 @@ import ai.ftech.babyphoto.data.model.Account
 import ai.ftech.babyphoto.data.model.ResponseModel
 import ai.ftech.babyphoto.data.service.APIService
 import android.app.Dialog
+import android.util.Log
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -14,6 +15,7 @@ class AccountLoginPresenter(private var view: ILoginContract.View) : ILoginContr
     private val apiService = APIService.base()
 
     override fun login(dialog: Dialog, email: String, password: String) {
+        Log.d("TAGLOGIN", "login presenter!!!: ")
         if (email.trim().isEmpty() || password.trim().isEmpty()) {
             view.onLogin(LoginState.EMAIL_OR_PASS_EMPTY, "email, pass is empty")
         } else {
@@ -22,7 +24,7 @@ class AccountLoginPresenter(private var view: ILoginContract.View) : ILoginContr
     }
 
     override fun getIdAccount(dialog: Dialog, email: String, password: String) {
-        dialog.show()
+//        dialog.show()
         apiService.login(email, password).enqueue(
             object : Callback<ResponseModel<List<String>>> {
                 override fun onResponse(
@@ -36,14 +38,12 @@ class AccountLoginPresenter(private var view: ILoginContract.View) : ILoginContr
                         return
                     }
                     view.onLogin(LoginState.INVALID_EMAIL_AND_PASS, "get id failed")
-                    dialog.dismiss()
+//                    dialog.dismiss()
                 }
-
                 override fun onFailure(call: Call<ResponseModel<List<String>>>, t: Throwable) {
                     view.onLogin(LoginState.INVALID_EMAIL_AND_PASS, "get id failed")
-                    dialog.dismiss()
+//                    dialog.dismiss()
                 }
-
             }
         )
     }
@@ -55,7 +55,7 @@ class AccountLoginPresenter(private var view: ILoginContract.View) : ILoginContr
                     call: Call<ResponseModel<List<Account>>>,
                     response: Response<ResponseModel<List<Account>>>
                 ) {
-                    dialog.dismiss()
+//                    dialog.dismiss()
                     if (response.body() != null && "code12" == response.body()?.code && response.body()!!.data
                             .isNotEmpty()
                     ) {
@@ -68,7 +68,7 @@ class AccountLoginPresenter(private var view: ILoginContract.View) : ILoginContr
 
                 override fun onFailure(call: Call<ResponseModel<List<Account>>>, t: Throwable) {
                     view.onLogin(LoginState.INVALID_EMAIL_AND_PASS, "Login failed")
-                    dialog.dismiss()
+//                    dialog.dismiss()
                 }
 
             }
